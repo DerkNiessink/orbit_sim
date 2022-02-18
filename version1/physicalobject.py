@@ -14,8 +14,8 @@ class PhysicalObject(pyglet.sprite.Sprite):
     def check_bounds(self):
         min_x = -self.image.width / 2
         min_y = -self.image.height / 2
-        max_x = 800 + self.image.width / 2
-        max_y = 600 + self.image.height / 2
+        max_x = 1500 + self.image.width / 2
+        max_y = 800 + self.image.height / 2
         if self.x < min_x:
             self.x = max_x
         elif self.x > max_x:
