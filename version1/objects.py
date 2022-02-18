@@ -3,13 +3,16 @@ from pyglet.window import key
 from resources.images import planet_image, star_image
 import math
 import time
+import pyglet
 
 
 class Planet(PhysicalObject):
     def __init__(self, *args, **kwargs):
         super().__init__(img=planet_image, *args, **kwargs)
         self.keys = dict(left=False, right=False, up=False, down=False, c=False)
-        self.rotate_speed = 200.0
+        self.rotate_speed = 100
+        self.semi_mayor_axis = 400
+        self.semi_minor_axis = 200
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -27,6 +30,12 @@ class Planet(PhysicalObject):
         elif symbol == key.RIGHT:
             self.keys["right"] = False
 
+    def get_positions(self):
+        return self.x, self.y
+
+    def get_axes(self):
+        return self.semi_mayor_axis, self.semi_minor_axis
+
     def update(self, dt, location):
         super(Planet, self).update(dt)
         self.check_bounds()
@@ -37,9 +46,10 @@ class Planet(PhysicalObject):
             self.rotation += self.rotate_speed * dt
         if not self.keys["c"]:
             location_x, location_y = location
-            angle = time.time()
-            self.x = 400 * math.cos(angle) + location_x
-            self.y = 400 * math.sin(angle) + location_y
+            angle = time.time() / 3
+            self.x = self.semi_mayor_axis * math.cos(angle) + location_x
+            self.y = self.semi_minor_axis * math.sin(angle) + location_y
+            self.rotation += self.rotate_speed * dt
 
 
 class Star(PhysicalObject):
@@ -84,3 +94,6 @@ class Star(PhysicalObject):
             angle_radians = -math.radians(self.rotation)
             self.velocity_x = math.cos(angle_radians) * self.speed * dt
             self.velocity_y = math.sin(angle_radians) * self.speed * dt
+        if not self.keys["up"]:
+            self.velocity_x = 0
+            self.velocity_y = 0

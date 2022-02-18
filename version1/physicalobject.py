@@ -24,3 +24,4 @@ class PhysicalObject(pyglet.sprite.Sprite):
             self.y = max_y
         elif self.y > max_y:
             self.y = min_y
+

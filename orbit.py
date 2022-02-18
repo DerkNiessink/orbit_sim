@@ -1,13 +1,23 @@
 import pyglet
 from version1.objects import Planet, Star
+from pyglet_gui.theme import Theme
+from pyglet_gui.gui import Label
 
 
-game_window = pyglet.window.Window(1500, 800)
+theme = pyglet_gui.theme.Theme(
+    {"font": "Lucida Grande", "font_size": 12, "text_color": [255, 0, 0, 255]},
+    resources_path="",
+)
+image1 = pyglet.image.AbstractImage(width=30, height=30)
+image2 = pyglet.image.AbstractImage(width=30, height=30)
+game_window = pyglet.window.Window(
+    width=1500, height=800, style=pyglet.window.Window.WINDOW_STYLE_TOOL
+)
+controller = pyglet.gui.WidgetBase(20, 20, 200, 200)
+pushbutton = pyglet.gui.PushButton(50, 50, image1, image2)
+
 pyglet.resource.path = ["../resources"]
 pyglet.resource.reindex()
-
-
-"""img=shapes.Circle(x=100, y=150, radius=100, color=(50, 225, 30))"""
 
 
 star = Star(x=500, y=500)
@@ -26,6 +36,10 @@ def update(dt):
 @game_window.event
 def on_draw():
     game_window.clear()
+    star_x, star_y = star.get_position()
+    semi_mayor_axis, semi_minor_axis = planet.get_axes()
+    ellipse = pyglet.shapes.Ellipse(star_x, star_y, semi_mayor_axis, semi_minor_axis)
+    ellipse.draw()
     planet.draw()
     star.draw()
 
