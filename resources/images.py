@@ -1,8 +1,7 @@
 import pyglet
 
-
 planet_image = pyglet.resource.image("planets-modified.png")
-star_image = pyglet.resource.image("sun.png")
+star_image = pyglet.resource.image("sun.jpg")
 
 
 def center_image(image):
