@@ -1,20 +1,14 @@
 import pyglet
 from version1.objects import Planet, Star
+from pyglet_gui.manager import Manager
+from pyglet_gui.containers import VerticalContainer
+from pyglet_gui.sliders import HorizontalSlider
 from pyglet_gui.theme import Theme
-from pyglet_gui.gui import Label
 
 
-theme = pyglet_gui.theme.Theme(
-    {"font": "Lucida Grande", "font_size": 12, "text_color": [255, 0, 0, 255]},
-    resources_path="",
-)
-image1 = pyglet.image.AbstractImage(width=30, height=30)
-image2 = pyglet.image.AbstractImage(width=30, height=30)
 game_window = pyglet.window.Window(
-    width=1500, height=800, style=pyglet.window.Window.WINDOW_STYLE_TOOL
+    width=1500, height=800, style=pyglet.window.Window.WINDOW_STYLE_BORDERLESS
 )
-controller = pyglet.gui.WidgetBase(20, 20, 200, 200)
-pushbutton = pyglet.gui.PushButton(50, 50, image1, image2)
 
 pyglet.resource.path = ["../resources"]
 pyglet.resource.reindex()
@@ -42,6 +36,48 @@ def on_draw():
     ellipse.draw()
     planet.draw()
     star.draw()
+
+
+theme = Theme(
+    {
+        "font": "Lucida Grande",
+        "font_size": 12,
+        "text_color": [255, 255, 255, 255],
+        "gui_color": [255, 0, 0, 255],
+        "slider": {
+            "knob": {"image": {"source": "slider-knob.png"}, "offset": [-5, -11]},
+            "padding": [8, 8, 8, 8],
+            "step": {"image": {"source": "slider-step.png"}, "offset": [-2, -8]},
+            "bar": {
+                "image": {
+                    "source": "slider-bar.png",
+                    "frame": [8, 8, 8, 0],
+                    "padding": [8, 8, 8, 8],
+                }
+            },
+        },
+    },
+    resources_path="",
+)
+
+gui_window = pyglet.window.Window(
+    width=500, height=500, style=pyglet.window.Window.WINDOW_STYLE_DEFAULT
+)
+batch = pyglet.graphics.Batch()
+
+
+@gui_window.event
+def on_draw():
+    gui_window.clear()
+    batch.draw()
+
+
+Manager(
+    VerticalContainer([HorizontalSlider(), HorizontalSlider(steps=10)]),
+    window=gui_window,
+    batch=batch,
+    theme=theme,
+)
 
 
 if __name__ == "__main__":
