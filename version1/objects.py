@@ -1,44 +1,31 @@
 from version1.physicalobject import PhysicalObject
-from pyglet.window import key
 from resources.images import planet_image, star_image, center_im
-import math
-import time
+import numpy as np
 
 
-class Planet(PhysicalObject):
-    def __init__(self, *args, **kwargs):
+class CelestialBody(PhysicalObject):
+    def __init__(self, init_v_x, init_v_y, mass, *args, **kwargs):
         super().__init__(img=planet_image, *args, **kwargs)
-        self.keys = dict(c=False)
-        self.rotate_speed = 100
-        self.semi_mayor_axis = 230
-        self.semi_minor_axis = 200
+        self.init_velocity = np.array([init_v_x, init_v_y])
+        self.mass = mass
 
-    def on_key_press(self, symbol, modifiers):
-        if symbol == key.C:
-            self.keys["c"] = True
+    def get_position(self):
+        return np.array([self.x, self.y])
 
-    def on_key_release(self, symbol, modifiers):
-        if symbol == key.C:
-            self.keys["c"] = False
+    def get_mass(self):
+        return self.mass
 
-    def get_positions(self):
-        return self.x, self.y
+    def update(self, dt, other_body_postion, other_body_mass):
+        init_velocity = self.init_velocity
+        mass = self.mass
 
-    def get_axes(self):
-        return self.semi_mayor_axis, self.semi_minor_axis
-
-    def update(self, dt, location):
-        super(Planet, self).update(dt)
+        super(CelestialBody, self).update(
+            dt, other_body_postion, other_body_mass, mass, init_velocity
+        )
         self.check_bounds()
 
-        if not self.keys["c"]:
-            location_x, location_y = location
-            angle = time.time() / 3
-            self.x = self.semi_mayor_axis * math.cos(angle) + location_x
-            self.y = self.semi_minor_axis * math.sin(angle) + location_y
-            self.rotation += self.rotate_speed * dt
 
-
+"""
 class Center(PhysicalObject):
     def __init__(self, *args, **kwargs):
         super().__init__(img=center_im, *args, **kwargs)
@@ -108,3 +95,4 @@ class Star(PhysicalObject):
         self.y = center_y
         if not self.keys["c"]:
             self.rotation += self.rotate_speed * dt
+"""

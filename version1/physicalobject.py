@@ -1,13 +1,22 @@
 import pyglet
+import numpy as np
 
 
 class PhysicalObject(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.gravitational_const = 1
 
-        self.velocity_x, self.velocity_y = 0, 0
+    def update(self, dt, other_body_position, other_body_mass, mass, init_velocity):
 
-    def update(self, dt):
+        dst = np.linalg.norm(other_body_position - self.position)
+        forceDir = (other_body_position - self.position) / dst
+        force = (
+            forceDir * self.gravitational_const * mass * other_body_mass / (dst ** 2)
+        )
+        acceleration = force / mass
+        init_velocity = init_velocity + acceleration * dt
+        self.velocity_x, self.velocity_y = init_velocity
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
@@ -24,4 +33,3 @@ class PhysicalObject(pyglet.sprite.Sprite):
             self.y = max_y
         elif self.y > max_y:
             self.y = min_y
-

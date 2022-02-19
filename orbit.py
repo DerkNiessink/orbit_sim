@@ -1,9 +1,6 @@
 import pyglet
-from version1.objects import Planet, Center, Star
-from pyglet_gui.manager import Manager
-from pyglet_gui.containers import VerticalContainer
-from pyglet_gui.sliders import HorizontalSlider
-from pyglet_gui.theme import Theme
+from version1.objects import CelestialBody
+import numpy as np
 
 
 game_window = pyglet.window.Window(
@@ -14,84 +11,29 @@ pyglet.resource.path = ["../resources"]
 pyglet.resource.reindex()
 
 
-center = Center(x=game_window.width // 2, y=game_window.height // 2)
-planet = Planet(x=400, y=300)
-star = Star(x=500, y=500)
-game_window.push_handlers(planet)
-game_window.push_handlers(center)
+inst_speed = np.sqrt(1_000_000 * (1 / 300))
+Body1 = CelestialBody(x=350, y=300, init_v_x=0, init_v_y=0, mass=1_000_00000)
+Body2 = CelestialBody(x=50, y=100, init_v_x=335.644, init_v_y=0, mass=0.00000001)
+game_window.push_handlers(Body1)
+game_window.push_handlers(Body2)
 
-game_objects = [planet, center]
+game_objects = [Body1, Body2]
 
 
 def update(dt):
-    center.update(dt)
-    planet.update(dt, center.get_position())
-    star.update(dt, center.get_position(), planet.get_axes())
+    Body1_position = Body1.get_position()
+    Body2_position = Body2.get_position()
+    Body1_mass = Body1.get_mass()
+    Body2_mass = Body2.get_mass()
+    Body1.update(dt, Body2_position, Body2_mass)
+    Body2.update(dt, Body1_position, Body1_mass)
 
 
 @game_window.event
 def on_draw():
     game_window.clear()
-    center_x, center_y = center.get_position()
-    semi_mayor_axis, semi_minor_axis = planet.get_axes()
-    ellipse = pyglet.shapes.Ellipse(
-        center_x, center_y, semi_mayor_axis, semi_minor_axis
-    )
-    circle = pyglet.shapes.Ellipse(
-        center_x, center_y + semi_minor_axis, semi_mayor_axis, semi_mayor_axis
-    )
-    line = pyglet.shapes.Line(
-        center_x - semi_mayor_axis, center_y, center_x + semi_mayor_axis, center_y
-    )
-
-    planet.draw()
-    center.draw()
-    star.draw()
-    line.draw()
-    ellipse.draw()
-    circle.draw()
-
-
-theme = Theme(
-    {
-        "font": "Lucida Grande",
-        "font_size": 12,
-        "text_color": [255, 255, 255, 255],
-        "gui_color": [255, 0, 0, 255],
-        "slider": {
-            "knob": {"image": {"source": "slider-knob.png"}, "offset": [-5, -11]},
-            "padding": [8, 8, 8, 8],
-            "step": {"image": {"source": "slider-step.png"}, "offset": [-2, -8]},
-            "bar": {
-                "image": {
-                    "source": "slider-bar.png",
-                    "frame": [8, 8, 8, 0],
-                    "padding": [8, 8, 8, 8],
-                }
-            },
-        },
-    },
-    resources_path="",
-)
-
-gui_window = pyglet.window.Window(
-    width=500, height=500, style=pyglet.window.Window.WINDOW_STYLE_DEFAULT
-)
-batch = pyglet.graphics.Batch()
-
-
-@gui_window.event
-def on_draw():
-    gui_window.clear()
-    batch.draw()
-
-
-Manager(
-    VerticalContainer([HorizontalSlider(), HorizontalSlider(steps=10)]),
-    window=gui_window,
-    batch=batch,
-    theme=theme,
-)
+    Body1.draw()
+    Body2.draw()
 
 
 if __name__ == "__main__":
