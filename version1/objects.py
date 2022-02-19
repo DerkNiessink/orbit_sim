@@ -1,34 +1,25 @@
 from version1.physicalobject import PhysicalObject
 from pyglet.window import key
-from resources.images import planet_image, star_image
+from resources.images import planet_image, star_image, center_im
 import math
 import time
-import pyglet
 
 
 class Planet(PhysicalObject):
     def __init__(self, *args, **kwargs):
         super().__init__(img=planet_image, *args, **kwargs)
-        self.keys = dict(left=False, right=False, up=False, down=False, c=False)
+        self.keys = dict(c=False)
         self.rotate_speed = 100
-        self.semi_mayor_axis = 400
+        self.semi_mayor_axis = 230
         self.semi_minor_axis = 200
 
     def on_key_press(self, symbol, modifiers):
-        if symbol == key.LEFT:
-            self.keys["left"] = True
-        elif symbol == key.RIGHT:
-            self.keys["right"] = True
-        elif symbol == key.C:
+        if symbol == key.C:
             self.keys["c"] = True
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.C:
             self.keys["c"] = False
-        elif symbol == key.LEFT:
-            self.keys["left"] = False
-        elif symbol == key.RIGHT:
-            self.keys["right"] = False
 
     def get_positions(self):
         return self.x, self.y
@@ -40,10 +31,6 @@ class Planet(PhysicalObject):
         super(Planet, self).update(dt)
         self.check_bounds()
 
-        if self.keys["left"]:
-            self.rotation -= self.rotate_speed * dt
-        if self.keys["right"]:
-            self.rotation += self.rotate_speed * dt
         if not self.keys["c"]:
             location_x, location_y = location
             angle = time.time() / 3
@@ -52,10 +39,10 @@ class Planet(PhysicalObject):
             self.rotation += self.rotate_speed * dt
 
 
-class Star(PhysicalObject):
+class Center(PhysicalObject):
     def __init__(self, *args, **kwargs):
-        super().__init__(img=star_image, *args, **kwargs)
-        self.keys = dict(left=False, right=False, up=False, down=False)
+        super().__init__(img=center_im, *args, **kwargs)
+        self.keys = dict(left=False, right=False, up=False)
         self.rotate_speed = 200.0
         self.speed = 5000
 
@@ -66,8 +53,6 @@ class Star(PhysicalObject):
             self.keys["left"] = True
         elif symbol == key.RIGHT:
             self.keys["right"] = True
-        elif symbol == key.DOWN:
-            self.keys["down"] = True
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
@@ -76,14 +61,12 @@ class Star(PhysicalObject):
             self.keys["left"] = False
         elif symbol == key.RIGHT:
             self.keys["right"] = False
-        elif symbol == key.DOWN:
-            self.keys["down"] = False
 
     def get_position(self):
         return self.x, self.y
 
     def update(self, dt):
-        super(Star, self).update(dt)
+        super(Center, self).update(dt)
         self.check_bounds()
 
         if self.keys["left"]:
@@ -97,3 +80,31 @@ class Star(PhysicalObject):
         if not self.keys["up"]:
             self.velocity_x = 0
             self.velocity_y = 0
+
+
+class Star(PhysicalObject):
+    def __init__(self, *args, **kwargs):
+        super().__init__(img=star_image, *args, **kwargs)
+        self.keys = dict(c=False)
+        self.rotate_speed = 100
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == key.LEFT:
+            self.keys["c"] = True
+
+    def on_key_release(self, symbol, modifiers):
+        if symbol == key.LEFT:
+            self.keys["c"] = False
+
+    def get_position(self):
+        return self.x, self.y
+
+    def update(self, dt, star_position, axes):
+        super(Star, self).update(dt)
+        self.check_bounds()
+        center_x, center_y = star_position
+        semi_mayor_axis, semi_minor_axis = axes
+        self.x = math.sqrt(semi_mayor_axis ** 2 - (semi_minor_axis) ** 2) + center_x
+        self.y = center_y
+        if not self.keys["c"]:
+            self.rotation += self.rotate_speed * dt

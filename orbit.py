@@ -1,5 +1,5 @@
 import pyglet
-from version1.objects import Planet, Star
+from version1.objects import Planet, Center, Star
 from pyglet_gui.manager import Manager
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.sliders import HorizontalSlider
@@ -14,28 +14,42 @@ pyglet.resource.path = ["../resources"]
 pyglet.resource.reindex()
 
 
-star = Star(x=500, y=500)
+center = Center(x=game_window.width // 2, y=game_window.height // 2)
 planet = Planet(x=400, y=300)
+star = Star(x=500, y=500)
 game_window.push_handlers(planet)
-game_window.push_handlers(star)
+game_window.push_handlers(center)
 
-game_objects = [planet, star]
+game_objects = [planet, center]
 
 
 def update(dt):
-    star.update(dt)
-    planet.update(dt, star.get_position())
+    center.update(dt)
+    planet.update(dt, center.get_position())
+    star.update(dt, center.get_position(), planet.get_axes())
 
 
 @game_window.event
 def on_draw():
     game_window.clear()
-    star_x, star_y = star.get_position()
+    center_x, center_y = center.get_position()
     semi_mayor_axis, semi_minor_axis = planet.get_axes()
-    ellipse = pyglet.shapes.Ellipse(star_x, star_y, semi_mayor_axis, semi_minor_axis)
-    ellipse.draw()
+    ellipse = pyglet.shapes.Ellipse(
+        center_x, center_y, semi_mayor_axis, semi_minor_axis
+    )
+    circle = pyglet.shapes.Ellipse(
+        center_x, center_y + semi_minor_axis, semi_mayor_axis, semi_mayor_axis
+    )
+    line = pyglet.shapes.Line(
+        center_x - semi_mayor_axis, center_y, center_x + semi_mayor_axis, center_y
+    )
+
     planet.draw()
+    center.draw()
     star.draw()
+    line.draw()
+    ellipse.draw()
+    circle.draw()
 
 
 theme = Theme(
