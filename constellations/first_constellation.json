@@ -2,7 +2,7 @@
     "body1": {
         "x": 500,
         "y": 500,
-        "init_velocity_x": 2,
+        "init_velocity_x": 10,
         "init_velocity_y": 0,
         "mass": 500000,
         "image": "planets-modified0.png",
