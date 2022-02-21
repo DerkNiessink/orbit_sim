@@ -13,13 +13,13 @@ class PhysicalObject(pyglet.sprite.Sprite):
         init_velocity = np.array([json["init_velocity_x"], json["init_velocity_y"]])
         mass = json["mass"]
         image = pyglet.resource.image(json["image"])
-        return cls(init_velocity=init_velocity, mass=mass, image=image, x=x, y=y)
+        image_copy = image.get_region(0, 0, image.width, image.height)
+        return cls(init_velocity=init_velocity, mass=mass, image=image_copy, x=x, y=y)
 
     def __init__(self, init_velocity, mass, image, *args, **kwargs):
         image.width = image.height = math.log(mass)
         image.anchor_x = image.width // 2
         image.anchor_y = image.height // 2
-
         super().__init__(img=image, *args, **kwargs)
         self.gravitational_const = 1
         self.scale = 1
