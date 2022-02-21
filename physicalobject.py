@@ -5,6 +5,16 @@ import pyglet.resource
 
 
 class PhysicalObject(pyglet.sprite.Sprite):
+    @classmethod
+    def from_json(cls, json):
+        """Create a physical object from a JSON fragment."""
+        x = json["x"]
+        y = json["y"]
+        init_velocity = np.array([json["init_velocity_x"], json["init_velocity_y"]])
+        mass = json["mass"]
+        image = pyglet.resource.image(json["image"])
+        return cls(init_velocity=init_velocity, mass=mass, image=image, x=x, y=y)
+
     def __init__(self, init_velocity, mass, image, *args, **kwargs):
         image.width = image.height = math.log(mass)
         image.anchor_x = image.width // 2
@@ -47,11 +57,10 @@ class PhysicalObject(pyglet.sprite.Sprite):
 
             self.velocity = self.velocity + acceleration * dt
             self.velocity_x, self.velocity_y = self.velocity
+            self.x += self.velocity_x * dt
+            self.y += self.velocity_y * dt
 
-            self.x += self.velocity_x * dt / self.scale
-            self.y += self.velocity_y * dt / self.scale
-
-        #self.check_bounds()
+        # self.check_bounds()
 
     def check_bounds(self):
         min_x = -self.image.width / 2

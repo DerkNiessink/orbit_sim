@@ -4,6 +4,37 @@ import collections
 import shutil
 from physicalobject import PhysicalObject
 import os
+import json
+
+"""
+pyglet.resource.path = ["resources"]
+BATCH = pyglet.graphics.Batch()
+
+play_button = pyglet.resource.image("play_button.png")
+play_button.width = play_button.height = 20
+
+button = pyglet.gui.ToggleButton(
+    200, 200, pressed=play_button, depressed=play_button, batch=BATCH
+)
+gui_window = pyglet.window.Window(
+    width=500, height=500, style=pyglet.window.Window.WINDOW_STYLE_DEFAULT
+)
+frame = pyglet.gui.Frame(gui_window, order=2)
+
+
+@gui_window.event
+def on_mouse_press(x, y, button, modifiers):
+    if x < 200 and y < 200:
+        print("yes")
+        return True
+    else:
+        return False
+
+
+@gui_window.event
+def on_draw():
+    BATCH.draw()
+"""
 
 for i in range(10):
     shutil.copy("resources/planets-modified.png", f"resources/planets-modified{i}.png")
@@ -15,69 +46,30 @@ pyglet.resource.path = ["resources"]
 pyglet.resource.reindex()
 
 
-Body1 = PhysicalObject(
-    x=game_window.width // 2,
-    y=game_window.height // 2,
-    init_velocity=np.array([0, 0]),
-    mass=600000,
-    image=pyglet.resource.image("planets-modified0.png"),
-)
-Body2 = PhysicalObject(
-    x=600,
-    y=game_window.height // 2,
-    init_velocity=np.array([0, -50]),
-    mass=600000,
-    image=pyglet.resource.image("planets-modified1.png"),
-)
-Body3 = PhysicalObject(
-    x=400,
-    y=game_window.height // 2,
-    init_velocity=np.array([0, 45]),
-    mass=300,
-    image=pyglet.resource.image("planets-modified2.png"),
-)
-Body4 = PhysicalObject(
-    x=380,
-    y=500,
-    init_velocity=np.array([0, 30]),
-    mass=4000,
-    image=pyglet.resource.image("planets-modified3.png"),
-)
-colours = [(150, 0, 0), (0, 150, 0), (0, 0, 150), (255, 255, 0)]
+with open("constellations/first_constellation.json") as json_file:
+    data = json.load(json_file)
 
-bodies = [Body1, Body2, Body3, Body4]
-for game_object in bodies:
-    game_window.push_handlers(game_object)
+body_dict = {}
+for index, key in enumerate(data):
+    body_dict["Body%s" % index] = PhysicalObject.from_json(data[key])
+
+bodies_list = []
+for body in body_dict:
+    game_window.push_handlers(body_dict[body])
+    bodies_list.append(body_dict[body])
 
 
 def update(dt):
-    for Body in bodies:
-        Body.update(dt, bodies)
+    for Body in bodies_list:
+        Body.update(dt, bodies_list)
 
 
 positions_dict = collections.defaultdict(list)
 
 
-@game_window.event
-def on_draw():
-    game_window.clear()
-
-    for index, body in enumerate(bodies):
-        x_position, y_position = body.get_position()
-        positions_dict["Body%s" % index].append(x_position)
-        positions_dict["Body%s" % index].append(y_position)
-
-    for index, key in enumerate(positions_dict):
-        tail(positions_dict[key], colours[index])
-
-    for body in bodies:
-        body.draw()
-
-
 def tail(positions, colour):
     colours = [colour for i in range(len(positions) // 2)]
     colours = [item for t in colours for item in t]
-
     if len(positions) > 3000:
         del colours[0:3]
         del positions[0:2]
@@ -88,6 +80,27 @@ def tail(positions, colour):
         ("v2f", (positions)),
         ("c3B", (colours)),
     )
+
+
+colours = []
+for key in data:
+    colours.append(data[key]["colour"])
+
+
+@game_window.event
+def on_draw():
+    game_window.clear()
+
+    for index, body in enumerate(bodies_list):
+        x_position, y_position = body.get_position()
+        positions_dict["Body%s" % index].append(x_position)
+        positions_dict["Body%s" % index].append(y_position)
+
+    for index, key in enumerate(positions_dict):
+        tail(positions_dict[key], colours[index])
+
+    for body in bodies_list:
+        body.draw()
 
 
 @game_window.event

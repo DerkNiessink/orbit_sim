@@ -1,0 +1,28 @@
+{
+    "body1": {
+        "x": 500,
+        "y": 500,
+        "init_velocity_x": 2,
+        "init_velocity_y": 0,
+        "mass": 500000,
+        "image": "planets-modified0.png",
+        "colour": [
+            0,
+            0,
+            250
+        ]
+    },
+    "body2": {
+        "x": 300,
+        "y": 500,
+        "init_velocity_x": 0,
+        "init_velocity_y": 40,
+        "mass": 5000,
+        "image": "planets-modified1.png",
+        "colour": [
+            250,
+            0,
+            0
+        ]
+    }
+}
