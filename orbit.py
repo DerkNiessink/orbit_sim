@@ -6,7 +6,7 @@ from physicalobject import PhysicalObject
 import os
 
 for i in range(10):
-    shutil.copy("planets-modified.png", f"resources/planets-modified{i}.png")
+    shutil.copy("resources/planets-modified.png", f"resources/planets-modified{i}.png")
 game_window = pyglet.window.Window(
     width=1500, height=800, style=pyglet.window.Window.WINDOW_STYLE_BORDERLESS
 )
