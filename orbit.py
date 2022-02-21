@@ -1,10 +1,15 @@
-import pyglet
-import numpy as np
+"""Orbit sum main program."""
+
 import collections
-import shutil
-from physicalobject import PhysicalObject
-import os
 import json
+import os
+import shutil
+import sys
+
+import numpy as np
+import pyglet
+
+from physicalobject import PhysicalObject
 
 """
 pyglet.resource.path = ["resources"]
@@ -45,8 +50,8 @@ game_window = pyglet.window.Window(
 pyglet.resource.path = ["resources"]
 pyglet.resource.reindex()
 
-
-with open("constellations/first_constellation.json") as json_file:
+filename = sys.argv[1] if len(sys.argv) > 1 else "constellations/first_constellation.json"
+with open(filename) as json_file:
     data = json.load(json_file)
 
 body_dict = {}
