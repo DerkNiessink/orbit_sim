@@ -19,33 +19,33 @@ Body1 = PhysicalObject(
     x=game_window.width // 2,
     y=game_window.height // 2,
     init_velocity=np.array([0, 0]),
-    mass=100000,
+    mass=600000,
     image=pyglet.resource.image("planets-modified0.png"),
 )
 Body2 = PhysicalObject(
-    x=500,
+    x=600,
     y=game_window.height // 2,
-    init_velocity=np.array([0, 20]),
-    mass=1000,
+    init_velocity=np.array([0, -50]),
+    mass=600000,
     image=pyglet.resource.image("planets-modified1.png"),
 )
 Body3 = PhysicalObject(
-    x=488,
+    x=400,
     y=game_window.height // 2,
-    init_velocity=np.array([0, 25]),
-    mass=100,
+    init_velocity=np.array([0, 45]),
+    mass=300,
     image=pyglet.resource.image("planets-modified2.png"),
 )
 Body4 = PhysicalObject(
-    x=400,
+    x=380,
     y=500,
-    init_velocity=np.array([5, 10]),
-    mass=100,
+    init_velocity=np.array([0, 30]),
+    mass=4000,
     image=pyglet.resource.image("planets-modified3.png"),
 )
 colours = [(150, 0, 0), (0, 150, 0), (0, 0, 150), (255, 255, 0)]
 
-bodies = [Body1, Body2, Body3]
+bodies = [Body1, Body2, Body3, Body4]
 for game_object in bodies:
     game_window.push_handlers(game_object)
 
@@ -78,7 +78,7 @@ def tail(positions, colour):
     colours = [colour for i in range(len(positions) // 2)]
     colours = [item for t in colours for item in t]
 
-    if len(positions) > 5000:
+    if len(positions) > 3000:
         del colours[0:3]
         del positions[0:2]
 
