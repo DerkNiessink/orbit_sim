@@ -2,13 +2,8 @@
 
 import collections
 import json
-import os
-import shutil
 import sys
-
-import numpy as np
 import pyglet
-
 from physicalobject import PhysicalObject
 
 """
@@ -48,7 +43,9 @@ game_window = pyglet.window.Window(
 pyglet.resource.path = ["resources"]
 pyglet.resource.reindex()
 
-filename = sys.argv[1] if len(sys.argv) > 1 else "constellations/first_constellation.json"
+filename = (
+    sys.argv[1] if len(sys.argv) > 1 else "constellations/first_constellation.json"
+)
 with open(filename) as json_file:
     data = json.load(json_file)
 
@@ -64,7 +61,12 @@ for body in body_dict:
 
 def update(dt):
     for Body in bodies_list:
-        Body.update(dt, bodies_list)
+        Body.update(
+            dt,
+            bodies_list,
+            speed_factor=10_000,
+            scale_factor=200 / (149597871 * 10 ** 3),
+        )
 
 
 positions_dict = collections.defaultdict(list)
@@ -73,7 +75,7 @@ positions_dict = collections.defaultdict(list)
 def tail(positions, colour):
     colours = [colour for i in range(len(positions) // 2)]
     colours = [item for t in colours for item in t]
-    if len(positions) > 3000:
+    if len(positions) > 5000:
         del colours[0:3]
         del positions[0:2]
 
