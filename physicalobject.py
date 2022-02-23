@@ -17,7 +17,7 @@ class PhysicalObject(pyglet.sprite.Sprite):
         return cls(init_velocity=init_velocity, mass=mass, image=image_copy, x=x, y=y)
 
     def __init__(self, init_velocity, mass, image, *args, **kwargs):
-        image.width = image.height = math.log(mass) / 10
+        image.width = image.height = math.log(mass) / 5
         image.anchor_x = image.width // 2
         image.anchor_y = image.height // 2
         super().__init__(img=image, *args, **kwargs)
@@ -57,6 +57,7 @@ class PhysicalObject(pyglet.sprite.Sprite):
             self.velocity_x, self.velocity_y = self.velocity
             self.x += self.velocity_x * delta_t * scale_factor
             self.y += self.velocity_y * delta_t * scale_factor
+            print(self.velocity)
 
         # self.check_bounds()
 

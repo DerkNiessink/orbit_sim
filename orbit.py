@@ -64,8 +64,8 @@ def update(dt):
         Body.update(
             dt,
             bodies_list,
-            speed_factor=10_000,
-            scale_factor=200 / (149597871 * 10 ** 3),
+            speed_factor=10,
+            scale_factor=100 / (2000 * 10 ** 3),
         )
 
 
