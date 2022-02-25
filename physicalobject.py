@@ -76,7 +76,7 @@ class PhysicalObject:
                 x += width / 2
                 y += height / 2
                 scaled_positions.append((x, y))
-                del scaled_positions[0:-500]
+                del scaled_positions[0:-100]
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
 
         window.blit(self.image, (x - self.radius / 2, y - self.radius / 2))

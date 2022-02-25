@@ -46,7 +46,7 @@ if __name__ == "__main__":
     run = True
     clock = pygame.time.Clock()
     while run:
-        clock.tick(20)
+        clock.tick(60)
         game_window.fill((0, 0, 0))
 
         for event in pygame.event.get():
@@ -55,8 +55,8 @@ if __name__ == "__main__":
         for body in bodies_list:
             body.update_position(
                 bodies_list,
-                time_step=3600,
-                scale_factor=10000 / (149597870000),
+                time_step=3600 * 24,
+                scale_factor=250 / (149597870000),
             )
             body.draw(game_window, width, height)
 
