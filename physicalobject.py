@@ -1,30 +1,31 @@
-import pyglet
 import math
 import numpy as np
-import pyglet.resource
+import pygame
 
 
-class PhysicalObject(pyglet.sprite.Sprite):
+class PhysicalObject:
+    """
     @classmethod
     def from_json(cls, json):
-        """Create a physical object from a JSON fragment."""
         x = json["x"]
         y = json["y"]
         init_velocity = np.array([json["init_velocity_x"], json["init_velocity_y"]])
         mass = json["mass"]
-        image = pyglet.resource.image(json["image"])
-        image_copy = image.get_region(0, 0, image.width, image.height)
-        return cls(init_velocity=init_velocity, mass=mass, image=image_copy, x=x, y=y)
+        colour = json["colour"]
+        return cls(init_velocity=init_velocity, mass=mass, x=x, y=y, colour=colour)
+    """
 
-    def __init__(self, init_velocity, mass, image, *args, **kwargs):
-        image.width = image.height = math.log(mass) / 5
-        image.anchor_x = image.width // 2
-        image.anchor_y = image.height // 2
-        super().__init__(img=image, *args, **kwargs)
+    def __init__(self, x, y, init_velocity_x, init_velocity_y, mass, colour, image):
+        self.x = x
+        self.y = y
+        self.radius = np.log(mass) ** 3 / 10000
         self.gravitational_const = 6.67408 * 10 ** (-11)
-
-        self.velocity = init_velocity  # m/s
+        self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
         self.mass = mass  # kg
+        self.colour = colour
+        image = pygame.image.load(image)
+        self.image = pygame.transform.scale(image, (self.radius, self.radius))
+        self.positions = []
 
     def get_position(self):
         return np.array([self.x, self.y])
@@ -32,14 +33,15 @@ class PhysicalObject(pyglet.sprite.Sprite):
     def get_mass(self):
         return self.mass
 
-    def update(self, dt, bodies, speed_factor, scale_factor):
-        delta_t = dt * speed_factor
+    def calc_force(self, bodies, scale_factor):
+        """calculate the net force on the body"""
+        self.scale_factor = scale_factor
         net_force = 0
         for other_body in bodies:
             if other_body is not self:
-                other_body_position = other_body.get_position() / scale_factor
+                other_body_position = other_body.get_position()
                 other_body_mass = other_body.get_mass()
-                self.position_vector = np.array(self.position) / scale_factor
+                self.position_vector = np.array([self.x, self.y])
 
                 dst = np.linalg.norm(other_body_position - self.position_vector)
                 forceDir = (other_body_position - self.position_vector) / dst
@@ -51,26 +53,30 @@ class PhysicalObject(pyglet.sprite.Sprite):
                     / (dst ** 2)
                 )
                 net_force += force
+        return net_force
 
-            acceleration = net_force / self.mass
-            self.velocity = self.velocity + acceleration * delta_t
-            self.velocity_x, self.velocity_y = self.velocity
-            self.x += self.velocity_x * delta_t * scale_factor
-            self.y += self.velocity_y * delta_t * scale_factor
-            print(self.velocity)
+    def update_position(self, bodies, time_step, scale_factor):
+        net_force = self.calc_force(bodies, scale_factor)
+        acceleration = net_force / self.mass
+        self.velocity = self.velocity + acceleration * time_step
+        self.velocity_x, self.velocity_y = self.velocity
+        self.x += self.velocity_x * time_step
+        self.y += self.velocity_y * time_step
+        self.positions.append(np.array([self.x, self.y]))
 
-        # self.check_bounds()
+    def draw(self, window, width, height):
+        x = self.x * self.scale_factor + width / 2
+        y = self.y * self.scale_factor + height / 2
 
-    def check_bounds(self):
-        min_x = -self.image.width / 2
-        min_y = -self.image.height / 2
-        max_x = 1500 + self.image.width / 2
-        max_y = 800 + self.image.height / 2
-        if self.x < min_x:
-            self.x = max_x
-        elif self.x > max_x:
-            self.x = min_x
-        if self.y < min_y:
-            self.y = max_y
-        elif self.y > max_y:
-            self.y = min_y
+        scaled_positions = []
+        if len(self.positions) > 2:
+            for position_vector in self.positions:
+                position_vector = position_vector * self.scale_factor
+                x, y = position_vector
+                x += width / 2
+                y += height / 2
+                scaled_positions.append((x, y))
+                del scaled_positions[0:-500]
+            pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
+
+        window.blit(self.image, (x - self.radius / 2, y - self.radius / 2))
