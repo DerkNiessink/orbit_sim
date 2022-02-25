@@ -4,6 +4,7 @@ import numpy as np
 import pyglet.resource
 
 
+<<<<<<< Updated upstream
 class PhysicalObject(pyglet.sprite.Sprite):
     @classmethod
     def from_json(cls, json):
@@ -21,6 +22,13 @@ class PhysicalObject(pyglet.sprite.Sprite):
         image.anchor_x = image.width // 2
         image.anchor_y = image.height // 2
         super().__init__(img=image, *args, **kwargs)
+=======
+class PhysicalObject:
+    def __init__(self, x, y, init_velocity_x, init_velocity_y, mass, colour, image):
+        self.x = x
+        self.y = y
+        self.radius = np.log(mass) ** 3 / 10000
+>>>>>>> Stashed changes
         self.gravitational_const = 6.67408 * 10 ** (-11)
 
         self.velocity = init_velocity  # m/s

@@ -1,4 +1,5 @@
 """Orbit sum main program."""
+"""Celestial object images from https://deep-fold.itch.io/pixel-planet-generator"""
 
 import collections
 import json
@@ -109,5 +110,28 @@ def on_draw():
 
 
 if __name__ == "__main__":
+<<<<<<< Updated upstream
     pyglet.clock.schedule_interval(update, 1 / 120)
     pyglet.app.run()
+=======
+    run = True
+    clock = pygame.time.Clock()
+    while run:
+        clock.tick(60)
+        game_window.fill((0, 0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        for body in bodies_list:
+            body.update_position(
+                bodies_list,
+                time_step=3600 * 24 * (1 / 2),
+                scale_factor=250 / (149597870000),
+            )
+            body.draw(game_window, width, height)
+
+        pygame.display.update()
+
+    pygame.quit()
+>>>>>>> Stashed changes
