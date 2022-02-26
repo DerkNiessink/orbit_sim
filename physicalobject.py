@@ -34,13 +34,13 @@ class PhysicalObject:
     def get_mass(self):
         return self.mass
 
-    def get_position(self):
-        return np.array(
-            [
-                self.x * self.scale_factor,
-                self.y * self.scale_factor,
-            ]
-        )
+    def get_position_meters(self):
+        "Get the position of the body in meters with origin in the upperleft of the window"
+        return np.array([self.x, self.y])
+
+    def get_position_pixels(self):
+        "Get the position of the body in pixels with origin in the upperleft of the window"
+        return np.array([self.x, self.y]) * self.scale_factor
 
     def calc_force(self, bodies):
         """calculate the net force on the body"""
@@ -48,7 +48,7 @@ class PhysicalObject:
         net_force = 0
         for other_body in bodies:
             if other_body is not self:
-                other_body_position = other_body.get_position()
+                other_body_position = other_body.get_position_meters()
                 other_body_mass = other_body.get_mass()
                 self.position_vector = np.array([self.x, self.y])
 

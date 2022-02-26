@@ -71,7 +71,7 @@ class CameraSystem(System):
         # update camera if tracking a body
         if body.camera.bodyToTrack is not None:
             trackedBody = body.camera.bodyToTrack
-            x, y = trackedBody.get_position()
+            x, y = trackedBody.get_position_pixels()
             body.camera.cameraX = x + width / 2
             body.camera.cameraY = y + height / 2
         # update the positions for each body
@@ -101,12 +101,11 @@ class Camera:
         self.bodyToTrack = body
 
 
-body_to_track = bodies_list[0]
+# Set the body to track
+body_to_track = bodies_list[1]
 
 body_to_track.camera = Camera(100, 100, 1300, 600)
-x, y = body_to_track.get_position()
 body_to_track.camera.trackBody(body_to_track)
-
 cameraSys = CameraSystem()
 
 

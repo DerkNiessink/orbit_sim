@@ -12,7 +12,7 @@ constellation = {
         "image": "resources/planet1.png",
     },
     "body2": {
-        "x": AU,
+        "x": 0,
         "y": 0,
         "init_velocity_x": 0,
         "init_velocity_y": 0,
