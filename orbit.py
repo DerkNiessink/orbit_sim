@@ -2,7 +2,7 @@
 
 from physicalobject import PhysicalObject
 import pygame
-from constellations.first_constellation import constellation, general_parameters, AU
+from constellations.first_constellation import constellation, general_parameters
 
 
 width = 1500
@@ -72,7 +72,6 @@ class CameraSystem(System):
         if body.camera.bodyToTrack is not None:
             trackedBody = body.camera.bodyToTrack
             x, y = trackedBody.get_position()
-            print(x, y)
             body.camera.cameraX = x + width / 2
             body.camera.cameraY = y + height / 2
         # update the positions for each body
