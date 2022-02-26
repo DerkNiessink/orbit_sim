@@ -32,7 +32,7 @@ class PhysicalObject:
         self.time_step = time_step
 
     def get_position(self):
-        return np.array([self.x, self.y])
+        return np.array([self.x * self.scale_factor + offsetX, self.y * self.scale_factor + ofsetY])
 
     def get_mass(self):
         return self.mass
@@ -68,7 +68,7 @@ class PhysicalObject:
         self.y += self.velocity_y * self.time_step
         self.positions.append(np.array([self.x, self.y]))
 
-    def draw(self, window, width, height):
+    def draw(self, window, width, height, offsetX, offsetY):
         x = self.x * self.scale_factor + width / 2
         y = self.y * self.scale_factor + height / 2
 
@@ -79,7 +79,8 @@ class PhysicalObject:
                 x, y = position_vector
                 x += width / 2
                 y += height / 2
-                scaled_positions.append((x, y))
+                scaled_positions.append((x + offsetX, y + offsetY))
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
-
-        window.blit(self.image, (x - self.radius / 2, y - self.radius / 2))
+        window.blit(
+            self.image, (x - self.radius / 2 + offsetX, y - self.radius / 2 + offsetY)
+        )

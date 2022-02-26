@@ -2,7 +2,7 @@
 
 from physicalobject import PhysicalObject
 import pygame
-from constellations.first_constellation import constellation
+from constellations.first_constellation import constellation, general_parameters, AU
 
 
 width = 1500
@@ -25,8 +25,8 @@ for index, key in enumerate(constellation):
             constellation[key]["mass"],
             constellation[key]["colour"],
             constellation[key]["image"],
-            scale_factor=250 / (149597870000),
-            time_step=3600 * 24,
+            scale_factor=general_parameters["scale_factor"],
+            time_step=general_parameters["time_step"],
         )
     )
 
@@ -61,6 +61,15 @@ class CameraSystem(System):
         clipRect = pygame.Rect(cameraRect.x, cameraRect.y, cameraRect.w, cameraRect.h)
         window.set_clip(clipRect)
 
+        # update camera if tracking a body
+        if body.camera.bodyToTrack is not None:
+            trackedBody = body.camera.bodyToTrack
+            x, y = trackedBody.get_position()
+            print((x, y))
+            body.camera.cameraX = x
+            body.camera.cameraY = y
+
+        # calculate offsets
         offsetX = cameraRect.x + cameraRect.w / 2 - body.camera.cameraX
         offsetY = cameraRect.y + cameraRect.h / 2 - body.camera.cameraY
 
@@ -69,7 +78,7 @@ class CameraSystem(System):
 
         # render bodies
         for body in bodies:
-            body.draw(window, width, height)
+            body.draw(window, width, height, offsetX, offsetY)
 
         # unset clipping rectangle
         window.set_clip(None)
@@ -80,14 +89,21 @@ class Camera:
         self.rect = pygame.Rect(x, y, w, h)
         self.cameraX = 0
         self.cameraY = 0
+        self.bodyToTrack = 0
 
     def setCameraPos(self, x, y):
         self.cameraX = x
         self.cameraY = y
 
+    def trackBody(self, body):
+        self.bodyToTrack = body
 
-bodies_list[0].camera = Camera(0, 0, 1000, 500)
-bodies_list[1].camera = Camera(700, 600, 100, 100)
+
+body_to_track = bodies_list[0]
+
+body_to_track.camera = Camera(0, 0, 1000, 500)
+body_to_track.camera.setCameraPos(500, 400)
+body_to_track.camera.trackBody(body_to_track)
 cameraSys = CameraSystem()
 
 
