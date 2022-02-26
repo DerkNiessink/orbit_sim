@@ -5,7 +5,18 @@ import pygame
 
 
 class PhysicalObject:
-    def __init__(self, x, y, init_velocity_x, init_velocity_y, mass, colour, image):
+    def __init__(
+        self,
+        x,
+        y,
+        init_velocity_x,
+        init_velocity_y,
+        mass,
+        colour,
+        image,
+        scale_factor,
+        time_step,
+    ):
         self.x = x
         self.y = y
         self.radius = np.log(mass) ** 3 / 10000
@@ -16,6 +27,9 @@ class PhysicalObject:
         image = pygame.image.load(image)
         self.image = pygame.transform.scale(image, (self.radius, self.radius))
         self.positions = collections.deque(maxlen=200)
+        self.camera = None
+        self.scale_factor = scale_factor
+        self.time_step = time_step
 
     def get_position(self):
         return np.array([self.x, self.y])
@@ -23,9 +37,9 @@ class PhysicalObject:
     def get_mass(self):
         return self.mass
 
-    def calc_force(self, bodies, scale_factor):
+    def calc_force(self, bodies):
         """calculate the net force on the body"""
-        self.scale_factor = scale_factor
+
         net_force = 0
         for other_body in bodies:
             if other_body is not self:
@@ -45,13 +59,13 @@ class PhysicalObject:
                 net_force += force
         return net_force
 
-    def update_position(self, bodies, time_step, scale_factor):
-        net_force = self.calc_force(bodies, scale_factor)
+    def update_position(self, bodies):
+        net_force = self.calc_force(bodies)
         acceleration = net_force / self.mass
-        self.velocity = self.velocity + acceleration * time_step
+        self.velocity = self.velocity + acceleration * self.time_step
         self.velocity_x, self.velocity_y = self.velocity
-        self.x += self.velocity_x * time_step
-        self.y += self.velocity_y * time_step
+        self.x += self.velocity_x * self.time_step
+        self.y += self.velocity_y * self.time_step
         self.positions.append(np.array([self.x, self.y]))
 
     def draw(self, window, width, height):

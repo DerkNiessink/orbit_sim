@@ -30,3 +30,4 @@ constellation = {
         "image": "resources/moon1.png",
     },
 }
+general_parameters = {"time_step": 3600 * 24, ""}
