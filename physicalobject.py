@@ -31,11 +31,16 @@ class PhysicalObject:
         self.scale_factor = scale_factor
         self.time_step = time_step
 
-    def get_position(self):
-        return np.array([self.x * self.scale_factor + offsetX, self.y * self.scale_factor + ofsetY])
-
     def get_mass(self):
         return self.mass
+
+    def get_position(self):
+        return np.array(
+            [
+                self.x * self.scale_factor,
+                self.y * self.scale_factor,
+            ]
+        )
 
     def calc_force(self, bodies):
         """calculate the net force on the body"""
@@ -82,5 +87,6 @@ class PhysicalObject:
                 scaled_positions.append((x + offsetX, y + offsetY))
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
         window.blit(
-            self.image, (x - self.radius / 2 + offsetX, y - self.radius / 2 + offsetY)
+            self.image,
+            (x - self.radius / 2 + offsetX, y - self.radius / 2 + offsetY),
         )

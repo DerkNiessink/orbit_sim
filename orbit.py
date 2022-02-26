@@ -61,20 +61,23 @@ class CameraSystem(System):
         clipRect = pygame.Rect(cameraRect.x, cameraRect.y, cameraRect.w, cameraRect.h)
         window.set_clip(clipRect)
 
-        # update camera if tracking a body
-        if body.camera.bodyToTrack is not None:
-            trackedBody = body.camera.bodyToTrack
-            x, y = trackedBody.get_position()
-            print((x, y))
-            body.camera.cameraX = x
-            body.camera.cameraY = y
-
         # calculate offsets
         offsetX = cameraRect.x + cameraRect.w / 2 - body.camera.cameraX
         offsetY = cameraRect.y + cameraRect.h / 2 - body.camera.cameraY
 
         # fill camera background black
         window.fill((0, 0, 0))
+
+        # update camera if tracking a body
+        if body.camera.bodyToTrack is not None:
+            trackedBody = body.camera.bodyToTrack
+            x, y = trackedBody.get_position()
+            print(x, y)
+            body.camera.cameraX = x + width / 2
+            body.camera.cameraY = y + height / 2
+        # update the positions for each body
+        for body in bodies_list:
+            body.update_position(bodies_list)
 
         # render bodies
         for body in bodies:
@@ -101,9 +104,10 @@ class Camera:
 
 body_to_track = bodies_list[0]
 
-body_to_track.camera = Camera(0, 0, 1000, 500)
-body_to_track.camera.setCameraPos(500, 400)
+body_to_track.camera = Camera(100, 100, 1300, 600)
+x, y = body_to_track.get_position()
 body_to_track.camera.trackBody(body_to_track)
+
 cameraSys = CameraSystem()
 
 
@@ -117,12 +121,9 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 run = False
 
-        # get the positions for each body
-        for body in bodies_list:
-            body.update_position(bodies_list)
-
         # update the camera system and draw bodies
         cameraSys.update(game_window, bodies_list)
+
         pygame.display.update()
 
     pygame.quit()

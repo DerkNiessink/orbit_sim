@@ -6,13 +6,10 @@ constellation = {
         "x": -AU,
         "y": 0,
         "init_velocity_x": 0,
-        "init_velocity_y": 30000,
+        "init_velocity_y": 29000,
         "mass": 5.772 * 10 ** 24,
         "colour": [0, 0, 250],
         "image": "resources/planet1.png",
-    }
-}
-""" 
     },
     "body2": {
         "x": 0,
@@ -32,10 +29,10 @@ constellation = {
         "colour": [0, 250, 0],
         "image": "resources/moon1.png",
     },
-"""
+}
 
 
 general_parameters = {
     "time_step": 3600 * 24 * 1 / 60,
-    "scale_factor": 250 / (149597870000),
+    "scale_factor": 250 / AU,
 }
