@@ -5,17 +5,6 @@ import pygame
 
 
 class PhysicalObject:
-    """
-    @classmethod
-    def from_json(cls, json):
-        x = json["x"]
-        y = json["y"]
-        init_velocity = np.array([json["init_velocity_x"], json["init_velocity_y"]])
-        mass = json["mass"]
-        colour = json["colour"]
-        return cls(init_velocity=init_velocity, mass=mass, x=x, y=y, colour=colour)
-    """
-
     def __init__(self, x, y, init_velocity_x, init_velocity_y, mass, colour, image):
         self.x = x
         self.y = y

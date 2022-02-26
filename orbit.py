@@ -1,7 +1,5 @@
 """Orbit sum main program."""
 
-import json
-import sys
 from physicalobject import PhysicalObject
 import pygame
 from constellations.first_constellation import constellation
@@ -13,11 +11,6 @@ game_window = pygame.display.set_mode((width, height))
 pygame.display.set_caption("orbit simulator")
 pygame.display.flip()
 keys = pygame.key.get_pressed()
-
-
-# filename = sys.argv[1] if len(sys.argv) > 1 else "constellations/first_constellation.py"
-# with open(filename) as json_file:
-# data = json.load(json_file)
 
 
 body_dict = {}
