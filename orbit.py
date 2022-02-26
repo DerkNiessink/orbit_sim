@@ -77,9 +77,7 @@ class CameraSystem(System):
         # update the positions for each body
         for body in bodies_list:
             body.update_position(bodies_list)
-
-        # render bodies
-        for body in bodies:
+            # render bodies
             body.draw(window, width, height, offsetX, offsetY)
 
         # unset clipping rectangle

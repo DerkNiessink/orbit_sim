@@ -21,13 +21,13 @@ constellation = {
         "image": "resources/star1.png",
     },
     "body3": {
-        "x": -AU + 384_400 * 10 ** 3,
+        "x": -249_000_000_000,
         "y": 0,
         "init_velocity_x": 0,
-        "init_velocity_y": 29800 + 966,
-        "mass": 7.34767309 * 10 ** 22,
+        "init_velocity_y": 21970,
+        "mass": 6.39 * 10 ** 23,
         "colour": [0, 250, 0],
-        "image": "resources/moon1.png",
+        "image": "resources/planet2.png",
     },
 }
 

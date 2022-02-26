@@ -35,16 +35,15 @@ class PhysicalObject:
         return self.mass
 
     def get_position_meters(self):
-        "Get the position of the body in meters with origin in the upperleft of the window"
+        "Get the position of the body in meters with origin in the upperleft corner of the window"
         return np.array([self.x, self.y])
 
     def get_position_pixels(self):
-        "Get the position of the body in pixels with origin in the upperleft of the window"
+        "Get the position of the body in pixels with origin in the upperleft corner of the window"
         return np.array([self.x, self.y]) * self.scale_factor
 
     def calc_force(self, bodies):
         """calculate the net force on the body"""
-
         net_force = 0
         for other_body in bodies:
             if other_body is not self:
@@ -65,6 +64,7 @@ class PhysicalObject:
         return net_force
 
     def update_position(self, bodies):
+        """update the position of the body, returns the position in meter with the origin in upperleft corner of the window"""
         net_force = self.calc_force(bodies)
         acceleration = net_force / self.mass
         self.velocity = self.velocity + acceleration * self.time_step
@@ -74,18 +74,23 @@ class PhysicalObject:
         self.positions.append(np.array([self.x, self.y]))
 
     def draw(self, window, width, height, offsetX, offsetY):
-        x = self.x * self.scale_factor + width / 2
-        y = self.y * self.scale_factor + height / 2
+        """Draw the body and its tail in the center of the camera"""
 
         scaled_positions = []
         if len(self.positions) > 2:
             for position_vector in self.positions:
+
+                # scale the positions to pixels and set the origin in the center of the window.
                 position_vector = position_vector * self.scale_factor
                 x, y = position_vector
                 x += width / 2
                 y += height / 2
                 scaled_positions.append((x + offsetX, y + offsetY))
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
+
+        # scale the positions to pixels and set the origin in the center of the window.
+        x = self.x * self.scale_factor + width / 2
+        y = self.y * self.scale_factor + height / 2
         window.blit(
             self.image,
             (x - self.radius / 2 + offsetX, y - self.radius / 2 + offsetY),
