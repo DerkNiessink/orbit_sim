@@ -1,4 +1,5 @@
-import math
+import collections
+
 import numpy as np
 import pygame
 
@@ -25,7 +26,7 @@ class PhysicalObject:
         self.colour = colour
         image = pygame.image.load(image)
         self.image = pygame.transform.scale(image, (self.radius, self.radius))
-        self.positions = []
+        self.positions = collections.deque(maxlen=200)
 
     def get_position(self):
         return np.array([self.x, self.y])
@@ -76,7 +77,6 @@ class PhysicalObject:
                 x += width / 2
                 y += height / 2
                 scaled_positions.append((x, y))
-                del scaled_positions[0:-100]
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
 
         window.blit(self.image, (x - self.radius / 2, y - self.radius / 2))
