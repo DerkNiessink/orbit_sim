@@ -1,4 +1,5 @@
 import collections
+import math
 
 import numpy as np
 import pygame
@@ -35,12 +36,16 @@ class PhysicalObject:
         return self.mass
 
     def get_position_meters(self):
-        "Get the position of the body in meters with origin in the upperleft corner of the window"
+        """Get the position of the body in meters with origin in the upperleft corner of the window"""
         return np.array([self.x, self.y])
 
     def get_position_pixels(self):
-        "Get the position of the body in pixels with origin in the upperleft corner of the window"
+        """Get the position of the body in pixels with origin in the upperleft corner of the window"""
         return np.array([self.x, self.y]) * self.scale_factor
+
+    def get_distance_pixels(self, x: float, y: float) -> float:
+        """Get the distance in pixels to the given coordinate"""
+        return math.sqrt((self.pixel_x - x) ** 2 + (self.pixel_y - y) ** 2)
 
     def calc_force(self, bodies):
         """calculate the net force on the body"""
@@ -89,9 +94,9 @@ class PhysicalObject:
             pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
 
         # scale the positions to pixels and set the origin in the center of the window.
-        x = self.x * self.scale_factor + width / 2
-        y = self.y * self.scale_factor + height / 2
+        self.pixel_x = self.x * self.scale_factor + width / 2
+        self.pixel_y = self.y * self.scale_factor + height / 2
         window.blit(
             self.image,
-            (x - self.radius / 2 + offsetX, y - self.radius / 2 + offsetY),
+            (self.pixel_x - self.radius / 2 + offsetX, self.pixel_y - self.radius / 2 + offsetY),
         )
