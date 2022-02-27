@@ -23,8 +23,8 @@ class PhysicalObjectView:
         self.pixel_y = self.body_model.y * self.scale_factor + height / 2
 
         # place the anchorpoint in the center of the image and the image in the center of the camera
-        self.x_to_draw = self.pixel_x - self.body_model.radius + offsetX
-        self.y_to_draw = self.pixel_y - self.body_model.radius + offsetY
+        self.x_to_draw = self.pixel_x + offsetX
+        self.y_to_draw = self.pixel_y + offsetY
 
     def draw(self, window, offsetX, offsetY, width, height):
 
@@ -48,7 +48,7 @@ class PhysicalObjectView:
 
     def get_distance_pixels(self, x: float, y: float) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return np.sqrt((self.pixel_x - x) ** 2 + (self.pixel_y - y) ** 2)
+        return np.sqrt((self.x_to_draw - x) ** 2 + (self.y_to_draw - y) ** 2)
 
     def clear_tail(self):
         """Remove all positions to prepare for a change in camera viewpoint"""
