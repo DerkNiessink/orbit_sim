@@ -27,7 +27,7 @@ class PhysicalObject:
         self.colour = colour
         image = pygame.image.load(image)
         self.image = pygame.transform.scale(image, (self.radius, self.radius))
-        self.positions = collections.deque(maxlen=500)
+        self.positions = collections.deque(maxlen=800)
         self.camera = None
         self.scale_factor = scale_factor
         self.time_step = time_step
@@ -98,5 +98,8 @@ class PhysicalObject:
         self.pixel_y = self.y * self.scale_factor + height / 2
         window.blit(
             self.image,
-            (self.pixel_x - self.radius / 2 + offsetX, self.pixel_y - self.radius / 2 + offsetY),
+            (
+                self.pixel_x - self.radius / 2 + offsetX,
+                self.pixel_y - self.radius / 2 + offsetY,
+            ),
         )
