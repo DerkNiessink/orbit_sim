@@ -1,10 +1,10 @@
-"""Orbit sum main program."""
-
-from physicalobject_model import PhysicalObjectModel
-from constellations.first_constellation import constellation, general_parameters
-from physicalobject_views import PhysicalObjectView
+"""Orbit sim main program."""
 
 import pygame
+
+from constellations.first_constellation import constellation, general_parameters
+from physicalobject_model import PhysicalObjectModel
+from physicalobject_views import PhysicalObjectView
 
 
 width = 1500
