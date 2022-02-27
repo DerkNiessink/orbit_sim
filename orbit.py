@@ -59,18 +59,17 @@ class Camera:
     def update(self, window, body):
 
         # calculate offsets
-        offsetX = camera.rect.x + camera.rect.w / 2 - camera.cameraX
-        offsetY = camera.rect.y + camera.rect.h / 2 - camera.cameraY
+        offsetX = self.rect.x + self.rect.w / 2 - self.cameraX
+        offsetY = self.rect.y + self.rect.h / 2 - self.cameraY
 
         # fill camera background black
         window.fill((0, 0, 0))
 
         # update camera if tracking a body
-        if camera.bodyToTrack is not None:
-            trackedBody = camera.bodyToTrack
-            x, y = trackedBody.get_position_pixels()
-            camera.cameraX = x + width / 2
-            camera.cameraY = y + height / 2
+        if self.bodyToTrack is not None:
+            x, y = self.bodyToTrack.get_position_pixels()
+            self.cameraX = x + width / 2
+            self.cameraY = y + height / 2
 
         # update the positions for each body
         for body in body_models:
