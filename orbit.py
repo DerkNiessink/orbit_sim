@@ -61,11 +61,10 @@ class Camera:
         # fill camera background black
         window.fill((0, 0, 0))
 
-        # update camera if tracking a body
-        if self.bodyToTrack is not None:
-            x, y = self.bodyToTrack.get_position_pixels()
-            self.cameraX = x + width / 2
-            self.cameraY = y + height / 2
+        # update camera
+        x, y = self.bodyToTrack.get_position_pixels()
+        self.cameraX = x + width / 2
+        self.cameraY = y + height / 2
 
         # update the positions for each body
         for body in body_models:
