@@ -49,14 +49,10 @@ class Camera:
         self.bodyToTrack = body
         self.cameraX, self.cameraY = 0, 0
 
-    def setCameraPos(self, x, y):
-        self.cameraX = x
-        self.cameraY = y
-
     def trackBody(self, body):
         self.bodyToTrack = body
 
-    def update(self, window, body):
+    def update(self, window):
 
         # calculate offsets
         offsetX = self.rect.x + self.rect.w / 2 - self.cameraX
@@ -127,7 +123,7 @@ if __name__ == "__main__":
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
 
         # update the camera system and draw bodies
-        camera.update(game_window, body_viewers)
+        camera.update(game_window)
 
         pygame.display.update()
 
