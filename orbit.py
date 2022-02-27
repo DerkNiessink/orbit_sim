@@ -1,9 +1,10 @@
 """Orbit sum main program."""
 
-from re import I
-from physicalobject import PhysicalObject
-import pygame
+from physicalobject_model import PhysicalObjectModel
 from constellations.first_constellation import constellation, general_parameters
+from physicalobject_views import PhysicalObjectView
+
+import pygame
 
 
 width = 1500
@@ -15,19 +16,25 @@ game_window.fill((50, 50, 50))
 pygame.display.set_caption("orbit simulator")
 
 
-bodies_list = []
-for index, key in enumerate(constellation):
-    bodies_list.append(
-        PhysicalObject(
-            constellation[key]["x"],
-            constellation[key]["y"],
-            constellation[key]["init_velocity_x"],
-            constellation[key]["init_velocity_y"],
-            constellation[key]["mass"],
-            constellation[key]["colour"],
-            constellation[key]["image"],
-            scale_factor=general_parameters["scale_factor"],
-            time_step=general_parameters["time_step"],
+body_models = []
+body_viewers = []
+for body in constellation:
+    body_model = PhysicalObjectModel(
+        constellation[body]["x"],
+        constellation[body]["y"],
+        constellation[body]["init_velocity_x"],
+        constellation[body]["init_velocity_y"],
+        constellation[body]["mass"],
+        general_parameters["time_step"],
+    )
+    body_models.append(body_model)
+
+    body_viewers.append(
+        PhysicalObjectView(
+            general_parameters["scale_factor"],
+            constellation[body]["colour"],
+            constellation[body]["image"],
+            body_model,
         )
     )
 
@@ -75,11 +82,14 @@ class CameraSystem(System):
             x, y = trackedBody.get_position_pixels()
             body.camera.cameraX = x + width / 2
             body.camera.cameraY = y + height / 2
+
         # update the positions for each body
-        for body in bodies_list:
-            body.update_position(bodies_list)
-            # render bodies
-            body.draw(window, width, height, offsetX, offsetY)
+        for body in body_models:
+            body.update_position(body_models)
+
+        # render bodies
+        for body in body_viewers:
+            body.draw(window, offsetX, offsetY, width, height)
 
         # unset clipping rectangle
         window.set_clip(None)
@@ -101,7 +111,7 @@ class Camera:
 
 
 # Set the body to track
-body_to_track = bodies_list[0]
+body_to_track = body_viewers[0]
 
 camera = body_to_track.camera = Camera(0, 0, 1500, 800)
 body_to_track.camera.trackBody(body_to_track)
@@ -119,13 +129,18 @@ if __name__ == "__main__":
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Move the camera to the body nearest to the mouse click
-                sorted_bodies = sorted([(body.get_distance_pixels(*event.pos), body) for body in bodies_list])
+                sorted_bodies = sorted(
+                    [
+                        (body.get_distance_pixels(*event.pos), body)
+                        for body in body_viewers
+                    ]
+                )
                 nearest_body = sorted_bodies[0][1]
                 nearest_body.camera = camera
                 nearest_body.camera.trackBody(nearest_body)
 
         # update the camera system and draw bodies
-        cameraSys.update(game_window, bodies_list)
+        cameraSys.update(game_window, body_viewers)
 
         pygame.display.update()
 

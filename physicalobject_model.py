@@ -1,11 +1,9 @@
 import collections
-import math
 
 import numpy as np
-import pygame
 
 
-class PhysicalObject:
+class PhysicalObjectModel:
     def __init__(
         self,
         x,
@@ -13,9 +11,6 @@ class PhysicalObject:
         init_velocity_x,
         init_velocity_y,
         mass,
-        colour,
-        image,
-        scale_factor,
         time_step,
     ):
         self.x = x
@@ -24,12 +19,7 @@ class PhysicalObject:
         self.gravitational_const = 6.67408 * 10 ** (-11)
         self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
         self.mass = mass  # kg
-        self.colour = colour
-        image = pygame.image.load(image)
-        self.image = pygame.transform.scale(image, (self.radius, self.radius))
         self.positions = collections.deque(maxlen=800)
-        self.camera = None
-        self.scale_factor = scale_factor
         self.time_step = time_step
 
     def get_mass(self):
@@ -39,16 +29,9 @@ class PhysicalObject:
         """Get the position of the body in meters with origin in the upperleft corner of the window"""
         return np.array([self.x, self.y])
 
-    def get_position_pixels(self):
-        """Get the position of the body in pixels with origin in the upperleft corner of the window"""
-        return np.array([self.x, self.y]) * self.scale_factor
-
-    def get_distance_pixels(self, x: float, y: float) -> float:
-        """Get the distance in pixels to the given coordinate"""
-        return math.sqrt((self.pixel_x - x) ** 2 + (self.pixel_y - y) ** 2)
-
     def calc_force(self, bodies):
         """calculate the net force on the body"""
+
         net_force = 0
         for other_body in bodies:
             if other_body is not self:
@@ -70,6 +53,7 @@ class PhysicalObject:
 
     def update_position(self, bodies):
         """update the position of the body, returns the position in meter with the origin in upperleft corner of the window"""
+
         net_force = self.calc_force(bodies)
         acceleration = net_force / self.mass
         self.velocity = self.velocity + acceleration * self.time_step
@@ -77,29 +61,3 @@ class PhysicalObject:
         self.x += self.velocity_x * self.time_step
         self.y += self.velocity_y * self.time_step
         self.positions.append(np.array([self.x, self.y]))
-
-    def draw(self, window, width, height, offsetX, offsetY):
-        """Draw the body and its tail in the center of the camera"""
-
-        scaled_positions = []
-        if len(self.positions) > 2:
-            for position_vector in self.positions:
-
-                # scale the positions to pixels and set the origin in the center of the window.
-                position_vector = position_vector * self.scale_factor
-                x, y = position_vector
-                x += width / 2
-                y += height / 2
-                scaled_positions.append((x + offsetX, y + offsetY))
-            pygame.draw.lines(window, self.colour, False, scaled_positions, 2)
-
-        # scale the positions to pixels and set the origin in the center of the window.
-        self.pixel_x = self.x * self.scale_factor + width / 2
-        self.pixel_y = self.y * self.scale_factor + height / 2
-        window.blit(
-            self.image,
-            (
-                self.pixel_x - self.radius / 2 + offsetX,
-                self.pixel_y - self.radius / 2 + offsetY,
-            ),
-        )
