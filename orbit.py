@@ -76,7 +76,6 @@ class CameraSystem(System):
         # calculate offsets
         offsetX = cameraRect.x + cameraRect.w / 2 - body.camera.cameraX
         offsetY = cameraRect.y + cameraRect.h / 2 - body.camera.cameraY
-
         # fill camera background black
         window.fill((0, 0, 0))
 
@@ -98,9 +97,18 @@ class CameraSystem(System):
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:
             self.elapsed_time_to_draw = elapsed_time
-        label = font.render(
-            f"Elapsed time: {int(self.elapsed_time_to_draw)} days", 1, (255, 255, 255)
-        )
+        if elapsed_time < 365:
+            label = font.render(
+                f"Elapsed time: {int(self.elapsed_time_to_draw)} days",
+                1,
+                (255, 255, 255),
+            )
+        else:
+            label = font.render(
+                f"Elapsed time: {round(int(self.elapsed_time_to_draw) / 365, 1)} yr",
+                1,
+                (255, 255, 255),
+            )
         game_window.blit(label, (25, 25))
 
         # unset clipping rectangle
