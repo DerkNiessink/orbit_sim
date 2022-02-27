@@ -13,8 +13,7 @@ class PhysicalObjectView:
         self.image = pygame.transform.scale(
             image, (self.body_model.radius * 2, self.body_model.radius * 2)
         )
-        self.camera = None
-        self.positions = collections.deque(maxlen=200)
+        self.positions = collections.deque(maxlen=700)
 
     def change_coord_sys(self, offsetX, offsetY, width, height):
         """scale the positions to pixels and set the origin in the center of the camera."""
@@ -30,10 +29,17 @@ class PhysicalObjectView:
     def draw(self, window, offsetX, offsetY, width, height):
 
         self.change_coord_sys(offsetX, offsetY, width, height)
-        self.positions.append((self.x_to_draw + self.body_model.radius, self.y_to_draw + self.body_model.radius))
+        self.positions.append(
+            (
+                self.x_to_draw + self.body_model.radius,
+                self.y_to_draw + self.body_model.radius,
+            )
+        )
         positions = list(self.positions)
         if len(positions) > 3:
-            pygame.draw.lines(window, self.colour, closed=False, points=positions[1:], width=2)
+            pygame.draw.lines(
+                window, self.colour, closed=False, points=positions[1:], width=2
+            )
         window.blit(self.image, (self.x_to_draw, self.y_to_draw))
 
     def get_position_pixels(self):
