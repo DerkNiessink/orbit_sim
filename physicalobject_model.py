@@ -1,3 +1,5 @@
+"""Physical object class to represent stars, planets, and moons."""
+
 import collections
 
 import numpy as np
