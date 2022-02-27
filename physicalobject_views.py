@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 
 
-class PhysicalObject_views:
+class PhysicalObjectView:
     def __init__(self, scale_factor, colour, image, body):
         self.scale_factor = scale_factor
         self.body_model = body

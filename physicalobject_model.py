@@ -3,7 +3,7 @@ import collections
 import numpy as np
 
 
-class PhysicalObject_model:
+class PhysicalObjectModel:
     def __init__(
         self,
         x,

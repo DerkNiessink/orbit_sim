@@ -1,8 +1,8 @@
 """Orbit sum main program."""
 
-from physicalobject_model import PhysicalObject_model
+from physicalobject_model import PhysicalObjectModel
 from constellations.first_constellation import constellation, general_parameters
-from physicalobject_views import PhysicalObject_views
+from physicalobject_views import PhysicalObjectView
 
 import pygame
 
@@ -19,7 +19,7 @@ pygame.display.set_caption("orbit simulator")
 body_models = []
 body_viewers = []
 for body in constellation:
-    body_model = PhysicalObject_model(
+    body_model = PhysicalObjectModel(
         constellation[body]["x"],
         constellation[body]["y"],
         constellation[body]["init_velocity_x"],
@@ -30,7 +30,7 @@ for body in constellation:
     body_models.append(body_model)
 
     body_viewers.append(
-        PhysicalObject_views(
+        PhysicalObjectView(
             general_parameters["scale_factor"],
             constellation[body]["colour"],
             constellation[body]["image"],
