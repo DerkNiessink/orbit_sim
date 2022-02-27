@@ -1,7 +1,5 @@
 """Physical object class to represent cellestial bodies."""
 
-import collections
-
 import numpy as np
 
 
@@ -17,11 +15,10 @@ class PhysicalObjectModel:
     ):
         self.x = x
         self.y = y
-        self.radius = np.log(mass) ** 3 / 10000
+        self.radius = np.log(mass) ** 3 / 20000
         self.gravitational_const = 6.67408 * 10 ** (-11)
         self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
         self.mass = mass  # kg
-        self.positions = collections.deque(maxlen=800)
         self.time_step = time_step
 
     def get_mass(self):
@@ -62,4 +59,3 @@ class PhysicalObjectModel:
         self.velocity_x, self.velocity_y = self.velocity
         self.x += self.velocity_x * self.time_step
         self.y += self.velocity_y * self.time_step
-        self.positions.append(np.array([self.x, self.y]))

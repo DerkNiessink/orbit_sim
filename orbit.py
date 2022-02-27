@@ -42,36 +42,21 @@ for body in constellation:
     )
 
 
-class System:
+class CameraSystem:
     def __init__(self):
-        pass
-
-    def check(self, body):
-        return True
-
-    def update(self, window, bodies):
-        for body in bodies:
-            if self.check(body):
-                self.updateBody(window, body, bodies)
-
-    def updateBody(self, window, body, bodies):
-        pass
-
-
-class CameraSystem(System):
-    def __init__(self):
-        super().__init__()
         self.elapsed_time_to_draw = 0
 
     def check(self, body):
         return body.camera is not None
 
-    def updateBody(self, window, body, bodies):
+    def update(self, window, bodies):
+        for body in bodies:
+            if self.check(body):
+                self.updateBody(window, body)
 
-        # set clipping rectangle
+    def updateBody(self, window, body):
+
         cameraRect = body.camera.rect
-        clipRect = pygame.Rect(cameraRect.x, cameraRect.y, cameraRect.w, cameraRect.h)
-        window.set_clip(clipRect)
 
         # calculate offsets
         offsetX = cameraRect.x + cameraRect.w / 2 - body.camera.cameraX
@@ -116,11 +101,10 @@ class CameraSystem(System):
 
 
 class Camera:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h, body):
         self.rect = pygame.Rect(x, y, w, h)
-        self.cameraX = 0
-        self.cameraY = 0
-        self.bodyToTrack = 0
+        self.bodyToTrack = body
+        self.cameraX, self.cameraY = 0, 0
 
     def setCameraPos(self, x, y):
         self.cameraX = x
@@ -133,10 +117,8 @@ class Camera:
 # Set the body to track
 body_to_track = body_viewers[0]
 
-camera = body_to_track.camera = Camera(0, 0, 1500, 800)
-body_to_track.camera.trackBody(body_to_track)
+camera = body_to_track.camera = Camera(0, 0, 1500, 800, body_to_track)
 cameraSys = CameraSystem()
-
 
 if __name__ == "__main__":
     run = True
@@ -158,6 +140,8 @@ if __name__ == "__main__":
                 nearest_body = sorted_bodies[0][1]
                 nearest_body.camera = camera
                 nearest_body.camera.trackBody(nearest_body)
+                for body in body_viewers:
+                    body.clear_tail()
 
         # keep track of the elapsed time in days
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
