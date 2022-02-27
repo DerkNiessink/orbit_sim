@@ -1,4 +1,4 @@
-"""Physical object class to represent stars, planets, and moons."""
+"""Physical object class to represent cellestial bodies."""
 
 import collections
 
