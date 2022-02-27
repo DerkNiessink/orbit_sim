@@ -47,28 +47,27 @@ class Camera:
         self.elapsed_time_to_draw = 0
         self.rect = pygame.Rect(x, y, w, h)
         self.bodyToTrack = body
-        self.cameraX, self.cameraY = 0, 0
 
     def trackBody(self, body):
         self.bodyToTrack = body
 
     def update(self, window):
 
-        # calculate offsets
-        offsetX = self.rect.x + self.rect.w / 2 - self.cameraX
-        offsetY = self.rect.y + self.rect.h / 2 - self.cameraY
-
         # fill camera background black
         window.fill((0, 0, 0))
-
-        # update camera
-        x, y = self.bodyToTrack.get_position_pixels()
-        self.cameraX = x + width / 2
-        self.cameraY = y + height / 2
 
         # update the positions for each body
         for body in body_models:
             body.update_position(body_models)
+
+        # update camera
+        x, y = self.bodyToTrack.get_position_pixels()
+        cameraX = x + width / 2
+        cameraY = y + height / 2
+
+        # calculate offsets
+        offsetX = self.rect.x + self.rect.w / 2 - cameraX
+        offsetY = self.rect.y + self.rect.h / 2 - cameraY
 
         # render bodies
         for body in body_viewers:
