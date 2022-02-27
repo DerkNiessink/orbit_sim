@@ -14,6 +14,9 @@ game_window = pygame.display.set_mode((width, height))
 # make background dark gray
 game_window.fill((50, 50, 50))
 pygame.display.set_caption("orbit simulator")
+pygame.init()
+font = pygame.font.SysFont("monospace", 18)
+elapsed_time = 0
 
 
 body_models = []
@@ -58,6 +61,7 @@ class System:
 class CameraSystem(System):
     def __init__(self):
         super().__init__()
+        self.elapsed_time_to_draw = 0
 
     def check(self, body):
         return body.camera is not None
@@ -90,6 +94,14 @@ class CameraSystem(System):
         # render bodies
         for body in body_viewers:
             body.draw(window, offsetX, offsetY, width, height)
+
+        # draw the elapsed time in steps of 10 days
+        if int(elapsed_time) % 10 == 0:
+            self.elapsed_time_to_draw = elapsed_time
+        label = font.render(
+            f"Elapsed time: {int(self.elapsed_time_to_draw)} days", 1, (255, 255, 255)
+        )
+        game_window.blit(label, (25, 25))
 
         # unset clipping rectangle
         window.set_clip(None)
@@ -138,6 +150,9 @@ if __name__ == "__main__":
                 nearest_body = sorted_bodies[0][1]
                 nearest_body.camera = camera
                 nearest_body.camera.trackBody(nearest_body)
+
+        # keep track of the elapsed time in days
+        elapsed_time += general_parameters["time_step"] / (3600 * 24)
 
         # update the camera system and draw bodies
         cameraSys.update(game_window, body_viewers)
