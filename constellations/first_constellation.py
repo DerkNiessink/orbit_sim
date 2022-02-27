@@ -2,7 +2,7 @@ AU = 149_597_871 * 10 ** 3
 
 
 constellation = {
-    "body1": {
+    "Earth": {
         "x": -AU,
         "y": 0,
         "init_velocity_x": 0,
@@ -11,7 +11,7 @@ constellation = {
         "colour": [0, 0, 250],
         "image": "resources/planet1.png",
     },
-    "body2": {
+    "Sun": {
         "x": 0,
         "y": 0,
         "init_velocity_x": 0,
@@ -20,7 +20,7 @@ constellation = {
         "colour": [250, 0, 0],
         "image": "resources/star1.png",
     },
-    "body3": {
+    "Mars": {
         "x": -249_000_000_000,
         "y": 0,
         "init_velocity_x": 0,
@@ -29,10 +29,19 @@ constellation = {
         "colour": [0, 250, 0],
         "image": "resources/planet2.png",
     },
+    "Venus": {
+        "x": 7304.326 * 10 ** 9,
+        "y": 0,
+        "init_velocity_x": 0,
+        "init_velocity_y": 3710,
+        "mass": 0.01303 * 10 ** 24,
+        "colour": [255, 165, 0],
+        "image": "resources/planet3.png",
+    },
 }
 
 
 general_parameters = {
     "time_step": 3600 * 24,
-    "scale_factor": 250 / AU,
+    "scale_factor": 15 / AU,
 }
