@@ -98,8 +98,8 @@ class Camera:
         game_window.blit(label, (25, 25))
 
 
-# Set the body to track
-body_to_track = body_viewers[1]
+# Set the default body to track
+body_to_track = body_viewers[0]
 camera = Camera(0, 0, 1500, 800, body_to_track)
 
 if __name__ == "__main__":

@@ -23,8 +23,8 @@ class PhysicalObjectView:
         self.pixel_y = self.body_model.y * self.scale_factor + height / 2
 
         # place the anchorpoint in the center of the image and the image in the center of the camera
-        self.x_to_draw = self.pixel_x - self.body_model.radius / 2 + offsetX
-        self.y_to_draw = self.pixel_y - self.body_model.radius / 2 + offsetY
+        self.x_to_draw = self.pixel_x - self.body_model.radius + offsetX
+        self.y_to_draw = self.pixel_y - self.body_model.radius + offsetY
 
     def draw(self, window, offsetX, offsetY, width, height):
 
