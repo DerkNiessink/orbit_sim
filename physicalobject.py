@@ -26,7 +26,7 @@ class PhysicalObject:
         self.colour = colour
         image = pygame.image.load(image)
         self.image = pygame.transform.scale(image, (self.radius, self.radius))
-        self.positions = collections.deque(maxlen=200)
+        self.positions = collections.deque(maxlen=500)
         self.camera = None
         self.scale_factor = scale_factor
         self.time_step = time_step

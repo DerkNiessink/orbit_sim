@@ -100,7 +100,7 @@ class Camera:
 
 
 # Set the body to track
-body_to_track = bodies_list[2]
+body_to_track = bodies_list[0]
 
 body_to_track.camera = Camera(0, 0, 1500, 800)
 body_to_track.camera.trackBody(body_to_track)
