@@ -2,15 +2,6 @@ AU = 149_597_871 * 10 ** 3
 
 
 constellation = {
-    "Earth": {
-        "x": -AU,
-        "y": 0,
-        "init_velocity_x": 0,
-        "init_velocity_y": 29800,
-        "mass": 5.772 * 10 ** 24,
-        "colour": [0, 0, 250],
-        "image": "resources/planet1.png",
-    },
     "Sun": {
         "x": 0,
         "y": 0,
@@ -19,6 +10,15 @@ constellation = {
         "mass": 1.98847 * 10 ** 30,
         "colour": [250, 0, 0],
         "image": "resources/star1.png",
+    },
+    "Earth": {
+        "x": -AU,
+        "y": 0,
+        "init_velocity_x": 0,
+        "init_velocity_y": 29800,
+        "mass": 5.772 * 10 ** 24,
+        "colour": [0, 0, 250],
+        "image": "resources/planet1.png",
     },
     "Mars": {
         "x": -249_000_000_000,
