@@ -1,5 +1,6 @@
 """Orbit sum main program."""
 
+from re import I
 from physicalobject import PhysicalObject
 import pygame
 from constellations.first_constellation import constellation, general_parameters
@@ -100,9 +101,9 @@ class Camera:
 
 
 # Set the body to track
-body_to_track = bodies_list[2]
+body_to_track = bodies_list[0]
 
-body_to_track.camera = Camera(0, 0, 1500, 800)
+camera = body_to_track.camera = Camera(0, 0, 1500, 800)
 body_to_track.camera.trackBody(body_to_track)
 cameraSys = CameraSystem()
 
@@ -116,6 +117,12 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Move the camera to the body nearest to the mouse click
+                sorted_bodies = sorted([(body.get_distance_pixels(*event.pos), body) for body in bodies_list])
+                nearest_body = sorted_bodies[0][1]
+                nearest_body.camera = camera
+                nearest_body.camera.trackBody(nearest_body)
 
         # update the camera system and draw bodies
         cameraSys.update(game_window, bodies_list)
