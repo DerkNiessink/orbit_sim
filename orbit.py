@@ -42,34 +42,35 @@ for body in constellation:
     )
 
 
-class CameraSystem:
-    def __init__(self):
+class Camera:
+    def __init__(self, x, y, w, h, body):
         self.elapsed_time_to_draw = 0
+        self.rect = pygame.Rect(x, y, w, h)
+        self.bodyToTrack = body
+        self.cameraX, self.cameraY = 0, 0
 
-    def check(self, body):
-        return body.camera is not None
+    def setCameraPos(self, x, y):
+        self.cameraX = x
+        self.cameraY = y
 
-    def update(self, window, bodies):
-        for body in bodies:
-            if self.check(body):
-                self.updateBody(window, body)
+    def trackBody(self, body):
+        self.bodyToTrack = body
 
-    def updateBody(self, window, body):
-
-        cameraRect = body.camera.rect
+    def update(self, window, body):
 
         # calculate offsets
-        offsetX = cameraRect.x + cameraRect.w / 2 - body.camera.cameraX
-        offsetY = cameraRect.y + cameraRect.h / 2 - body.camera.cameraY
+        offsetX = camera.rect.x + camera.rect.w / 2 - camera.cameraX
+        offsetY = camera.rect.y + camera.rect.h / 2 - camera.cameraY
+
         # fill camera background black
         window.fill((0, 0, 0))
 
         # update camera if tracking a body
-        if body.camera.bodyToTrack is not None:
-            trackedBody = body.camera.bodyToTrack
+        if camera.bodyToTrack is not None:
+            trackedBody = camera.bodyToTrack
             x, y = trackedBody.get_position_pixels()
-            body.camera.cameraX = x + width / 2
-            body.camera.cameraY = y + height / 2
+            camera.cameraX = x + width / 2
+            camera.cameraY = y + height / 2
 
         # update the positions for each body
         for body in body_models:
@@ -96,29 +97,10 @@ class CameraSystem:
             )
         game_window.blit(label, (25, 25))
 
-        # unset clipping rectangle
-        window.set_clip(None)
 
-
-class Camera:
-    def __init__(self, x, y, w, h, body):
-        self.rect = pygame.Rect(x, y, w, h)
-        self.bodyToTrack = body
-        self.cameraX, self.cameraY = 0, 0
-
-    def setCameraPos(self, x, y):
-        self.cameraX = x
-        self.cameraY = y
-
-    def trackBody(self, body):
-        self.bodyToTrack = body
-
-
-# Set the body to track
+# Set the default body to track
 body_to_track = body_viewers[0]
-
-camera = body_to_track.camera = Camera(0, 0, 1500, 800, body_to_track)
-cameraSys = CameraSystem()
+camera = Camera(0, 0, 1500, 800, body_to_track)
 
 if __name__ == "__main__":
     run = True
@@ -138,8 +120,7 @@ if __name__ == "__main__":
                     ]
                 )
                 nearest_body = sorted_bodies[0][1]
-                nearest_body.camera = camera
-                nearest_body.camera.trackBody(nearest_body)
+                camera.trackBody(nearest_body)
                 for body in body_viewers:
                     body.clear_tail()
 
@@ -147,7 +128,7 @@ if __name__ == "__main__":
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
 
         # update the camera system and draw bodies
-        cameraSys.update(game_window, body_viewers)
+        camera.update(game_window, body_viewers)
 
         pygame.display.update()
 
