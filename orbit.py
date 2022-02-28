@@ -26,6 +26,7 @@ for body in constellation:
     body_model = PhysicalObjectModel(
         constellation[body]["x"],
         constellation[body]["y"],
+        constellation[body]["radius"],
         constellation[body]["init_velocity_x"],
         constellation[body]["init_velocity_y"],
         constellation[body]["mass"],
@@ -45,7 +46,7 @@ for body in constellation:
 
 class Camera:
 
-    MAX_ZOOM_LEVEL = 100
+    MAX_ZOOM_LEVEL = 10000
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
 
@@ -124,7 +125,7 @@ if __name__ == "__main__":
     run = True
     clock = pygame.time.Clock()
     while run:
-        clock.tick(60)
+        clock.tick()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -133,7 +134,7 @@ if __name__ == "__main__":
                 # Move the camera to the body nearest to the mouse click
                 sorted_bodies = sorted(
                     [
-                        (body.get_distance_pixels(*event.pos), body)
+                        (body.get_distance_pixels(*event.pos, camera.zoomLevel), body)
                         for body in body_viewers
                     ]
                 )
