@@ -10,6 +10,7 @@ class PhysicalObjectView:
         self.body_model = body
         self.colour = colour
         image = pygame.image.load(image)
+        self.originalImage = image
         self.image = pygame.transform.scale(
             image, (self.body_model.radius * 2, self.body_model.radius * 2)
         )
@@ -47,7 +48,7 @@ class PhysicalObjectView:
         newWidth = int(self.image.get_rect().w * zoomLevel)
         newHeight = int(self.image.get_rect().h * zoomLevel)
         window.blit(
-            pygame.transform.scale(self.image, (newWidth, newHeight)),
+            pygame.transform.scale(self.originalImage, (newWidth, newHeight)),
             (self.x_to_draw * zoomLevel, self.y_to_draw * zoomLevel),
         )
 

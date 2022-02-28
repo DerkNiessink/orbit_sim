@@ -42,6 +42,6 @@ constellation = {
 
 
 general_parameters = {
-    "time_step": 3600 * 24 * 5,
+    "time_step": 3600 * 24,
     "scale_factor": 10 / AU,
 }

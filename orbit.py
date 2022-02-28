@@ -44,10 +44,11 @@ for body in constellation:
 
 
 class Camera:
-    def __init__(self, x, y, w, h, body):
+    def __init__(self, width, height, body):
+        self.width = width
+        self.height = height
         self.zoomLevel = 1
         self.elapsed_time_to_draw = 0
-        self.rect = pygame.Rect(x, y, w, h)
         self.bodyToTrack = body
 
     def trackBody(self, body):
@@ -64,16 +65,16 @@ class Camera:
 
         # update camera
         x, y = self.bodyToTrack.get_position_pixels()
-        cameraX = x + width / 2
-        cameraY = y + height / 2
+        cameraX = x + self.width / 2
+        cameraY = y + self.height / 2
 
         # calculate offsets
-        offsetX = self.rect.x + self.rect.w / 2 - (cameraX * self.zoomLevel)
-        offsetY = self.rect.y + self.rect.h / 2 - (cameraY * self.zoomLevel)
+        offsetX = self.width / 2 - (cameraX * self.zoomLevel)
+        offsetY = self.height / 2 - (cameraY * self.zoomLevel)
 
         # render bodies
         for body in body_viewers:
-            body.draw(window, offsetX, offsetY, width, height, self.zoomLevel)
+            body.draw(window, offsetX, offsetY, self.width, self.height, self.zoomLevel)
 
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:
@@ -104,7 +105,7 @@ class Camera:
 
 # Set the default body to track
 body_to_track = body_viewers[0]
-camera = Camera(0, 0, 1500, 800, body_to_track)
+camera = Camera(width, height, body_to_track)
 
 if __name__ == "__main__":
     run = True
@@ -131,10 +132,10 @@ if __name__ == "__main__":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     # Zoom out
-                    camera.zoomLevel += 0.08
+                    camera.zoomLevel *= 1.1
                 if event.button == 5 and camera.zoomLevel > 0.08:
                     # Zoom in and make sure the zoomlevel is not negative
-                    camera.zoomLevel -= 0.08
+                    camera.zoomLevel /= 1.1
                 for body in body_viewers:
                     body.clear_tail()
 
