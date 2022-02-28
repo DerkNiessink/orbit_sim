@@ -29,8 +29,8 @@ constellation = {
         "colour": [0, 250, 0],
         "image": "resources/planet2.png",
     },
-    "Venus": {
-        "x": 7304.326 * 10 ** 9,
+    "Pluto": {
+        "x": -7304.326 * 10 ** 9,
         "y": 0,
         "init_velocity_x": 0,
         "init_velocity_y": 3710,
@@ -42,6 +42,6 @@ constellation = {
 
 
 general_parameters = {
-    "time_step": 3600 * 24,
-    "scale_factor": 15 / AU,
+    "time_step": 3600 * 24 * 5,
+    "scale_factor": 12 / AU,
 }

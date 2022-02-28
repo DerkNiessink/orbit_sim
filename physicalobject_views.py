@@ -13,7 +13,7 @@ class PhysicalObjectView:
         self.image = pygame.transform.scale(
             image, (self.body_model.radius * 2, self.body_model.radius * 2)
         )
-        self.positions = collections.deque(maxlen=700)
+        self.positions = collections.deque(maxlen=7000)
 
     def change_coord_sys(self, offsetX, offsetY, width, height):
         """scale the positions to pixels and set the origin in the center of the camera."""
