@@ -15,7 +15,7 @@ class PhysicalObjectModel:
     ):
         self.x = x
         self.y = y
-        self.radius = np.log(mass) ** 3 / 50000
+        self.radius = np.log(mass) ** 3 / 100000
         self.gravitational_const = 6.67408 * 10 ** (-11)
         self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
         self.mass = mass  # kg

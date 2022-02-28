@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import constellation, general_parameters
+from constellations.first_constellation import constellation, general_parameters, AU
 from physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView
 
@@ -16,6 +16,7 @@ game_window.fill((50, 50, 50))
 pygame.display.set_caption("orbit simulator")
 pygame.init()
 font = pygame.font.SysFont("monospace", 18)
+keys = pygame.key.get_pressed()
 elapsed_time = 0
 
 
@@ -44,6 +45,7 @@ for body in constellation:
 
 class Camera:
     def __init__(self, x, y, w, h, body):
+        self.zoomLevel = 1
         self.elapsed_time_to_draw = 0
         self.rect = pygame.Rect(x, y, w, h)
         self.bodyToTrack = body
@@ -66,29 +68,38 @@ class Camera:
         cameraY = y + height / 2
 
         # calculate offsets
-        offsetX = self.rect.x + self.rect.w / 2 - cameraX
-        offsetY = self.rect.y + self.rect.h / 2 - cameraY
+        offsetX = self.rect.x + self.rect.w / 2 - (cameraX * self.zoomLevel)
+        offsetY = self.rect.y + self.rect.h / 2 - (cameraY * self.zoomLevel)
 
         # render bodies
         for body in body_viewers:
-            body.draw(window, offsetX, offsetY, width, height)
+            body.draw(window, offsetX, offsetY, width, height, self.zoomLevel)
 
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:
             self.elapsed_time_to_draw = elapsed_time
         if elapsed_time < 365:
-            label = font.render(
+            label_time = font.render(
                 f"Elapsed time: {int(self.elapsed_time_to_draw)} days",
                 1,
                 (255, 255, 255),
             )
         else:
-            label = font.render(
+            label_time = font.render(
                 f"Elapsed time: {round(int(self.elapsed_time_to_draw) / 365, 1)} yr",
                 1,
                 (255, 255, 255),
             )
-        game_window.blit(label, (25, 25))
+        game_window.blit(label_time, (25, 25))
+
+        # draw the scale on the screen
+        pixel_size = 0.026  # cm
+        label_zoom = font.render(
+            f"Scale: {round(body_viewers[0].scale_factor * AU * camera.zoomLevel * pixel_size, 2)} cm = AU",
+            1,
+            (255, 255, 255),
+        )
+        game_window.blit(label_zoom, (25, 48))
 
 
 # Set the default body to track
@@ -114,6 +125,16 @@ if __name__ == "__main__":
                 )
                 nearest_body = sorted_bodies[0][1]
                 camera.trackBody(nearest_body)
+                for body in body_viewers:
+                    body.clear_tail()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    # Zoom out
+                    camera.zoomLevel += 0.08
+                if event.button == 5 and camera.zoomLevel > 0.08:
+                    # Zoom in and make sure the zoomlevel is not negative
+                    camera.zoomLevel -= 0.08
                 for body in body_viewers:
                     body.clear_tail()
 
