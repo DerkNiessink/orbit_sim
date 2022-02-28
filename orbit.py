@@ -44,6 +44,11 @@ for body in constellation:
 
 
 class Camera:
+
+    MAX_ZOOM_LEVEL = 100
+    MIN_ZOOM_LEVEL = 0.1
+    ZOOM_STEP = 1.1
+
     def __init__(self, width, height, body):
         self.width = width
         self.height = height
@@ -53,6 +58,14 @@ class Camera:
 
     def trackBody(self, body):
         self.bodyToTrack = body
+
+    def zoomIn(self):
+        """Zoom in to a maximum of 0.1."""
+        self.zoomLevel = max(self.zoomLevel / self.ZOOM_STEP, self.MIN_ZOOM_LEVEL)
+
+    def zoomOut(self):
+        """Zoom in to a maximum of 10."""
+        self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
 
     def update(self, window):
 
@@ -131,11 +144,9 @@ if __name__ == "__main__":
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 4:
-                    # Zoom out
-                    camera.zoomLevel *= 1.1
-                if event.button == 5 and camera.zoomLevel > 0.08:
-                    # Zoom in and make sure the zoomlevel is not negative
-                    camera.zoomLevel /= 1.1
+                    camera.zoomOut()
+                if event.button == 5:
+                    camera.zoomIn()
                 for body in body_viewers:
                     body.clear_tail()
 
