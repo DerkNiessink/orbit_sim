@@ -7,7 +7,7 @@ from constellations.first_constellation import AU
 
 class Camera:
 
-    MAX_ZOOM_LEVEL = 10000
+    MAX_ZOOM_LEVEL = 100000
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
 
