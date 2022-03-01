@@ -12,21 +12,31 @@ class PhysicalObjectView:
         self.colour = colour
         image = pygame.image.load(image)
         self.originalImage = image
-        self.positions = collections.deque(maxlen=7000)
+        self.positions = collections.deque(maxlen=700)
 
-    def change_coord_sys(self, x, y, offsetX, offsetY, width, height, zoomLevel):
+    def change_coord_sys(
+        self, x, y, width, height, zoomLevel, bodyTrack_x, bodyTrack_y
+    ):
         """Scale the positions to pixels and set the origin in the center of the camera."""
 
-        # scale to pixels and place origin in the center of the window
-        self.pixel_x = x * self.scale_factor + width / 2
-        self.pixel_y = y * self.scale_factor + height / 2
+        # scale to pixels
+        self.pixel_x = x * self.scale_factor
+        self.pixel_y = y * self.scale_factor
 
         # place the anchorpoint in the center of the image and the image in the center of the camera
-        x_to_draw = (self.pixel_x + (offsetX / zoomLevel) - self.radius) * zoomLevel
-        y_to_draw = (self.pixel_y + (offsetY / zoomLevel) - self.radius) * zoomLevel
+        x_to_draw = (self.pixel_x - bodyTrack_x - self.radius) * zoomLevel + width / 2
+        y_to_draw = (self.pixel_y - bodyTrack_y - self.radius) * zoomLevel + height / 2
         return x_to_draw, y_to_draw
 
-    def draw(self, window, offsetX, offsetY, width, height, zoomLevel):
+    def draw(
+        self,
+        window,
+        width,
+        height,
+        zoomLevel,
+        bodyTrack_x,
+        bodyTrack_y,
+    ):
 
         # adjust the radius of the body to the zoomlevel
         radius_to_draw = self.radius * zoomLevel
@@ -43,7 +53,13 @@ class PhysicalObjectView:
         scaled_positions = []
         for position in self.positions:
             x_to_draw, y_to_draw = self.change_coord_sys(
-                position[0], position[1], offsetX, offsetY, width, height, zoomLevel
+                position[0],
+                position[1],
+                width,
+                height,
+                zoomLevel,
+                bodyTrack_x,
+                bodyTrack_y,
             )
             scaled_positions.append((x_to_draw, y_to_draw))
 

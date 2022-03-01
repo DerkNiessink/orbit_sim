@@ -41,18 +41,19 @@ class Camera:
             body.update_position(self.body_models)
 
         # update camera
-        x, y = self.bodyToTrack.get_position_pixels()
+        bodyToTrack_x, BodyToTrack_y = self.bodyToTrack.get_position_pixels()
         width, height = self.window.get_size()
-        cameraX = x + width / 2
-        cameraY = y + height / 2
-
-        # calculate offsets
-        offsetX = width / 2 - (cameraX * self.zoomLevel)
-        offsetY = height / 2 - (cameraY * self.zoomLevel)
 
         # render bodies
         for body in self.body_viewers:
-            body.draw(self.window, offsetX, offsetY, width, height, self.zoomLevel)
+            body.draw(
+                self.window,
+                width,
+                height,
+                self.zoomLevel,
+                bodyToTrack_x,
+                BodyToTrack_y,
+            )
 
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:
