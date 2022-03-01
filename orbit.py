@@ -72,8 +72,6 @@ if __name__ == "__main__":
                     camera.zoomOut()
                 if event.button == 5:
                     camera.zoomIn()
-                for body in body_viewers:
-                    body.clear_tail()
 
         # keep track of the elapsed time in days
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
