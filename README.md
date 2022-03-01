@@ -1,6 +1,6 @@
 # Orbit sim
 
-Application for simulating gravity between bodies with Newton's law of universal gravitation.
+Application for simulating gravity between bodies with [Newton's law of universal gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation).
 
 ## Installation
 
@@ -11,7 +11,4 @@ Application for simulating gravity between bodies with Newton's law of universal
 
 ## Constellations
 
-The constellations that Orbit sim can simulate are defined in JSON files. See the constellations folder for examples. 
-
-If `orbit.py` is started without argument, it uses `constellations/first_constellation.json`. To specify a different consellation, pass the filename as argument: `python orbit.py constellations/constellation2.json`.
-
+The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for an example.
