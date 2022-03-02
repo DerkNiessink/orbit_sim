@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import constellation, general_parameters, AU
+from constellations.first_constellation import constellation, general_parameters
 from physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView
 from camera import Camera
