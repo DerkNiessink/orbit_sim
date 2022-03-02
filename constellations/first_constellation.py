@@ -10,7 +10,7 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 0,
         "mass": 1.98847 * 10 ** 30,
-        "colour": [250, 0, 0],
+        "colour": [250, 255, 0],
         "image": "resources/star1.png",
     },
     "Earth": {
@@ -20,7 +20,7 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 29_800,
         "mass": 5.772 * 10 ** 24,
-        "colour": [0, 0, 250],
+        "colour": [0, 0, 255],
         "image": "resources/planet1.png",
     },
     "Mars": {
@@ -30,7 +30,7 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 21970,
         "mass": 6.39 * 10 ** 23,
-        "colour": [0, 250, 0],
+        "colour": [225, 133, 100],
         "image": "resources/planet2.png",
     },
     "Pluto": {
@@ -40,7 +40,7 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 3710,
         "mass": 0.01303 * 10 ** 24,
-        "colour": [255, 165, 0],
+        "colour": [150, 125, 100],
         "image": "resources/planet3.png",
     },
 }
