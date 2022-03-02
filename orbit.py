@@ -21,23 +21,24 @@ elapsed_time = 0
 
 body_models = []
 body_viewers = []
-for body in constellation:
+for name, body in constellation.items():
     body_model = PhysicalObjectModel(
-        constellation[body]["x"],
-        constellation[body]["y"],
-        constellation[body]["radius"],
-        constellation[body]["init_velocity_x"],
-        constellation[body]["init_velocity_y"],
-        constellation[body]["mass"],
+        body["x"],
+        body["y"],
+        body["radius"],
+        body["init_velocity_x"],
+        body["init_velocity_y"],
+        body["mass"],
         general_parameters["time_step"],
     )
     body_models.append(body_model)
 
     body_viewers.append(
         PhysicalObjectView(
+            name,
             general_parameters["scale_factor"],
-            constellation[body]["colour"],
-            constellation[body]["image"],
+            body["colour"],
+            body["image"],
             body_model,
         )
     )
@@ -58,22 +59,16 @@ if __name__ == "__main__":
                 # Move the camera to the body nearest to the mouse click
                 sorted_bodies = sorted(
                     [
-                        (body.get_distance_pixels(*event.pos, camera.zoomLevel), body)
-                        for body in body_viewers
+                        (body.get_distance_pixels(*event.pos), body) for body in body_viewers
                     ]
                 )
-                nearest_body = sorted_bodies[0][1]
-                camera.trackBody(nearest_body)
-                for body in body_viewers:
-                    body.clear_tail()
+                camera.trackBody(sorted_bodies[0][1])
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     camera.zoomOut()
                 if event.button == 5:
                     camera.zoomIn()
-                for body in body_viewers:
-                    body.clear_tail()
 
         # keep track of the elapsed time in days
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
