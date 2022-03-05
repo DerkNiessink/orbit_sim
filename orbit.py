@@ -7,15 +7,10 @@ from physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView
 from camera import Camera
 
-width = 1500
-height = 800
-game_window = pygame.display.set_mode((width, height))
 
-# make background dark gray
-game_window.fill((50, 50, 50))
+game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
-keys = pygame.key.get_pressed()
 elapsed_time = 0
 
 
