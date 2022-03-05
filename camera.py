@@ -17,11 +17,18 @@ class Camera:
         self.body_viewers = body_viewers
         self.bodyToTrack = body_viewers[0]
         self.zoomLevel = 1
+        self.offset = self.initialOffset()
         self.elapsed_time_to_draw = 0
         self.font = pygame.font.SysFont("monospace", 18)
 
-    def trackBody(self, body):
-        self.bodyToTrack = body
+    def initialOffset(self):
+        return (self.window.get_width()/2, self.window.get_height()/2)
+
+    def trackBody(self, x: int, y: int) -> None:
+        """Track the body closest the the x and y coordinates."""
+        sorted_bodies = sorted([(body.get_distance_pixels(x, y), body) for body in self.body_viewers])
+        self.bodyToTrack = sorted_bodies[0][1]
+        self.offset = self.initialOffset()
 
     def zoomIn(self):
         """Zoom in to a maximum of 0.1."""
@@ -30,6 +37,10 @@ class Camera:
     def zoomOut(self):
         """Zoom in to a maximum of 10."""
         self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
+
+    def pan(self, dx, dy):
+        """Pan the camera."""
+        self.offset = (self.offset[0] + dx, self.offset[1] + dy)
 
     def update(self, elapsed_time):
 
@@ -42,7 +53,7 @@ class Camera:
 
         # render bodies
         for body in self.body_viewers:
-            body.draw(self.window, self.zoomLevel, self.bodyToTrack)
+            body.draw(self.window, self.zoomLevel, self.offset, self.bodyToTrack)
 
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:
