@@ -22,11 +22,13 @@ class Camera:
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self):
-        return (self.window.get_width()/2, self.window.get_height()/2)
+        return (self.window.get_width() / 2, self.window.get_height() / 2)
 
     def trackBody(self, x: int, y: int) -> None:
         """Track the body closest the the x and y coordinates."""
-        sorted_bodies = sorted([(body.get_distance_pixels(x, y), body) for body in self.body_viewers])
+        sorted_bodies = sorted(
+            [(body.get_distance_pixels(x, y), body) for body in self.body_viewers]
+        )
         self.bodyToTrack = sorted_bodies[0][1]
         self.offset = self.initialOffset()
 
@@ -42,7 +44,7 @@ class Camera:
         """Pan the camera."""
         self.offset = (self.offset[0] + dx, self.offset[1] + dy)
 
-    def update(self, elapsed_time):
+    def update(self, elapsed_time, label):
 
         # fill camera background black
         self.window.fill((0, 0, 0))
@@ -54,6 +56,11 @@ class Camera:
         # render bodies
         for body in self.body_viewers:
             body.draw(self.window, self.zoomLevel, self.offset, self.bodyToTrack)
+
+        # draw body labels
+        if label == True:
+            for body in self.body_viewers:
+                body.draw_label(self.window, self.zoomLevel)
 
         # draw the elapsed time in steps of 10 days
         if int(elapsed_time) % 10 == 0:

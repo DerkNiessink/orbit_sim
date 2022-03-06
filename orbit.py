@@ -11,6 +11,7 @@ from camera import Camera
 game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
+label = False
 elapsed_time = 0
 
 
@@ -53,8 +54,14 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_button_down_pos = event.pos  # Keep track of mouse button down to distinguish click from drag
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and distance(mouse_button_down_pos, event.pos) <= 10:
+                mouse_button_down_pos = (
+                    event.pos
+                )  # Keep track of mouse button down to distinguish click from drag
+            if (
+                event.type == pygame.MOUSEBUTTONUP
+                and event.button == 1
+                and distance(mouse_button_down_pos, event.pos) <= 10
+            ):
                 camera.trackBody(*event.pos)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -66,11 +73,16 @@ if __name__ == "__main__":
             if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0]:
                 camera.pan(*event.rel)
 
+            if event.type == pygame.KEYDOWN:
+                # press l to show or unshow body labels
+                if event.key == pygame.K_l:
+                    label = not label
+
         # keep track of the elapsed time in days
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
 
         # update the camera system and draw bodies
-        camera.update(elapsed_time)
+        camera.update(elapsed_time, label)
 
         pygame.display.update()
 
