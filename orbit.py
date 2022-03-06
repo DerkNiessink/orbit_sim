@@ -4,7 +4,7 @@ import pygame
 
 from constellations.first_constellation import constellation, general_parameters
 from physicalobject_model import PhysicalObjectModel
-from physicalobject_views import PhysicalObjectView
+from physicalobject_views import PhysicalObjectView, distance
 from camera import Camera
 
 
@@ -41,7 +41,9 @@ for name, body in constellation.items():
 
 camera = Camera(game_window, body_models, body_viewers)
 
+
 if __name__ == "__main__":
+    mouse_button_down_pos = None
     run = True
     clock = pygame.time.Clock()
     while run:
@@ -51,19 +53,18 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                # Move the camera to the body nearest to the mouse click
-                sorted_bodies = sorted(
-                    [
-                        (body.get_distance_pixels(*event.pos), body) for body in body_viewers
-                    ]
-                )
-                camera.trackBody(sorted_bodies[0][1])
+                mouse_button_down_pos = event.pos  # Keep track of mouse button down to distinguish click from drag
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and distance(mouse_button_down_pos, event.pos) <= 10:
+                camera.trackBody(*event.pos)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     camera.zoomOut()
                 if event.button == 5:
                     camera.zoomIn()
+
+            if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0]:
+                camera.pan(*event.rel)
 
         # keep track of the elapsed time in days
         elapsed_time += general_parameters["time_step"] / (3600 * 24)
