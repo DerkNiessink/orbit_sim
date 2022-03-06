@@ -22,7 +22,7 @@ constellation = {
         "init_velocity_y": 38_860,
         "mass": 0.33010 * 10 ** 24,
         "colour": [150, 150, 150],
-        "image": "resources/mercury.jpg"
+        "image": "resources/mercury.jpg",
     },
     "Earth": {
         "x": -AU,
@@ -43,6 +43,16 @@ constellation = {
         "mass": 6.39 * 10 ** 23,
         "colour": [225, 133, 100],
         "image": "resources/planet2.png",
+    },
+    "Jupiter": {
+        "x": -5.367 * AU,
+        "y": 0,
+        "radius": 71_492_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 12440,
+        "mass": 1.898 * 10 ** 24,
+        "colour": [50, 133, 20],
+        "image": "resources/planet4.png",
     },
     "Pluto": {
         "x": -7304.326 * 10 ** 9,
