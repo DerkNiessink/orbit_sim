@@ -1,5 +1,6 @@
 # Note, all measures are in SI units (kg, m, s, etc.)
 
+
 AU = 149_597_871 * 10 ** 3
 
 constellation = {
@@ -12,6 +13,16 @@ constellation = {
         "mass": 1.98847 * 10 ** 30,
         "colour": [250, 255, 0],
         "image": "resources/star1.png",
+    },
+    "Mercury": {
+        "x": -69_818_000_000,
+        "y": 0,
+        "radius": 2_479_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 38_860,
+        "mass": 0.33010 * 10 ** 24,
+        "colour": [150, 150, 150],
+        "image": "resources/mercury.jpg"
     },
     "Earth": {
         "x": -AU,
