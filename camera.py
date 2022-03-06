@@ -11,9 +11,9 @@ class Camera:
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
 
-    def __init__(self, window, body_models, body_viewers):
+    def __init__(self, window, constellation_model, body_viewers):
         self.window = window
-        self.body_models = body_models
+        self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.bodyToTrack = body_viewers[0]
         self.zoomLevel = 1
@@ -49,9 +49,8 @@ class Camera:
         # fill camera background black
         self.window.fill((0, 0, 0))
 
-        # update the positions for each body
-        for body in self.body_models:
-            body.update_position(self.body_models)
+        # update the positions in the constellation
+        self.constellation_model.update_positions()
 
         # render bodies
         for body in self.body_viewers:

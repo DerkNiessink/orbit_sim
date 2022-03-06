@@ -3,8 +3,9 @@
 import pygame
 
 from constellations.first_constellation import constellation, general_parameters
-from physicalobject_model import PhysicalObjectModel
+from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
+from models.constellation import Constellation
 from camera import Camera
 
 
@@ -29,6 +30,8 @@ for name, body in constellation.items():
     )
     body_models.append(body_model)
 
+    constellation_model = Constellation(body_models)
+
     body_viewers.append(
         PhysicalObjectView(
             name,
@@ -40,7 +43,7 @@ for name, body in constellation.items():
     )
 
 
-camera = Camera(game_window, body_models, body_viewers)
+camera = Camera(game_window, constellation_model, body_viewers)
 
 
 if __name__ == "__main__":
