@@ -11,7 +11,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 0,
         "mass": 1.98847 * 10 ** 30,
-        "colour": [250, 255, 0],
         "image": "resources/star1.png",
     },
     "Mercury": {
@@ -21,7 +20,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 38_860,
         "mass": 0.33010 * 10 ** 24,
-        "colour": [150, 150, 150],
         "image": "resources/mercury.jpg",
     },
     "Earth": {
@@ -41,7 +39,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 21970,
         "mass": 6.39 * 10 ** 23,
-        "colour": [225, 133, 100],
         "image": "resources/planet2.png",
     },
     "Jupiter": {
@@ -51,7 +48,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 12440,
         "mass": 1.898 * 10 ** 24,
-        "colour": [50, 133, 20],
         "image": "resources/planet4.png",
     },
     "Pluto": {
@@ -61,7 +57,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 3710,
         "mass": 0.01303 * 10 ** 24,
-        "colour": [150, 125, 100],
         "image": "resources/planet3.png",
     },
 }

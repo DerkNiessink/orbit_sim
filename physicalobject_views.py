@@ -1,5 +1,6 @@
 import collections
 import math
+from random import randrange
 
 import pygame
 import numpy as np
@@ -24,6 +25,19 @@ def pan(coordinates, origin):
     ]
 
 
+def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
+    """Calculate the average colour of an image by sampling a limited number of pixels."""
+    width, height = image.get_width(), image.get_height()
+    sample_size = round(math.sqrt(width * height))
+    random_points = [(randrange(0, width), randrange(0, height)) for _ in range(sample_size)]
+    colours = [image.get_at(point) for point in random_points]
+    colours = [colour for colour in colours if colour.a > 0]  # Ignore transparent pixels
+    average_r = round(sum(colour.r for colour in colours) / len(colours))
+    average_g = round(sum(colour.g for colour in colours) / len(colours))
+    average_b = round(sum(colour.b for colour in colours) / len(colours))
+    return (average_r, average_g, average_b)
+
+
 class PhysicalObjectView:
 
     DEQUE_MAXLEN = 7000
@@ -32,8 +46,8 @@ class PhysicalObjectView:
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
-        self.colour = colour
         self.originalImage = pygame.image.load(image)
+        self.colour = colour or average_colour(self.originalImage)
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level):

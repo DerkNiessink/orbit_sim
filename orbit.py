@@ -36,7 +36,7 @@ for name, body in constellation.items():
         PhysicalObjectView(
             name,
             general_parameters["scale_factor"],
-            body["colour"],
+            body.get("colour"),
             body["image"],
             body_model,
         )
