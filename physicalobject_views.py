@@ -11,11 +11,17 @@ def distance(point1: tuple[float], point2: tuple[float]) -> float:
 
 
 def zoom(coordinates, scale_factor, zoom_level):
-    return [(x * scale_factor * zoom_level, y * scale_factor * zoom_level) for x, y in coordinates]
+    return [
+        (x * scale_factor * zoom_level, y * scale_factor * zoom_level)
+        for x, y in coordinates
+    ]
 
 
 def pan(coordinates, origin):
-    return [(x + origin_x, y + origin_y) for (x, y), (origin_x, origin_y) in zip(coordinates, origin)]
+    return [
+        (x + origin_x, y + origin_y)
+        for (x, y), (origin_x, origin_y) in zip(coordinates, origin)
+    ]
 
 
 class PhysicalObjectView:
@@ -31,12 +37,19 @@ class PhysicalObjectView:
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level):
-        return max(self.body_model.radius * self.scale_factor * zoom_level, 3 * math.log(zoom_level))
+        return max(
+            self.body_model.radius * self.scale_factor * zoom_level,
+            3 * math.log(zoom_level),
+        )
 
     def draw(self, window, zoomLevel, offset, bodyToTrack):
         """Draw the body relative to the body to track."""
         self.positions.append((self.body_model.x, self.body_model.y))
-        positions = [(0, 0) for _ in self.positions] if self == bodyToTrack else pan(self.positions, bodyToTrack.positions)
+        positions = (
+            [(0, 0) for _ in self.positions]
+            if self == bodyToTrack
+            else pan(self.positions, bodyToTrack.positions)
+        )
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, [(offset[0], offset[1]) for _ in positions])
         self.x_to_draw, self.y_to_draw = positions[-1]
@@ -49,8 +62,38 @@ class PhysicalObjectView:
                 width=1,
             )
         window.blit(
-            pygame.transform.scale(self.originalImage, (self.radius(zoomLevel) * 2, self.radius(zoomLevel) * 2)),
-            (self.x_to_draw - self.radius(zoomLevel), self.y_to_draw - self.radius(zoomLevel)),
+            pygame.transform.scale(
+                self.originalImage,
+                (self.radius(zoomLevel) * 2, self.radius(zoomLevel) * 2),
+            ),
+            (
+                self.x_to_draw - self.radius(zoomLevel),
+                self.y_to_draw - self.radius(zoomLevel),
+            ),
+        )
+
+    def draw_label(self, window, zoomLevel):
+        """Draw a label of the name of the body"""
+
+        min_size = 15
+        # formula for size of label based on zoomlevel
+        size = int(1 / zoomLevel ** 0.05)
+
+        if size < min_size:
+            size = min_size
+
+        font = pygame.font.SysFont("monospace", size)
+        label_zoom = font.render(
+            f"{self.name}",
+            1,
+            (255, 255, 255),
+        )
+        window.blit(
+            label_zoom,
+            (
+                self.x_to_draw + self.radius(zoomLevel),
+                self.y_to_draw + self.radius(zoomLevel),
+            ),
         )
 
     def get_distance_pixels(self, x: float, y: float) -> float:
