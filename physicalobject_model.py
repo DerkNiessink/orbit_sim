@@ -4,6 +4,9 @@ import numpy as np
 
 
 class PhysicalObjectModel:
+
+    gravitational_constant = 6.67408 * 10 ** (-11)
+
     def __init__(
         self,
         x,
@@ -17,44 +20,37 @@ class PhysicalObjectModel:
         self.x = x
         self.y = y
         self.radius = radius
-        self.gravitational_const = 6.67408 * 10 ** (-11)
         self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
         self.mass = mass  # kg
         self.time_step = time_step
 
-    def get_mass(self):
-        return self.mass
-
-    def get_position_meters(self):
-        """Get the position of the body in meters with origin in the upperleft corner of the window"""
+    def position(self):
+        """Get the position of the body in meters."""
         return np.array([self.x, self.y])
 
-    def calc_force(self, bodies):
-        """calculate the net force on the body"""
+    def force(self, bodies):
+        """Calculate the net force on the body."""
+        return sum(self.force_between_two_bodies(body) for body in bodies)
 
-        net_force = 0
-        for other_body in bodies:
-            if other_body is not self:
-                other_body_position = other_body.get_position_meters()
-                other_body_mass = other_body.get_mass()
-                self.position_vector = np.array([self.x, self.y])
-
-                dst = np.linalg.norm(other_body_position - self.position_vector)
-                forceDir = (other_body_position - self.position_vector) / dst
-                force = (
-                    forceDir
-                    * self.gravitational_const
-                    * self.mass
-                    * other_body_mass
-                    / (dst ** 2)
-                )
-                net_force += force
-        return net_force
+    def force_between_two_bodies(self, other_body):
+        """Calculate the force between this body and another body."""
+        if self is other_body:
+            return 0
+        self_position = self.position()
+        other_body_position = other_body.position()
+        distance = np.linalg.norm(other_body_position - self_position)
+        force_direction = (other_body_position - self_position) / distance
+        return (
+            force_direction
+            * self.gravitational_constant
+            * self.mass
+            * other_body.mass
+            / (distance ** 2)
+        )
 
     def update_position(self, bodies):
-        """update the position of the body, returns the position in meter with the origin in upperleft corner of the window"""
-
-        net_force = self.calc_force(bodies)
+        """Update the position of the body."""
+        net_force = self.force(bodies)
         acceleration = net_force / self.mass
         self.velocity = self.velocity + acceleration * self.time_step
         self.velocity_x, self.velocity_y = self.velocity
