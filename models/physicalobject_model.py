@@ -50,9 +50,21 @@ class PhysicalObjectModel:
 
     def update_position(self, bodies):
         """Update the position of the body."""
-        net_force = self.force(bodies)
-        acceleration = net_force / self.mass
-        self.velocity = self.velocity + acceleration * self.time_step
-        self.velocity_x, self.velocity_y = self.velocity
-        self.x += self.velocity_x * self.time_step
-        self.y += self.velocity_y * self.time_step
+
+        if self.mass == 0:
+            self.masses = [body.mass for body in bodies[0:-1]]
+            center_of_mass = 0
+            for index, body_model in enumerate(bodies[0:-1]):
+
+                center_of_mass += (body_model.position() * self.masses[index]) / sum(
+                    self.masses
+                )
+            self.x, self.y = center_of_mass
+
+        else:
+            net_force = self.force(bodies[0:-1])
+            acceleration = net_force / self.mass
+            self.velocity = self.velocity + acceleration * self.time_step
+            self.velocity_x, self.velocity_y = self.velocity
+            self.x += self.velocity_x * self.time_step
+            self.y += self.velocity_y * self.time_step

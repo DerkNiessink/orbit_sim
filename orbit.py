@@ -42,6 +42,26 @@ for name, body in constellation.items():
         )
     )
 
+center_of_mass_model = PhysicalObjectModel(
+    0,
+    0,
+    100,
+    0,
+    0,
+    0,
+    general_parameters["time_step"],
+)
+
+body_models.append(center_of_mass_model)
+body_viewers.append(
+    PhysicalObjectView(
+        "Center of mass",
+        general_parameters["scale_factor"],
+        [255, 0, 0],
+        "resources\center_of_mass.png",
+        center_of_mass_model,
+    )
+)
 
 camera = Camera(game_window, constellation_model, body_viewers)
 

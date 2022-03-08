@@ -39,9 +39,13 @@ def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
     """Calculate the average colour of an image by sampling a limited number of pixels."""
     width, height = image.get_width(), image.get_height()
     sample_size = round(math.sqrt(width * height))
-    random_points = [(randrange(0, width), randrange(0, height)) for _ in range(sample_size)]
+    random_points = [
+        (randrange(0, width), randrange(0, height)) for _ in range(sample_size)
+    ]
     colours = [cast(pygame.Color, image.get_at(point)) for point in random_points]
-    colours = [colour for colour in colours if colour.a > 0]  # Ignore transparent pixels
+    colours = [
+        colour for colour in colours if colour.a > 0
+    ]  # Ignore transparent pixels
     average_r = round(sum(colour.r for colour in colours) / len(colours))
     average_g = round(sum(colour.g for colour in colours) / len(colours))
     average_b = round(sum(colour.b for colour in colours) / len(colours))
@@ -61,10 +65,13 @@ class PhysicalObjectView:
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level):
-        return max(
-            self.body_model.radius * self.scale_factor * zoom_level,
-            3 * math.log(zoom_level),
-        )
+        if self.name == "Center of mass":
+            return 15
+        else:
+            return max(
+                self.body_model.radius * self.scale_factor * zoom_level,
+                3 * math.log(zoom_level),
+            )
 
     def draw(self, window, zoomLevel, offset, bodyToTrack):
         """Draw the body relative to the body to track."""
