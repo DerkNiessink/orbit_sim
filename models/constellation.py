@@ -6,7 +6,6 @@ class Constellation:
         for body_model in self.body_models:
             body_model.update_position(self.body_models)
 
+    # def calc_center_of_mass(self):
 
-    #def calc_center_of_mass(self):
-
-    #def collision(self):
+    # def collision(self):

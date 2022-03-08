@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import constellation, general_parameters
+from constellations.binary_star import constellation, general_parameters
 from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
 from models.constellation import Constellation
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     while run:
         clock.tick()
 
-        for _ in range(60):
+        for _ in range(100):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
