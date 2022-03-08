@@ -49,9 +49,6 @@ class Camera:
         # fill camera background black
         self.window.fill((0, 0, 0))
 
-        # update the positions in the constellation
-        self.constellation_model.update_positions()
-
         # render bodies
         for body in self.body_viewers:
             body.draw(self.window, self.zoomLevel, self.offset, self.bodyToTrack)
