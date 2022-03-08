@@ -13,7 +13,7 @@ game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
 label = False
-elapsed_time = 0
+elapsed_time = 0.0
 
 
 body_models = []
@@ -47,7 +47,7 @@ camera = Camera(game_window, constellation_model, body_viewers)
 
 
 if __name__ == "__main__":
-    mouse_button_down_pos = None
+    mouse_button_down_pos = (-100, -100)
     run = True
     clock = pygame.time.Clock()
     while run:
@@ -77,10 +77,8 @@ if __name__ == "__main__":
                 if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0]:
                     camera.pan(*event.rel)
 
-                if event.type == pygame.KEYDOWN:
-                    # press l to show or unshow body labels
-                    if event.key == pygame.K_l:
-                        label = not label
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_l:
+                    label = not label  # press l to show or unshow body labels
 
             # keep track of the elapsed time in days
             elapsed_time += general_parameters["time_step"] / (3600 * 24)

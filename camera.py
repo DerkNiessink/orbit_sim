@@ -22,6 +22,7 @@ class Camera:
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self):
+        """The initial offset for the camera is the center of the window. Panning may change the offset."""
         return (self.window.get_width() / 2, self.window.get_height() / 2)
 
     def trackBody(self, x: int, y: int) -> None:
@@ -37,10 +38,10 @@ class Camera:
         self.zoomLevel = max(self.zoomLevel / self.ZOOM_STEP, self.MIN_ZOOM_LEVEL)
 
     def zoomOut(self):
-        """Zoom in to a maximum of 10."""
+        """Zoom out to a maximum of 10."""
         self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
 
-    def pan(self, dx, dy):
+    def pan(self, dx: int, dy: int) -> None:
         """Pan the camera."""
         self.offset = (self.offset[0] + dx, self.offset[1] + dy)
 
