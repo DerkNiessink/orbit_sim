@@ -66,7 +66,7 @@ class PhysicalObjectView:
 
     def radius(self, zoom_level):
         if self.name == "Center of mass":
-            return 15
+            return 10
         else:
             return max(
                 self.body_model.radius * self.scale_factor * zoom_level,
