@@ -12,7 +12,6 @@ from camera import Camera
 game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
-label = False
 elapsed_time = 0.0
 
 
@@ -88,7 +87,7 @@ if __name__ == "__main__":
                     camera.pan(*event.rel)
 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_l:
-                    label = not label  # press l to show or unshow body labels
+                    camera.toggle_labels()
 
             # keep track of the elapsed time in days
             elapsed_time += general_parameters["time_step"] / (3600 * 24)
@@ -97,7 +96,7 @@ if __name__ == "__main__":
             constellation_model.update_positions()
 
         # update the camera system and draw bodies
-        camera.update(elapsed_time, label)
+        camera.update(elapsed_time)
 
         pygame.display.update()
 
