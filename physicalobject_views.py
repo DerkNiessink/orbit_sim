@@ -65,13 +65,10 @@ class PhysicalObjectView:
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level):
-        if self.name == "Center of mass":
-            return 5
-        else:
-            return max(
-                self.body_model.radius * self.scale_factor * zoom_level,
-                3 * math.log(zoom_level),
-            )
+        return max(
+            self.body_model.radius * self.scale_factor * zoom_level,
+            math.log(zoom_level * 10),
+        )
 
     def draw(self, window, zoomLevel, offset, bodyToTrack):
         """Draw the body relative to the body to track."""

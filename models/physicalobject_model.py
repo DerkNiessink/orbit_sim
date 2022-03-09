@@ -51,7 +51,7 @@ class PhysicalObjectModel:
 
     def update_position(self, bodies):
         """Update the position of the body."""
-        net_force = self.force(bodies[0:-1])
+        net_force = self.force(bodies)
         acceleration = net_force / self.mass
         self.velocity = self.velocity + acceleration * self.time_step
         self.velocity_x, self.velocity_y = self.velocity
