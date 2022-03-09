@@ -29,7 +29,6 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 29_800,
         "mass": 5.772 * 10 ** 24,
-        "colour": [0, 0, 255],
         "image": "resources/planet1.png",
     },
     "Mars": {
