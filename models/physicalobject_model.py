@@ -1,6 +1,5 @@
 """Physical object class to represent cellestial bodies."""
 
-from email.quoprimime import body_check
 import numpy as np
 
 
