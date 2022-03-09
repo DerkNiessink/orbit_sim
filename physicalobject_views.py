@@ -19,10 +19,19 @@ def zoom(coordinates, scale_factor, zoom_level):
     ]
 
 
-def pan(coordinates, origin):
+def relative_coordinates(coordinates, origin):
+    """Transform the coordinates into coordinates relative to the origin."""
+    return [
+        (x - origin_x, y - origin_y)
+        for (x, y), (origin_x, origin_y) in zip(coordinates, origin)
+    ]
+
+
+def pan(coordinates, offsets):
+    """Pan the coordinates with the given offsets."""
     return [
         (x + origin_x, y + origin_y)
-        for (x, y), (origin_x, origin_y) in zip(coordinates, origin)
+        for (x, y), (origin_x, origin_y) in zip(coordinates, offsets)
     ]
 
 
@@ -63,7 +72,7 @@ class PhysicalObjectView:
         positions = (
             [(0, 0) for _ in self.positions]
             if self == bodyToTrack
-            else pan(self.positions, bodyToTrack.positions)
+            else relative_coordinates(self.positions, bodyToTrack.positions)
         )
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, [(offset[0], offset[1]) for _ in positions])

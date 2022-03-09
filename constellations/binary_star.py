@@ -15,10 +15,10 @@ constellation = {
     "Star 2": {
         "x": 10 * AU,
         "y": 0,
-        "radius": 1 * radius_sun,
+        "radius": 1.711 * radius_sun,
         "init_velocity_x": 0,
         "init_velocity_y": -3000,
-        "mass": 1.018 * mass_sun,
+        "mass": 2.063 * mass_sun,
         "image": "resources/star1.png",
     },
 }
