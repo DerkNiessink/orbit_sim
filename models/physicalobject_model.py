@@ -56,11 +56,3 @@ class PhysicalObjectModel:
         self.velocity_x, self.velocity_y = self.velocity
         self.x += self.velocity_x * self.time_step
         self.y += self.velocity_y * self.time_step
-
-
-class CenterOfMass(PhysicalObjectModel):
-   def update_position(self, bodies):
-        """Update the position of the center of mass."""
-        total_mass = sum(body.mass for body in bodies)
-        center_of_mass = sum((body.position() * (body.mass / total_mass)) for body in bodies)
-        self.x, self.y = center_of_mass
