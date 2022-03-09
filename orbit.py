@@ -50,6 +50,7 @@ body_viewers.append(
         [255, 0, 0],
         "resources/center_of_mass.png",
         constellation_model.center_of_mass,
+        label_bottom_right=False,
     )
 )
 
