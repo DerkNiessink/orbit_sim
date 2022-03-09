@@ -1,12 +1,13 @@
 import collections
 import math
 from random import randrange
+from typing import cast
 
 import pygame
 import numpy as np
 
 
-def distance(point1: tuple[float], point2: tuple[float]) -> float:
+def distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
     """Return the distance between point 1 and 2."""
     return np.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
 
@@ -30,7 +31,7 @@ def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
     width, height = image.get_width(), image.get_height()
     sample_size = round(math.sqrt(width * height))
     random_points = [(randrange(0, width), randrange(0, height)) for _ in range(sample_size)]
-    colours = [image.get_at(point) for point in random_points]
+    colours = [cast(pygame.Color, image.get_at(point)) for point in random_points]
     colours = [colour for colour in colours if colour.a > 0]  # Ignore transparent pixels
     average_r = round(sum(colour.r for colour in colours) / len(colours))
     average_g = round(sum(colour.g for colour in colours) / len(colours))
