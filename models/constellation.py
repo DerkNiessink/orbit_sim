@@ -2,10 +2,12 @@ from models.physicalobject_model import PhysicalObjectModel
 
 
 class CenterOfMass(PhysicalObjectModel):
-   def update_position(self, bodies):
+    def update_position(self, bodies):
         """Update the position of the center of mass."""
         total_mass = sum(body.mass for body in bodies)
-        center_of_mass = sum((body.position() * (body.mass / total_mass)) for body in bodies)
+        center_of_mass = sum(
+            (body.position() * (body.mass / total_mass)) for body in bodies
+        )
         self.x, self.y = center_of_mass
 
 
