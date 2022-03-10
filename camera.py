@@ -20,6 +20,7 @@ class Camera:
         self.offset = self.initialOffset()
         self.elapsed_time_to_draw = 0
         self.show_labels = False
+        self.scaled_radius = False
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self):
@@ -34,11 +35,11 @@ class Camera:
         self.bodyToTrack = sorted_bodies[0][1]
         self.offset = self.initialOffset()
 
-    def zoomIn(self):
+    def zoomIn(self) -> None:
         """Zoom in to a maximum of 0.1."""
         self.zoomLevel = max(self.zoomLevel / self.ZOOM_STEP, self.MIN_ZOOM_LEVEL)
 
-    def zoomOut(self):
+    def zoomOut(self) -> None:
         """Zoom out to a maximum of 10."""
         self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
 
@@ -50,6 +51,10 @@ class Camera:
         """Toggle the display of labels."""
         self.show_labels = not self.show_labels
 
+    def toggle_scaled_radius(self) -> None:
+        """Toggle body radius to scale"""
+        self.scaled_radius = not self.scaled_radius
+
     def update(self, elapsed_time):
 
         # fill camera background black
@@ -57,12 +62,18 @@ class Camera:
 
         # render bodies
         for body in self.body_viewers:
-            body.draw(self.window, self.zoomLevel, self.offset, self.bodyToTrack)
+            body.draw(
+                self.window,
+                self.zoomLevel,
+                self.offset,
+                self.bodyToTrack,
+                self.scaled_radius,
+            )
 
         # draw body labels
         if self.show_labels:
             for body in self.body_viewers:
-                body.draw_label(self.window, self.zoomLevel)
+                body.draw_label(self.window, self.zoomLevel, self.scaled_radius)
 
         # draw the elapsed time in steps of 10 days
         elapsed_time = elapsed_time / (2400 * 36)  # Convert seconds to days
@@ -90,3 +101,15 @@ class Camera:
             (255, 255, 255),
         )
         self.window.blit(label_zoom, (25, 48))
+
+        # display whether radius is scaled or not
+        if self.scaled_radius == True:
+            scaled_radius = "Yes"
+        else:
+            scaled_radius = "No"
+        label_scale = self.font.render(
+            f"Bodies to scale: {scaled_radius}",
+            1,
+            (255, 255, 255),
+        )
+        self.window.blit(label_scale, (25, 71))
