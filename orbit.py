@@ -36,7 +36,6 @@ for name, body in constellation_module.constellation.items():
         body["init_velocity_x"],
         body["init_velocity_y"],
         body["mass"],
-        constellation_module.general_parameters["time_step"],
     )
     body_models.append(body_model)
 
