@@ -58,10 +58,46 @@ constellation = {
         "mass": 0.01303 * 10 ** 24,
         "image": "resources/planet3.png",
     },
+    "Venus": {
+        "x": -0.716 * AU,
+        "y": 0,
+        "radius": 6051.8 * 10 ** 3,
+        "init_velocity_x": 0,
+        "init_velocity_y": 34790,
+        "mass": 4.8673 * 10 ** 24,
+        "image": "resources/planet3.png",
+    },
+    "Saturn": {
+        "x": -9.905 * AU,
+        "y": 0,
+        "radius": 60_268_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 9090,
+        "mass": 568.32 * 10 ** 24,
+        "image": "resources/planet3.png",
+    },
+    "Uranus": {
+        "x": -19.733 * AU,
+        "y": 0,
+        "radius": 25_559_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 6490,
+        "mass": 86.811 * 10 ** 24,
+        "image": "resources/planet3.png",
+    },
+    "Neptune": {
+        "x": -29.973 * AU,
+        "y": 0,
+        "radius": 24_764_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 5370,
+        "mass": 102.409 * 10 ** 24,
+        "image": "resources/planet3.png",
+    },
 }
 
 
 general_parameters = {
-    "time_step": 3600 * 0.5,
+    "time_step": 3600,
     "scale_factor": 10 / AU,
 }
