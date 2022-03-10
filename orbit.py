@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import constellation, general_parameters
+from constellations.solar_system import constellation, general_parameters
 from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
 from models.constellation import Constellation
