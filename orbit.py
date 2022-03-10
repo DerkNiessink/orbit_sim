@@ -8,6 +8,7 @@ from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
 from models.constellation import Constellation
 from camera import Camera
+from event_handler import EventHandler
 
 
 module_name = sys.argv[1].replace("/", ".").replace("\\", ".").removesuffix(".py")
@@ -58,49 +59,18 @@ body_viewers.insert(
     ),
 )
 
-camera = Camera(game_window, constellation_model, body_viewers)
-
-
 if __name__ == "__main__":
-    mouse_button_down_pos = (-100, -100)
-    run = True
     clock = pygame.time.Clock()
-    while run:
+    camera = Camera(game_window, constellation_model, body_viewers)
+    event_handler = EventHandler(camera)
+    while True:
         clock.tick()
 
         for _ in range(100):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    mouse_button_down_pos = (
-                        event.pos
-                    )  # Keep track of mouse button down to distinguish click from drag
-                if (
-                    event.type == pygame.MOUSEBUTTONUP
-                    and event.button == 1
-                    and distance(mouse_button_down_pos, event.pos) <= 10
-                ):
-                    camera.trackBody(*event.pos)
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 4:
-                        camera.zoomOut()
-                    if event.button == 5:
-                        camera.zoomIn()
-
-                if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0]:
-                    camera.pan(*event.rel)
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_l:
-                    camera.toggle_labels()
-
-            # update the body positions
+            event_handler.handle_events()
             constellation_model.update_positions()
 
         # update the camera system and draw bodies
         camera.update(constellation_model.elapsed_time)
 
         pygame.display.update()
-
-    pygame.quit()
