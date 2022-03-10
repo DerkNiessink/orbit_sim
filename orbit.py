@@ -31,7 +31,9 @@ for name, body in constellation_module.constellation.items():
     )
     body_models.append(body_model)
 
-    constellation_model = Constellation(body_models, general_parameters["time_step"])
+    constellation_model = Constellation(
+        body_models, constellation_module.general_parameters["time_step"]
+    )
 
     body_viewers.append(
         PhysicalObjectView(
