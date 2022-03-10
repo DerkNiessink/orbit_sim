@@ -68,7 +68,6 @@ class PhysicalObjectView:
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level, scaled_radius: bool):
-        print(self.name)
         if scaled_radius and self.name != "Center of mass":
             return self.body_model.radius * self.scale_factor * zoom_level
         else:
