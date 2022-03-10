@@ -1,12 +1,15 @@
 from models.physicalobject_model import PhysicalObjectModel
 
+from pygame import math
+
 
 class CenterOfMass(PhysicalObjectModel):
     def update_position(self, bodies, time_step):
         """Update the position of the center of mass."""
         total_mass = sum(body.mass for body in bodies)
         center_of_mass = sum(
-            (body.position() * (body.mass / total_mass)) for body in bodies
+            ((body.position() * (body.mass / total_mass)) for body in bodies),
+            start=math.Vector2(0, 0),
         )
         self.x, self.y = center_of_mass
 
