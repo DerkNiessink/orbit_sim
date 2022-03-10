@@ -10,13 +10,16 @@ class CenterOfMass(PhysicalObjectModel):
 
 
 class Constellation:
-    def __init__(self, body_models):
+    def __init__(self, body_models, time_step):
         self.body_models = body_models
+        self.time_step = time_step
+        self.elapsed_time = 0.0
         self.center_of_mass = CenterOfMass(0, 0, 100, 0, 0, 0, 0)
 
     def update_positions(self):
         for body_model in self.body_models:
             body_model.update_position(self.body_models)
         self.center_of_mass.update_position(self.body_models)
+        self.elapsed_time += self.time_step
 
     # def collision(self):

@@ -65,6 +65,7 @@ class Camera:
                 body.draw_label(self.window, self.zoomLevel)
 
         # draw the elapsed time in steps of 10 days
+        elapsed_time = elapsed_time / (2400 * 36)  # Convert seconds to days
         if int(elapsed_time) % 10 == 0:
             self.elapsed_time_to_draw = elapsed_time
         if elapsed_time < 365:
