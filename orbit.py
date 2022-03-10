@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import constellation, general_parameters
+from constellations.binary_star import constellation, general_parameters
 from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
 from models.constellation import Constellation
@@ -42,7 +42,8 @@ for name, body in constellation.items():
     )
 
 
-body_viewers.append(
+body_viewers.insert(
+    0,
     PhysicalObjectView(
         "Center of mass",
         general_parameters["scale_factor"],
@@ -50,7 +51,7 @@ body_viewers.append(
         "resources/center_of_mass.png",
         constellation_model.center_of_mass,
         label_bottom_right=False,
-    )
+    ),
 )
 
 camera = Camera(game_window, constellation_model, body_viewers)
