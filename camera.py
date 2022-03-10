@@ -19,6 +19,7 @@ class Camera:
         self.zoomLevel = 1
         self.offset = self.initialOffset()
         self.elapsed_time_to_draw = 0
+        self.show_labels = False
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self):
@@ -45,7 +46,11 @@ class Camera:
         """Pan the camera."""
         self.offset = (self.offset[0] + dx, self.offset[1] + dy)
 
-    def update(self, elapsed_time, label):
+    def toggle_labels(self) -> None:
+        """Toggle the display of labels."""
+        self.show_labels = not self.show_labels
+
+    def update(self, elapsed_time):
 
         # fill camera background black
         self.window.fill((0, 0, 0))
@@ -55,7 +60,7 @@ class Camera:
             body.draw(self.window, self.zoomLevel, self.offset, self.bodyToTrack)
 
         # draw body labels
-        if label == True:
+        if self.show_labels:
             for body in self.body_viewers:
                 body.draw_label(self.window, self.zoomLevel)
 
