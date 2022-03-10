@@ -1,14 +1,16 @@
 """Orbit sim main program."""
 
 import pygame
+import sys
+import importlib
 
-from constellations.first_constellation import constellation, general_parameters
 from models.physicalobject_model import PhysicalObjectModel
 from physicalobject_views import PhysicalObjectView, distance
 from models.constellation import Constellation
 from camera import Camera
 
 
+const = importlib.import_module("constellations." + sys.argv[1])
 game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
@@ -17,7 +19,7 @@ elapsed_time = 0.0
 
 body_models = []
 body_viewers = []
-for name, body in constellation.items():
+for name, body in const.constellation.items():
     body_model = PhysicalObjectModel(
         body["x"],
         body["y"],
@@ -25,7 +27,7 @@ for name, body in constellation.items():
         body["init_velocity_x"],
         body["init_velocity_y"],
         body["mass"],
-        general_parameters["time_step"],
+        const.general_parameters["time_step"],
     )
     body_models.append(body_model)
 
@@ -34,7 +36,7 @@ for name, body in constellation.items():
     body_viewers.append(
         PhysicalObjectView(
             name,
-            general_parameters["scale_factor"],
+            const.general_parameters["scale_factor"],
             body.get("colour"),
             body["image"],
             body_model,
@@ -45,7 +47,7 @@ for name, body in constellation.items():
 body_viewers.append(
     PhysicalObjectView(
         "Center of mass",
-        general_parameters["scale_factor"],
+        const.general_parameters["scale_factor"],
         [255, 0, 0],
         "resources/center_of_mass.png",
         constellation_model.center_of_mass,
@@ -91,7 +93,7 @@ if __name__ == "__main__":
                     camera.toggle_labels()
 
             # keep track of the elapsed time in days
-            elapsed_time += general_parameters["time_step"] / (3600 * 24)
+            elapsed_time += const.general_parameters["time_step"] / (3600 * 24)
 
             # update the body positions
             constellation_model.update_positions()
