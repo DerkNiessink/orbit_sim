@@ -56,7 +56,9 @@ class PhysicalObjectView:
 
     DEQUE_MAXLEN = 7000
 
-    def __init__(self, name, scale_factor, colour, image, body, label_bottom_right=True):
+    def __init__(
+        self, name, scale_factor, colour, image, body, label_bottom_right=True
+    ):
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
@@ -73,6 +75,7 @@ class PhysicalObjectView:
 
     def draw(self, window, zoomLevel, offset, bodyToTrack):
         """Draw the body relative to the body to track."""
+
         self.positions.append((self.body_model.x, self.body_model.y))
         positions = relative_coordinates(self.positions, bodyToTrack.positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
@@ -115,7 +118,11 @@ class PhysicalObjectView:
         )
         radius = self.radius(zoomLevel)
         label_x = self.x_to_draw + radius
-        label_y = self.y_to_draw + radius if self.label_bottom_right else self.y_to_draw - radius
+        label_y = (
+            self.y_to_draw + radius
+            if self.label_bottom_right
+            else self.y_to_draw - radius
+        )
         window.blit(label_zoom, (label_x, label_y))
 
     def get_distance_pixels(self, x: float, y: float) -> float:

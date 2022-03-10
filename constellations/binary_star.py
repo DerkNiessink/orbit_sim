@@ -8,22 +8,22 @@ constellation = {
         "y": 0,
         "radius": 1.711 * radius_sun,
         "init_velocity_x": 0,
-        "init_velocity_y": 0,
-        "mass": 2.063 * mass_sun,
+        "init_velocity_y": -10000,
+        "mass": 4 * mass_sun,
         "image": "resources/star1.png",
     },
     "Star 2": {
-        "x": 10 * AU,
+        "x": 5 * AU,
         "y": 0,
         "radius": 1.711 * radius_sun,
         "init_velocity_x": 0,
-        "init_velocity_y": 10000,
-        "mass": 2.063 * mass_sun,
+        "init_velocity_y": 0,
+        "mass": 1 * mass_sun,
         "image": "resources/star1.png",
     },
 }
 
 general_parameters = {
-    "time_step": 3600,
+    "time_step": 3600 * 0.1,
     "scale_factor": 10 / AU,
 }
