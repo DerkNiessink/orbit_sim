@@ -2,7 +2,7 @@
 
 import pygame
 
-from constellations.first_constellation import AU
+from constellations.solar_system import AU
 
 
 class Camera:
