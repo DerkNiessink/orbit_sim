@@ -11,7 +11,15 @@ from camera import Camera
 from event_handler import EventHandler
 
 
-module_name = sys.argv[1].replace("/", ".").replace("\\", ".").removesuffix(".py")
+module_name = (
+    sys.argv[1]
+    .replace("/", ".")
+    .removeprefix(".\\")
+    .replace("\\", ".")
+    .removesuffix(".py")
+)
+print(module_name)
+print(sys.argv[1])
 constellation_module = importlib.import_module(module_name)
 game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
@@ -66,7 +74,7 @@ if __name__ == "__main__":
     while True:
         clock.tick()
 
-        for _ in range(100):
+        for _ in range(60):
             event_handler.handle_events()
             constellation_model.update_positions()
 
