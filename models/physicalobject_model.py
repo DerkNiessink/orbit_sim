@@ -1,6 +1,7 @@
 """Physical object class to represent cellestial bodies."""
 
 import numpy as np
+from pygame import math
 
 
 class PhysicalObjectModel:
@@ -19,25 +20,28 @@ class PhysicalObjectModel:
         self.x = x
         self.y = y
         self.radius = radius
-        self.velocity = np.array([init_velocity_x, init_velocity_y])  # m/s
+        self.velocity = math.Vector2(init_velocity_x, init_velocity_y)  # m/s
         self.mass = mass  # kg
 
     def position(self):
         """Get the position of the body in meters."""
-        return np.array([self.x, self.y])
+        return math.Vector2(self.x, self.y)
 
     def force(self, bodies):
         """Calculate the net force on the body."""
-        return sum(self.force_between_two_bodies(body) for body in bodies)
+        return sum(
+            (self.force_between_two_bodies(body) for body in bodies),
+            start=math.Vector2(0, 0),
+        )
 
     def force_between_two_bodies(self, other_body):
         """Calculate the force between this body and another body."""
         if self is other_body:
-            return 0
+            return math.Vector2(0, 0)
         self_position = self.position()
         other_body_position = other_body.position()
-        distance = np.linalg.norm(other_body_position - self_position)
-        force_direction = (other_body_position - self_position) / distance
+        distance = (other_body_position - self_position).length()
+        force_direction = (other_body_position - self_position).normalize()
         return (
             force_direction
             * self.gravitational_constant
