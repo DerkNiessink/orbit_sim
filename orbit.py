@@ -7,7 +7,7 @@ import importlib
 from models.constellation import Constellation
 from models.physicalobject_model import PhysicalObjectModel
 from models.time import Time
-from physicalobject_views import PhysicalObjectView, distance
+from physicalobject_views import PhysicalObjectView
 from camera import Camera
 from event_handler import EventHandler
 
