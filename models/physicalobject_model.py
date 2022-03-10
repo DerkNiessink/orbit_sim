@@ -1,6 +1,5 @@
 """Physical object class to represent cellestial bodies."""
 
-import numpy as np
 from pygame import math
 
 
