@@ -67,13 +67,14 @@ class PhysicalObjectView:
         self.label_bottom_right = label_bottom_right
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
-    def radius(self, zoom_level):
-        return max(
-            self.body_model.radius * self.scale_factor * zoom_level,
-            math.log(zoom_level * 10),
-        )
+    def radius(self, zoom_level, scaled_radius: bool):
+        print(self.name)
+        if scaled_radius and self.name != "Center of mass":
+            return self.body_model.radius * self.scale_factor * zoom_level
+        else:
+            return math.log(zoom_level * 10)
 
-    def draw(self, window, zoomLevel, offset, bodyToTrack):
+    def draw(self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool):
         """Draw the body relative to the body to track."""
 
         self.positions.append((self.body_model.x, self.body_model.y))
@@ -92,15 +93,18 @@ class PhysicalObjectView:
         window.blit(
             pygame.transform.scale(
                 self.originalImage,
-                (self.radius(zoomLevel) * 2, self.radius(zoomLevel) * 2),
+                (
+                    self.radius(zoomLevel, scaled_radius) * 2,
+                    self.radius(zoomLevel, scaled_radius) * 2,
+                ),
             ),
             (
-                self.x_to_draw - self.radius(zoomLevel),
-                self.y_to_draw - self.radius(zoomLevel),
+                self.x_to_draw - self.radius(zoomLevel, scaled_radius),
+                self.y_to_draw - self.radius(zoomLevel, scaled_radius),
             ),
         )
 
-    def draw_label(self, window, zoomLevel):
+    def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
 
         min_size = 15
@@ -116,7 +120,7 @@ class PhysicalObjectView:
             1,
             (255, 255, 255),
         )
-        radius = self.radius(zoomLevel)
+        radius = self.radius(zoomLevel, scaled_radius)
         label_x = self.x_to_draw + radius
         label_y = (
             self.y_to_draw + radius

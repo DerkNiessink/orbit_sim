@@ -38,3 +38,5 @@ class EventHandler:
                     self.camera.pan(*event.rel)
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):
                 self.camera.toggle_labels()
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_s):
+                self.camera.toggle_scaled_radius()
