@@ -56,12 +56,13 @@ class PhysicalObjectView:
 
     DEQUE_MAXLEN = 7000
 
-    def __init__(self, name, scale_factor, colour, image, body):
+    def __init__(self, name, scale_factor, colour, image, body, label_bottom_right=True):
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
         self.originalImage = pygame.image.load(image)
         self.colour = colour or average_colour(self.originalImage)
+        self.label_bottom_right = label_bottom_right
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
 
     def radius(self, zoom_level):
@@ -112,13 +113,10 @@ class PhysicalObjectView:
             1,
             (255, 255, 255),
         )
-        window.blit(
-            label_zoom,
-            (
-                self.x_to_draw + self.radius(zoomLevel),
-                self.y_to_draw + self.radius(zoomLevel),
-            ),
-        )
+        radius = self.radius(zoomLevel)
+        label_x = self.x_to_draw + radius
+        label_y = self.y_to_draw + radius if self.label_bottom_right else self.y_to_draw - radius
+        window.blit(label_zoom, (label_x, label_y))
 
     def get_distance_pixels(self, x: float, y: float) -> float:
         """Get the distance in pixels to the given coordinate"""
