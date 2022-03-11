@@ -40,3 +40,5 @@ class EventHandler:
                 self.camera.toggle_labels()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):
                 self.camera.toggle_scaled_radius()
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_t):
+                self.camera.toggle_tail()

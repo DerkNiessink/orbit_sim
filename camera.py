@@ -21,6 +21,7 @@ class Camera:
         self.elapsed_time_to_draw = 0
         self.show_labels = False
         self.scaled_radius = False
+        self.show_tail = False
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self):
@@ -55,6 +56,10 @@ class Camera:
         """Toggle body radius to scale"""
         self.scaled_radius = not self.scaled_radius
 
+    def toggle_tail(self) -> None:
+        "Toogle the tail of the bodies"
+        self.show_tail = not self.show_tail
+
     def update(self, elapsed_time):
 
         # fill camera background black
@@ -68,6 +73,7 @@ class Camera:
                 self.offset,
                 self.bodyToTrack,
                 self.scaled_radius,
+                self.show_tail,
             )
 
         # draw body labels
