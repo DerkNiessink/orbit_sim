@@ -67,7 +67,7 @@ body_viewers.insert(
 if __name__ == "__main__":
     clock = pygame.time.Clock()
     time = Time(constellation_module.general_parameters["time_step"])
-    background_image = pygame.image.load('resources/background.jpg')
+    background_image = pygame.image.load("resources/stars_background.png")
     camera = Camera(window, constellation_model, body_viewers)
     event_handler = EventHandler(camera)
     while True:
@@ -78,7 +78,9 @@ if __name__ == "__main__":
             time.update()
             constellation_model.update_positions(time.time_step)
 
-        background = pygame.transform.scale(background_image, (window.get_width(), window.get_height()))
+        background = pygame.transform.scale(
+            background_image, (window.get_width(), window.get_height())
+        )
         window.blit(background, (0, 0))
         camera.update(time.elapsed_time)
 

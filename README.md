@@ -17,4 +17,4 @@ The constellations that Orbit sim can simulate are defined in Python files. See 
 
 1. [planet images from](https://deep-fold.itch.io/pixel-planet-generator)
 2. [solar system data from](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
-3. [background image](https://unsplash.com/photos/E0AHdsENmDg)
+3. [background image](https://pixabay.com/illustrations/stars-night-dark-sky-space-3750824/)
