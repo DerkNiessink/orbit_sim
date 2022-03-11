@@ -20,7 +20,7 @@ module_name = (
     .removesuffix(".py")
 )
 constellation_module = importlib.import_module(module_name)
-game_window = pygame.display.set_mode(flags=pygame.RESIZABLE)
+window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
 
@@ -67,7 +67,8 @@ body_viewers.insert(
 if __name__ == "__main__":
     clock = pygame.time.Clock()
     time = Time(constellation_module.general_parameters["time_step"])
-    camera = Camera(game_window, constellation_model, body_viewers)
+    background_image = pygame.image.load('resources/background.jpg')
+    camera = Camera(window, constellation_model, body_viewers)
     event_handler = EventHandler(camera)
     while True:
         clock.tick()
@@ -77,7 +78,8 @@ if __name__ == "__main__":
             time.update()
             constellation_model.update_positions(time.time_step)
 
-        # update the camera system and draw bodies
+        background = pygame.transform.scale(background_image, (window.get_width(), window.get_height()))
+        window.blit(background, (0, 0))
         camera.update(time.elapsed_time)
 
         pygame.display.update()
