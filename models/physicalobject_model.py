@@ -6,6 +6,7 @@ from pygame import math
 class PhysicalObjectModel:
 
     gravitational_constant = 6.67408 * 10 ** (-11)
+    force_cache = dict()
 
     def __init__(
         self,
@@ -26,21 +27,30 @@ class PhysicalObjectModel:
         """Get the position of the body in meters."""
         return math.Vector2(self.x, self.y)
 
-    def force(self, bodies):
+    def net_force(self, bodies):
         """Calculate the net force on the body."""
         return sum(
-            (self.force_between_two_bodies(body) for body in bodies),
+            (self.two_body_force(body) for body in bodies),
             start=math.Vector2(0, 0),
         )
 
-    def force_between_two_bodies(self, other_body):
-        """Calculate the force between this body and another body."""
-        if self is other_body:
+    def two_body_force(self, other_body):
+        """Return the force between self and other body, from the cache or calculated."""
+        if self == other_body:
             return math.Vector2(0, 0)
-        self_position = self.position()
-        other_body_position = other_body.position()
-        distance = (other_body_position - self_position).length()
-        force_direction = (other_body_position - self_position).normalize()
+        key = tuple(sorted([self, other_body], key=id))
+        if key in self.force_cache:
+            force = -self.force_cache[key]  # Reverse the force direction
+            del self.force_cache[key]  # We need the cached force only once
+        else:
+            self.force_cache[key] = force = self.calculate_two_body_force(other_body)
+        return force
+
+    def calculate_two_body_force(self, other_body):
+        """Calculate the force between self and other body."""
+        position1, position2 = self.position(), other_body.position()
+        distance = (position2 - position1).length()
+        force_direction = (position2 - position1).normalize()
         return (
             force_direction
             * self.gravitational_constant
@@ -51,7 +61,7 @@ class PhysicalObjectModel:
 
     def update_position(self, bodies, time_step):
         """Update the position of the body."""
-        net_force = self.force(bodies)
+        net_force = self.net_force(bodies)
         acceleration = net_force / self.mass
         self.velocity = self.velocity + acceleration * time_step
         self.velocity_x, self.velocity_y = self.velocity
