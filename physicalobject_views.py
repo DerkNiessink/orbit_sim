@@ -76,7 +76,7 @@ class PhysicalObjectView:
     ):
         """Draw the body relative to the body to track."""
 
-        self.positions.append((self.body_model.x, self.body_model.y))
+        self.positions.append((self.body_model.position.x, self.body_model.position.y))
         positions = relative_coordinates(self.positions, bodyToTrack.positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)

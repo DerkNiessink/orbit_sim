@@ -8,10 +8,10 @@ class CenterOfMass(PhysicalObjectModel):
         """Update the position of the center of mass."""
         total_mass = sum(body.mass for body in bodies)
         center_of_mass = sum(
-            ((body.position() * (body.mass / total_mass)) for body in bodies),
+            ((body.position * (body.mass / total_mass)) for body in bodies),
             start=math.Vector2(0, 0),
         )
-        self.x, self.y = center_of_mass
+        self.position[:] = center_of_mass
 
 
 class Constellation:

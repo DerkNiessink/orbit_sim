@@ -17,15 +17,10 @@ class PhysicalObjectModel:
         init_velocity_y,
         mass,
     ):
-        self.x = x
-        self.y = y
+        self.position = math.Vector2(x, y)
         self.radius = radius
         self.velocity = math.Vector2(init_velocity_x, init_velocity_y)  # m/s
         self.mass = mass  # kg
-
-    def position(self):
-        """Get the position of the body in meters."""
-        return math.Vector2(self.x, self.y)
 
     def net_force(self, bodies):
         """Calculate the net force on the body."""
@@ -48,7 +43,7 @@ class PhysicalObjectModel:
 
     def calculate_two_body_force(self, other_body):
         """Calculate the force between self and other body."""
-        position1, position2 = self.position(), other_body.position()
+        position1, position2 = self.position, other_body.position
         distance = (position2 - position1).length()
         force_direction = (position2 - position1).normalize()
         return (
@@ -61,9 +56,6 @@ class PhysicalObjectModel:
 
     def update_position(self, bodies, time_step):
         """Update the position of the body."""
-        net_force = self.net_force(bodies)
-        acceleration = net_force / self.mass
-        self.velocity = self.velocity + acceleration * time_step
-        self.velocity_x, self.velocity_y = self.velocity
-        self.x += self.velocity_x * time_step
-        self.y += self.velocity_y * time_step
+        acceleration = self.net_force(bodies) / self.mass
+        self.velocity += acceleration * time_step
+        self.position += self.velocity * time_step
