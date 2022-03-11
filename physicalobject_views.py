@@ -73,7 +73,9 @@ class PhysicalObjectView:
         else:
             return math.log(zoom_level * 10)
 
-    def draw(self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool):
+    def draw(
+        self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool, tail: bool
+    ):
         """Draw the body relative to the body to track."""
 
         self.positions.append((self.body_model.x, self.body_model.y))
@@ -81,7 +83,7 @@ class PhysicalObjectView:
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, [(offset[0], offset[1]) for _ in positions])
         self.x_to_draw, self.y_to_draw = positions[-1]
-        if self != bodyToTrack and len(positions) > 2:
+        if self != bodyToTrack and len(positions) > 2 and tail:
             pygame.draw.lines(
                 window,
                 self.colour,
