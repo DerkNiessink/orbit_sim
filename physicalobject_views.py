@@ -27,11 +27,10 @@ def relative_coordinates(coordinates, origin):
     ]
 
 
-def pan(coordinates, offsets):
-    """Pan the coordinates with the given offsets."""
+def pan(coordinates, offset):
+    """Pan the coordinates with the given offset."""
     return [
-        (x + origin_x, y + origin_y)
-        for (x, y), (origin_x, origin_y) in zip(coordinates, offsets)
+        (x + offset[0], y + offset[1]) for (x, y) in coordinates
     ]
 
 
@@ -81,7 +80,7 @@ class PhysicalObjectView:
         self.positions.append((self.body_model.x, self.body_model.y))
         positions = relative_coordinates(self.positions, bodyToTrack.positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
-        positions = pan(positions, [(offset[0], offset[1]) for _ in positions])
+        positions = pan(positions, offset)
         self.x_to_draw, self.y_to_draw = positions[-1]
         if self != bodyToTrack and len(positions) > 2 and tail:
             pygame.draw.lines(
