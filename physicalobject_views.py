@@ -4,12 +4,11 @@ from random import randrange
 from typing import cast
 
 import pygame
-import numpy as np
 
 
 def distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
     """Return the distance between point 1 and 2."""
-    return np.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
 
 
 def zoom(coordinates, scale_factor, zoom_level):
@@ -88,7 +87,7 @@ class PhysicalObjectView:
                 window,
                 self.colour,
                 closed=False,
-                points=np.array(positions),
+                points=positions,
                 width=1,
             )
         window.blit(
