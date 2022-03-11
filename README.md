@@ -11,9 +11,10 @@ Application for simulating gravity between bodies with [Newton's law of universa
 
 ## Constellations
 
-The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for an example.
+The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for examples.
 
 ## sources
 
 1. [planet images from](https://deep-fold.itch.io/pixel-planet-generator)
-2. [solar system data from](https://nssdc.gsfc.nasa.gov/planetary/factsheet/) 
+2. [solar system data from](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
+3. [background image](https://unsplash.com/photos/E0AHdsENmDg)

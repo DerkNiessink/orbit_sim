@@ -62,9 +62,6 @@ class Camera:
 
     def update(self, elapsed_time):
 
-        # fill camera background black
-        self.window.fill((0, 0, 0))
-
         # render bodies
         for body in self.body_viewers:
             body.draw(
