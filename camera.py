@@ -82,37 +82,21 @@ class Camera:
         elapsed_time = elapsed_time / (2400 * 36)  # Convert seconds to days
         if int(elapsed_time) % 10 == 0:
             self.elapsed_time_to_draw = elapsed_time
-        if elapsed_time < 365:
-            label_time = self.font.render(
-                f"Elapsed time: {int(self.elapsed_time_to_draw)} days",
-                1,
-                (255, 255, 255),
-            )
+        if elapsed_time < 600:
+            elapsed_time_text = f"{int(self.elapsed_time_to_draw)} days"
         else:
-            label_time = self.font.render(
-                f"Elapsed time: {round(int(self.elapsed_time_to_draw) / 365, 1)} yr",
-                1,
-                (255, 255, 255),
-            )
-        self.window.blit(label_time, (25, 25))
+            elapsed_time_text = f"{round(int(self.elapsed_time_to_draw) / 365.25, 1)} years"
+        self.draw_label(f"Elapsed time: {elapsed_time_text}", (25, 25))
 
         # draw the scale on the screen
         pixel_size = 0.026  # cm
-        label_zoom = self.font.render(
-            f"Scale: {round(self.body_viewers[0].scale_factor * AU * self.zoomLevel * pixel_size, 2)} cm = AU",
-            1,
-            (255, 255, 255),
-        )
-        self.window.blit(label_zoom, (25, 48))
+        scale = round(self.body_viewers[0].scale_factor * AU * self.zoomLevel * pixel_size, 2)
+        self.draw_label(f"Scale: {scale} cm = 1 AU", (25, 48))
 
         # display whether radius is scaled or not
-        if self.scaled_radius == True:
-            scaled_radius = "Yes"
-        else:
-            scaled_radius = "No"
-        label_scale = self.font.render(
-            f"Bodies to scale: {scaled_radius}",
-            1,
-            (255, 255, 255),
-        )
-        self.window.blit(label_scale, (25, 71))
+        self.draw_label(f"Bodies to scale: {'Yes' if self.scaled_radius else 'No'}", (25, 71))
+
+    def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
+        """Draw the label."""
+        label = self.font.render(text, True, color)
+        self.window.blit(label, coordinate)
