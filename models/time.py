@@ -14,9 +14,7 @@ class Time:
         self.elapsed_time += self.time_step
 
     def slower(self) -> None:
-        self.calculations -= 1
-        self.calculations = max(self.calculations, 1)
+        self.calculations = max(self.calculations - 1, 1)
 
     def faster(self) -> None:
-        self.calculations += 1
-        self.calculations = min(self.calculations, 120)
+        self.calculations = min(self.calculations + 1, 120)

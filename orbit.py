@@ -73,11 +73,6 @@ if __name__ == "__main__":
     while True:
         clock.tick()
 
-        if event_handler.pressed_down:
-            time.slower()
-        if event_handler.pressed_up:
-            time.faster()
-
         for _ in range(time.calculations):
             event_handler.handle_events()
             time.update()
