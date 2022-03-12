@@ -46,11 +46,6 @@ class EventHandler:
             case EventType(type=pygame.KEYDOWN, key=pygame.K_t):
                 self.camera.toggle_tail()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_UP):
-                self.pressed_up = True 
+                self.time.faster()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_DOWN):
-                self.pressed_down = True
-            case EventType(type = pygame.KEYUP, key=pygame.K_UP):
-                self.pressed_up = False
-            case EventType(type = pygame.KEYUP, key=pygame.K_DOWN):
-                self.pressed_down = False
-      
+                self.time.slower()
