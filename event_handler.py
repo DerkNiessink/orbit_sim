@@ -5,13 +5,16 @@ from pygame.event import EventType
 
 from camera import Camera
 from physicalobject_views import distance
-
+from models.time import Time
 
 class EventHandler:
     """Handle user input in the form of pygame events, such as keyboard and mouse events."""
-    def __init__(self, camera: Camera) -> None:
+    def __init__(self, camera: Camera, time: Time) -> None:
         self.camera = camera
+        self.time = time
         self._mouse_button_down_pos = (-100, -100)
+        self.pressed_down = False
+        self.pressed_up = False
 
     def handle_events(self) -> None:
         """Handle the queued pygame events."""
@@ -42,3 +45,12 @@ class EventHandler:
                 self.camera.toggle_scaled_radius()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_t):
                 self.camera.toggle_tail()
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_UP):
+                self.pressed_up = True 
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_DOWN):
+                self.pressed_down = True
+            case EventType(type = pygame.KEYUP, key=pygame.K_UP):
+                self.pressed_up = False
+            case EventType(type = pygame.KEYUP, key=pygame.K_DOWN):
+                self.pressed_down = False
+      
