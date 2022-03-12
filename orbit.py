@@ -69,11 +69,16 @@ if __name__ == "__main__":
     time = Time(constellation_module.general_parameters["time_step"])
     background_image = pygame.image.load("resources/stars_background.png")
     camera = Camera(window, constellation_model, body_viewers)
-    event_handler = EventHandler(camera)
+    event_handler = EventHandler(camera, time)
     while True:
         clock.tick()
 
-        for _ in range(60):
+        if event_handler.pressed_down:
+            time.slower()
+        if event_handler.pressed_up:
+            time.faster()
+
+        for _ in range(time.calculations):
             event_handler.handle_events()
             time.update()
             constellation_model.update_positions(time.time_step)
