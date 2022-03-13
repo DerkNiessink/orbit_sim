@@ -76,7 +76,7 @@ class PhysicalObjectView:
             return math.log(zoom_level * 10)
 
     def draw(
-        self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool, tail: bool
+        self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool, tail: bool, label: bool
     ):
         """Draw the body relative to the body to track."""
         self.update_positions(zoomLevel, offset, bodyToTrack)
@@ -101,6 +101,8 @@ class PhysicalObjectView:
                 self._screen_positions[-1][1] - self.radius(zoomLevel, scaled_radius),
             ),
         )
+        if label:
+            self.draw_label(window, zoomLevel, scaled_radius)
 
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
