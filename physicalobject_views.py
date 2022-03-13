@@ -28,9 +28,7 @@ def relative_coordinates(coordinates, origin):
 
 def pan(coordinates, offset):
     """Pan the coordinates with the given offset."""
-    return [
-        (x + offset[0], y + offset[1]) for (x, y) in coordinates
-    ]
+    return [(x + offset[0], y + offset[1]) for (x, y) in coordinates]
 
 
 def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
@@ -68,6 +66,7 @@ class PhysicalObjectView:
         self._bodyToTrack = None
         self._zoomLevel = None
         self._offset = None
+        self._tail = None
 
     def radius(self, zoom_level, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
@@ -76,10 +75,17 @@ class PhysicalObjectView:
             return math.log(zoom_level * 10)
 
     def draw(
-        self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool, tail: bool, label: bool
+        self,
+        window,
+        zoomLevel,
+        offset,
+        bodyToTrack,
+        scaled_radius: bool,
+        tail: bool,
+        label: bool,
     ):
         """Draw the body relative to the body to track."""
-        self.update_positions(zoomLevel, offset, bodyToTrack)
+        self.update_positions(zoomLevel, offset, bodyToTrack, tail)
         if self != bodyToTrack and len(self._screen_positions) > 2 and tail:
             pygame.draw.lines(
                 window,
@@ -129,15 +135,17 @@ class PhysicalObjectView:
         )
         window.blit(label_zoom, (label_x, label_y))
 
-    def update_positions(self, zoomLevel, offset, bodyToTrack) -> None:
+    def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
         self.positions.append((self.body_model.position.x, self.body_model.position.y))
-        if bodyToTrack == self._bodyToTrack and zoomLevel == self._zoomLevel and offset == self._offset:
-            # Zoom level, offset, and body to track didn't change, so just calculate and add the last position
+        if not tail or self.display_parameters_unchanged(
+            zoomLevel, offset, bodyToTrack, tail
+        ):
+            # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [bodyToTrack.positions[-1]]
         else:
-            # Zoom level, offset, or body to track changed, so recalculate all positions
+            # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
             my_positions = self.positions
             bodyToTrack_positions = bodyToTrack.positions
@@ -148,7 +156,21 @@ class PhysicalObjectView:
         self._bodyToTrack = bodyToTrack
         self._zoomLevel = zoomLevel
         self._offset = offset
+        self._tail = tail
+
+    def display_parameters_unchanged(
+        self, zoomLevel, offset, bodyToTrack, tail: bool
+    ) -> bool:
+        """Return whether the display parameters changed."""
+        return (
+            bodyToTrack == self._bodyToTrack
+            and zoomLevel == self._zoomLevel
+            and offset == self._offset
+            and tail == self._tail
+        )
 
     def get_distance_pixels(self, x: float, y: float) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return distance((self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y))
+        return distance(
+            (self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y)
+        )
