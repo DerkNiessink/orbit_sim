@@ -131,7 +131,7 @@ class PhysicalObjectView:
         """Calculate the screen positions relative to the body to track."""
         self.positions.append((self.body_model.position.x, self.body_model.position.y))
         if bodyToTrack == self._bodyToTrack and zoomLevel == self._zoomLevel and offset == self._offset:
-            # Zoom level, offset, and body to track didn't change or tail isn't shown, so just calculate and add the last position
+            # Zoom level, offset, and body to track didn't change, so just calculate and add the last position
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [bodyToTrack.positions[-1]]
         else:
