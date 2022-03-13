@@ -1,6 +1,7 @@
 """Time model."""
 
 import time
+import collections
 
 
 class Time:
@@ -11,13 +12,15 @@ class Time:
         self.time_step = time_step
         self.calculations = 30
         self._timestamp = time.time()
+        self.speedups = collections.deque(maxlen=100)
 
     def update(self) -> None:
         """Update the time."""
         elapsed_time = self.time_step * self.calculations
         self.elapsed_time += elapsed_time
         now = time.time()
-        self.speedup = elapsed_time / (now - self._timestamp)
+        self.speedups.append(elapsed_time / (now - self._timestamp))
+        self.speedup = sum(self.speedups) / len(self.speedups)
         self._timestamp = now
 
     def slower(self) -> None:
