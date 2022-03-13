@@ -64,6 +64,10 @@ class PhysicalObjectView:
         self.colour = colour or average_colour(self.originalImage)
         self.label_bottom_right = label_bottom_right
         self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
+        self._screen_positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
+        self._bodyToTrack = None
+        self._zoomLevel = None
+        self._offset = None
 
     def radius(self, zoom_level, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
@@ -75,18 +79,13 @@ class PhysicalObjectView:
         self, window, zoomLevel, offset, bodyToTrack, scaled_radius: bool, tail: bool
     ):
         """Draw the body relative to the body to track."""
-
-        self.positions.append((self.body_model.position.x, self.body_model.position.y))
-        positions = relative_coordinates(self.positions, bodyToTrack.positions)
-        positions = zoom(positions, self.scale_factor, zoomLevel)
-        positions = pan(positions, offset)
-        self.x_to_draw, self.y_to_draw = positions[-1]
-        if self != bodyToTrack and len(positions) > 2 and tail:
+        self.update_positions(zoomLevel, offset, bodyToTrack)
+        if self != bodyToTrack and len(self._screen_positions) > 2 and tail:
             pygame.draw.lines(
                 window,
                 self.colour,
                 closed=False,
-                points=positions,
+                points=self._screen_positions,
                 width=1,
             )
         window.blit(
@@ -98,8 +97,8 @@ class PhysicalObjectView:
                 ),
             ),
             (
-                self.x_to_draw - self.radius(zoomLevel, scaled_radius),
-                self.y_to_draw - self.radius(zoomLevel, scaled_radius),
+                self._screen_positions[-1][0] - self.radius(zoomLevel, scaled_radius),
+                self._screen_positions[-1][1] - self.radius(zoomLevel, scaled_radius),
             ),
         )
 
@@ -120,14 +119,34 @@ class PhysicalObjectView:
             (255, 255, 255),
         )
         radius = self.radius(zoomLevel, scaled_radius)
-        label_x = self.x_to_draw + radius
+        label_x = self._screen_positions[-1][0] + radius
         label_y = (
-            self.y_to_draw + radius
+            self._screen_positions[-1][1] + radius
             if self.label_bottom_right
-            else self.y_to_draw - radius
+            else self._screen_positions[-1][1] - radius
         )
         window.blit(label_zoom, (label_x, label_y))
 
+    def update_positions(self, zoomLevel, offset, bodyToTrack) -> None:
+        """Calculate the screen positions relative to the body to track."""
+        self.positions.append((self.body_model.position.x, self.body_model.position.y))
+        if bodyToTrack == self._bodyToTrack and zoomLevel == self._zoomLevel and offset == self._offset:
+            # Zoom level, offset, and body to track didn't change, so just calculate and add the last position
+            my_positions = [self.positions[-1]]
+            bodyToTrack_positions = [bodyToTrack.positions[-1]]
+        else:
+            # Zoom level, offset, or body to track changed, so recalculate all positions
+            self._screen_positions.clear()
+            my_positions = self.positions
+            bodyToTrack_positions = bodyToTrack.positions
+        positions = relative_coordinates(my_positions, bodyToTrack_positions)
+        positions = zoom(positions, self.scale_factor, zoomLevel)
+        positions = pan(positions, offset)
+        self._screen_positions.extend(positions)
+        self._bodyToTrack = bodyToTrack
+        self._zoomLevel = zoomLevel
+        self._offset = offset
+
     def get_distance_pixels(self, x: float, y: float) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return distance((self.x_to_draw, self.y_to_draw), (x, y))
+        return distance((self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y))
