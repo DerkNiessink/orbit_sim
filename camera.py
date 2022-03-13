@@ -11,11 +11,13 @@ class Camera:
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
 
-    def __init__(self, window, constellation_model, body_viewers):
+    def __init__(self, window, constellation_model, body_viewers, time):
         self.window = window
         self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.bodyToTrack = body_viewers[0]
+        self.background_image = pygame.image.load("resources/stars_background.png")
+        self.time = time
         self.zoomLevel = 1
         self.offset = self.initialOffset()
         self.elapsed_time_to_draw = 0
@@ -62,6 +64,12 @@ class Camera:
 
     def update(self, elapsed_time):
 
+        # draw background image
+        background = pygame.transform.scale(
+            self.background_image, (self.window.get_width(), self.window.get_height())
+        )
+        self.window.blit(background, (0, 0))
+
         # render bodies
         for body in self.body_viewers:
             body.draw(
@@ -88,13 +96,17 @@ class Camera:
             elapsed_time_text = f"{round(int(self.elapsed_time_to_draw) / 365.25, 1)} years"
         self.draw_label(f"Elapsed time: {elapsed_time_text}", (25, 25))
 
-        # draw the scale on the screen
+        # display the spatial scale
         pixel_size = 0.026  # cm
         scale = round(self.body_viewers[0].scale_factor * AU * self.zoomLevel * pixel_size, 2)
-        self.draw_label(f"Scale: {scale} cm = 1 AU", (25, 48))
+        self.draw_label(f"Spatial scale: {scale} cm = 1 AU", (25, 48))
+
+        # display the temporal scale
+        scale = self.time.speedup / (24 * 3600)
+        self.draw_label(f"Temporal scale: 1 second = {round(scale, 1)} days", (25, 71))
 
         # display whether radius is scaled or not
-        self.draw_label(f"Bodies to scale: {'Yes' if self.scaled_radius else 'No'}", (25, 71))
+        self.draw_label(f"Bodies to scale: {'Yes' if self.scaled_radius else 'No'}", (25, 94))
 
     def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
         """Draw the label."""
