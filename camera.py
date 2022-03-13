@@ -71,12 +71,8 @@ class Camera:
                 self.bodyToTrack,
                 self.scaled_radius,
                 self.show_tail,
+                self.show_labels,
             )
-
-        # draw body labels
-        if self.show_labels:
-            for body in self.body_viewers:
-                body.draw_label(self.window, self.zoomLevel, self.scaled_radius)
 
         # draw the elapsed time in steps of 10 days
         elapsed_time = elapsed_time / (2400 * 36)  # Convert seconds to days
