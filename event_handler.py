@@ -1,3 +1,5 @@
+"""Event handler module."""
+
 import sys
 
 import pygame
@@ -7,14 +9,13 @@ from camera import Camera
 from physicalobject_views import distance
 from models.time import Time
 
+
 class EventHandler:
     """Handle user input in the form of pygame events, such as keyboard and mouse events."""
     def __init__(self, camera: Camera, time: Time) -> None:
         self.camera = camera
         self.time = time
         self._mouse_button_down_pos = (-100, -100)
-        self.pressed_down = False
-        self.pressed_up = False
 
     def handle_events(self) -> None:
         """Handle the queued pygame events."""
