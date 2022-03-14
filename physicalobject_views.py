@@ -136,17 +136,15 @@ class PhysicalObjectView:
 
     def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
-        if not tail or self.display_parameters_unchanged(
-            zoomLevel, offset, bodyToTrack, tail
-        ):
-            # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
-            my_positions = [self.body_model.positions[-1]]
-            bodyToTrack_positions = [bodyToTrack.body_model.positions[-1]]
-        else:
+        if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions = self.body_model.positions
-            bodyToTrack_positions = bodyToTrack.body_model.positions
+            my_positions = self.positions
+            bodyToTrack_positions = bodyToTrack.positions
+        else:
+            # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
+            my_positions = [self.positions[-1]]
+            bodyToTrack_positions = [bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
@@ -156,15 +154,13 @@ class PhysicalObjectView:
         self._offset = offset
         self._tail = tail
 
-    def display_parameters_unchanged(
-        self, zoomLevel, offset, bodyToTrack, tail: bool
-    ) -> bool:
+    def display_parameters_changed(self, zoomLevel, offset, bodyToTrack, tail: bool) -> bool:
         """Return whether the display parameters changed."""
         return (
-            bodyToTrack == self._bodyToTrack
-            and zoomLevel == self._zoomLevel
-            and offset == self._offset
-            and tail == self._tail
+            bodyToTrack != self._bodyToTrack
+            or zoomLevel != self._zoomLevel
+            or offset != self._offset
+            or tail != self._tail
         )
 
     def get_distance_pixels(self, x: float, y: float) -> float:
