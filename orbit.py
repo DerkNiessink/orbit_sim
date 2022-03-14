@@ -37,9 +37,6 @@ for name, body in constellation_module.constellation.items():
         body["mass"],
     )
     body_models.append(body_model)
-
-    constellation_model = Constellation(body_models)
-
     body_viewers.append(
         PhysicalObjectView(
             name,
@@ -50,6 +47,7 @@ for name, body in constellation_module.constellation.items():
         )
     )
 
+constellation_model = Constellation(body_models)
 
 body_viewers.insert(
     0,
@@ -62,6 +60,7 @@ body_viewers.insert(
         label_bottom_right=False,
     ),
 )
+
 
 
 if __name__ == "__main__":
