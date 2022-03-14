@@ -124,9 +124,7 @@ class PhysicalObjectView:
 
     def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
-        if tail and self.display_parameters_changed(
-            zoomLevel, offset, bodyToTrack, tail
-        ):
+        if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
             my_positions = self.body_model.positions
@@ -144,9 +142,7 @@ class PhysicalObjectView:
         self._offset = offset
         self._tail = tail
 
-    def display_parameters_changed(
-        self, zoomLevel, offset, bodyToTrack, tail: bool
-    ) -> bool:
+    def display_parameters_changed(self, zoomLevel, offset, bodyToTrack, tail: bool) -> bool:
         """Return whether the display parameters changed."""
         return (
             bodyToTrack != self._bodyToTrack
