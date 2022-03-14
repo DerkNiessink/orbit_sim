@@ -12,13 +12,7 @@ from camera import Camera
 from event_handler import EventHandler
 
 
-module_name = (
-    sys.argv[1]
-    .replace("/", ".")
-    .removeprefix(".\\")
-    .replace("\\", ".")
-    .removesuffix(".py")
-)
+module_name = sys.argv[1].replace("/", ".").removeprefix(".\\").replace("\\", ".").removesuffix(".py")
 constellation_module = importlib.import_module(module_name)
 window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
@@ -60,7 +54,6 @@ body_viewers.insert(
         label_bottom_right=False,
     ),
 )
-
 
 
 if __name__ == "__main__":

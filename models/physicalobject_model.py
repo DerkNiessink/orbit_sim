@@ -48,13 +48,7 @@ class PhysicalObjectModel:
         position1, position2 = self.positions[-1], other_body.positions[-1]
         distance = (position2 - position1).length()
         force_direction = (position2 - position1).normalize()
-        return (
-            force_direction
-            * self.gravitational_constant
-            * self.mass
-            * other_body.mass
-            / (distance ** 2)
-        )
+        return force_direction * self.gravitational_constant * self.mass * other_body.mass / (distance ** 2)
 
     def update_position(self, bodies, time_step):
         """Update the position of the body."""
