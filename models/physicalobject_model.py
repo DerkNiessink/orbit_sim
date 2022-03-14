@@ -8,6 +8,7 @@ class PhysicalObjectModel:
 
     gravitational_constant = 6.67408 * 10 ** (-11)
     force_cache = dict()
+    null_vector = math.Vector2(0, 0)
 
     def __init__(
         self,
@@ -18,23 +19,20 @@ class PhysicalObjectModel:
         init_velocity_y,
         mass,
     ):
+        self.positions = collections.deque(maxlen=7000)
+        self.positions.append(math.Vector2(x, y))
         self.radius = radius
         self.velocity = math.Vector2(init_velocity_x, init_velocity_y)  # m/s
         self.mass = mass  # kg
-        self.positions = collections.deque(maxlen=7000)
-        self.positions.append(math.Vector2(x, y))
 
     def net_force(self, bodies):
         """Calculate the net force on the body."""
-        return sum(
-            (self.two_body_force(body) for body in bodies),
-            start=math.Vector2(0, 0),
-        )
+        return sum((self.two_body_force(body) for body in bodies), start=self.null_vector)
 
     def two_body_force(self, other_body):
         """Return the force between self and other body, from the cache or calculated."""
         if self == other_body:
-            return math.Vector2(0, 0)
+            return self.null_vector
         key = (self, other_body) if id(self) < id(other_body) else (other_body, self)
         if key in self.force_cache:
             force = -self.force_cache[key]  # Reverse the force direction
