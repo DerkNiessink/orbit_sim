@@ -94,6 +94,15 @@ constellation = {
         "mass": 102.409 * 10 ** 24,
         "image": "resources/planet3.png",
     },
+    "Moon": {
+        "x": -AU - 0.4055 * 10 ** 9,
+        "y": 0,
+        "radius": 1_736_000,
+        "init_velocity_x": 0,
+        "init_velocity_y": 970 + 29_800,
+        "mass": 0.07346 * 10 ** 24,
+        "image": "resources/planet3.png",
+    },
 }
 
 
