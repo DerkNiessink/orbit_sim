@@ -12,18 +12,12 @@ def distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
 
 
 def zoom(coordinates, scale_factor, zoom_level):
-    return [
-        (x * scale_factor * zoom_level, y * scale_factor * zoom_level)
-        for x, y in coordinates
-    ]
+    return [(x * scale_factor * zoom_level, y * scale_factor * zoom_level) for x, y in coordinates]
 
 
 def relative_coordinates(coordinates, origin):
     """Transform the coordinates into coordinates relative to the origin."""
-    return [
-        (x - origin_x, y - origin_y)
-        for (x, y), (origin_x, origin_y) in zip(coordinates, origin)
-    ]
+    return [(x - origin_x, y - origin_y) for (x, y), (origin_x, origin_y) in zip(coordinates, origin)]
 
 
 def pan(coordinates, offset):
@@ -35,13 +29,9 @@ def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
     """Calculate the average colour of an image by sampling a limited number of pixels."""
     width, height = image.get_width(), image.get_height()
     sample_size = round(math.sqrt(width * height))
-    random_points = [
-        (randrange(0, width), randrange(0, height)) for _ in range(sample_size)
-    ]
+    random_points = [(randrange(0, width), randrange(0, height)) for _ in range(sample_size)]
     colours = [cast(pygame.Color, image.get_at(point)) for point in random_points]
-    colours = [
-        colour for colour in colours if colour.a > 0
-    ]  # Ignore transparent pixels
+    colours = [colour for colour in colours if colour.a > 0]  # Ignore transparent pixels
     average_r = round(sum(colour.r for colour in colours) / len(colours))
     average_g = round(sum(colour.g for colour in colours) / len(colours))
     average_b = round(sum(colour.b for colour in colours) / len(colours))
@@ -52,9 +42,7 @@ class PhysicalObjectView:
 
     DEQUE_MAXLEN = 7000
 
-    def __init__(
-        self, name, scale_factor, colour, image, body, label_bottom_right=True
-    ):
+    def __init__(self, name, scale_factor, colour, image, body, label_bottom_right=True):
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
@@ -136,9 +124,7 @@ class PhysicalObjectView:
 
     def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
-        if tail and self.display_parameters_changed(
-            zoomLevel, offset, bodyToTrack, tail
-        ):
+        if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
             my_positions = self.body_model.positions
@@ -156,9 +142,7 @@ class PhysicalObjectView:
         self._offset = offset
         self._tail = tail
 
-    def display_parameters_changed(
-        self, zoomLevel, offset, bodyToTrack, tail: bool
-    ) -> bool:
+    def display_parameters_changed(self, zoomLevel, offset, bodyToTrack, tail: bool) -> bool:
         """Return whether the display parameters changed."""
         return (
             bodyToTrack != self._bodyToTrack
@@ -169,6 +153,4 @@ class PhysicalObjectView:
 
     def get_distance_pixels(self, x: float, y: float) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return distance(
-            (self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y)
-        )
+        return distance((self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y))

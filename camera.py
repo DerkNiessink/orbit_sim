@@ -32,9 +32,7 @@ class Camera:
 
     def trackBody(self, x: int, y: int) -> None:
         """Track the body closest the the x and y coordinates."""
-        sorted_bodies = sorted(
-            [(body.get_distance_pixels(x, y), body) for body in self.body_viewers]
-        )
+        sorted_bodies = sorted([(body.get_distance_pixels(x, y), body) for body in self.body_viewers])
         self.bodyToTrack = sorted_bodies[0][1]
         self.offset = self.initialOffset()
 
@@ -65,9 +63,7 @@ class Camera:
     def update(self, elapsed_time):
 
         # draw background image
-        background = pygame.transform.scale(
-            self.background_image, (self.window.get_width(), self.window.get_height())
-        )
+        background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
         self.window.blit(background, (0, 0))
 
         # render bodies
@@ -89,32 +85,22 @@ class Camera:
         if elapsed_time < 600:
             elapsed_time_text = f"{int(self.elapsed_time_to_draw)} days"
         else:
-            elapsed_time_text = (
-                f"{round(int(self.elapsed_time_to_draw) / 365.25, 1)} years"
-            )
+            elapsed_time_text = f"{round(int(self.elapsed_time_to_draw) / 365.25, 1)} years"
         self.draw_label(f"Elapsed time: {elapsed_time_text}", (25, 25))
 
         # display the spatial scale
         pixel_size = 0.026  # cm
-        spatial_scale = round(
-            self.body_viewers[0].scale_factor * AU * self.zoomLevel * pixel_size, 2
-        )
+        spatial_scale = round(self.body_viewers[0].scale_factor * AU * self.zoomLevel * pixel_size, 2)
         self.draw_label(f"Spatial scale: {spatial_scale} cm = 1 AU", (25, 48))
 
         # display the temporal scale, take the average of the maxlen of the deque
         self.temporal_scale = self.time.speedup / (24 * 3600)
-        self.draw_label(
-            f"Temporal scale: 1 second = {round(self.temporal_scale, 1)} days", (25, 71)
-        )
+        self.draw_label(f"Temporal scale: 1 second = {round(self.temporal_scale, 1)} days", (25, 71))
 
         # display whether radius is scaled or not
-        self.draw_label(
-            f"Bodies to scale: {'Yes' if self.scaled_radius else 'No'}", (25, 94)
-        )
+        self.draw_label(f"Bodies to scale: {'Yes' if self.scaled_radius else 'No'}", (25, 94))
 
-    def draw_label(
-        self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)
-    ) -> None:
+    def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
         """Draw the label."""
         label = self.font.render(text, True, color)
         self.window.blit(label, coordinate)
