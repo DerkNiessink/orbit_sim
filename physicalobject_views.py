@@ -49,6 +49,7 @@ class PhysicalObjectView:
         self.originalImage = pygame.image.load(image)
         self.colour = colour or average_colour(self.originalImage)
         self.label_bottom_right = label_bottom_right
+        self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
         self._screen_positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
         self._bodyToTrack = None
         self._zoomLevel = None
@@ -72,7 +73,7 @@ class PhysicalObjectView:
         label: bool,
     ):
         """Draw the body relative to the body to track."""
-        self.update_positions(zoomLevel, offset, bodyToTrack, tail)
+        self.update_screen_positions(zoomLevel, offset, bodyToTrack, tail)
         if self != bodyToTrack and len(self._screen_positions) > 2 and tail:
             pygame.draw.lines(
                 window,
@@ -122,17 +123,21 @@ class PhysicalObjectView:
         )
         window.blit(label_zoom, (label_x, label_y))
 
-    def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
+    def update_position(self):
+        """Update the list of physical model object positions."""
+        self.positions.append((self.body_model.position.x, self.body_model.position.y))
+
+    def update_screen_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
         if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions = self.body_model.positions
-            bodyToTrack_positions = bodyToTrack.body_model.positions
+            my_positions = self.positions
+            bodyToTrack_positions = bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
-            my_positions = [self.body_model.positions[-1]]
-            bodyToTrack_positions = [bodyToTrack.body_model.positions[-1]]
+            my_positions = [self.positions[-1]]
+            bodyToTrack_positions = [bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
