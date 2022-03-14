@@ -66,6 +66,10 @@ class Camera:
         background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
         self.window.blit(background, (0, 0))
 
+        # update positions
+        for body in self.body_viewers:
+            body.update_position()
+
         # render bodies
         for body in self.body_viewers:
             body.draw(
