@@ -1,6 +1,7 @@
 """Physical object class to represent cellestial bodies."""
 
 from pygame import math
+import collections
 
 
 class PhysicalObjectModel:
@@ -17,10 +18,11 @@ class PhysicalObjectModel:
         init_velocity_y,
         mass,
     ):
-        self.position = math.Vector2(x, y)
         self.radius = radius
         self.velocity = math.Vector2(init_velocity_x, init_velocity_y)  # m/s
         self.mass = mass  # kg
+        self.positions = collections.deque(maxlen=7000)
+        self.positions.append(math.Vector2(x, y))
 
     def net_force(self, bodies):
         """Calculate the net force on the body."""
@@ -43,7 +45,7 @@ class PhysicalObjectModel:
 
     def calculate_two_body_force(self, other_body):
         """Calculate the force between self and other body."""
-        position1, position2 = self.position, other_body.position
+        position1, position2 = self.positions[-1], other_body.positions[-1]
         distance = (position2 - position1).length()
         force_direction = (position2 - position1).normalize()
         return (
@@ -58,4 +60,4 @@ class PhysicalObjectModel:
         """Update the position of the body."""
         acceleration = self.net_force(bodies) / self.mass
         self.velocity += acceleration * time_step
-        self.position += self.velocity * time_step
+        self.positions.append(self.positions[-1] + self.velocity * time_step)

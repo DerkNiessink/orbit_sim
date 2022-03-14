@@ -61,7 +61,6 @@ class PhysicalObjectView:
         self.originalImage = pygame.image.load(image)
         self.colour = colour or average_colour(self.originalImage)
         self.label_bottom_right = label_bottom_right
-        self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
         self._screen_positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
         self._bodyToTrack = None
         self._zoomLevel = None
@@ -137,18 +136,17 @@ class PhysicalObjectView:
 
     def update_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
         """Calculate the screen positions relative to the body to track."""
-        self.positions.append((self.body_model.position.x, self.body_model.position.y))
         if not tail or self.display_parameters_unchanged(
             zoomLevel, offset, bodyToTrack, tail
         ):
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
-            my_positions = [self.positions[-1]]
-            bodyToTrack_positions = [bodyToTrack.positions[-1]]
+            my_positions = [self.body_model.positions[-1]]
+            bodyToTrack_positions = [bodyToTrack.body_model.positions[-1]]
         else:
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions = self.positions
-            bodyToTrack_positions = bodyToTrack.positions
+            my_positions = self.body_model.positions
+            bodyToTrack_positions = bodyToTrack.body_model.positions
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
