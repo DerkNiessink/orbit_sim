@@ -12,7 +12,7 @@ class Time:
         self.time_step = time_step
         self.calculations = 30
         self._timestamp = time.time()
-        self.speedups = collections.deque(maxlen=25)
+        self.speedups: collections.deque[float] = collections.deque(maxlen=25)
 
     def update(self) -> None:
         """Update the time."""
