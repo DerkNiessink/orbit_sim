@@ -49,6 +49,7 @@ class PhysicalObjectView:
         scale_factor: float,
         colour: tuple[int, int, int],
         image: Path,
+        font: pygame.font.SysFont,
         body: PhysicalObjectModel,
         label_bottom_right=True,
     ) -> None:
@@ -57,6 +58,7 @@ class PhysicalObjectView:
         self.body_model = body
         self.originalImage = pygame.image.load(image)
         self.colour = colour or average_colour(self.originalImage)
+        self.label_font = font
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
         self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
@@ -110,15 +112,7 @@ class PhysicalObjectView:
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
 
-        min_size = 15
-        # formula for size of label based on zoomlevel
-        size = int(1 / zoomLevel ** 0.05)
-
-        if size < min_size:
-            size = min_size
-
-        font = pygame.font.SysFont("monospace", size)
-        label_zoom = font.render(
+        label_zoom = self.label_font.render(
             f"{self.name}",
             True,
             (255, 255, 255),
