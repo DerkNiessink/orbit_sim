@@ -1,8 +1,11 @@
 """Orbit sim main program."""
 
-import pygame
 import sys
 import importlib
+from pathlib import Path
+
+import pygame
+from pygame.math import Vector2
 
 from models.constellation import Constellation
 from models.physicalobject_model import PhysicalObjectModel
@@ -23,11 +26,9 @@ body_models = []
 body_viewers = []
 for name, body in constellation_module.constellation.items():
     body_model = PhysicalObjectModel(
-        body["x"],
-        body["y"],
+        Vector2(body["x"], body["y"]),
+        Vector2(body["init_velocity_x"], body["init_velocity_y"]),
         body["radius"],
-        body["init_velocity_x"],
-        body["init_velocity_y"],
         body["mass"],
     )
     body_models.append(body_model)
@@ -48,8 +49,8 @@ body_viewers.insert(
     PhysicalObjectView(
         "Center of mass",
         constellation_module.general_parameters["scale_factor"],
-        [255, 0, 0],
-        "resources/center_of_mass.png",
+        (255, 0, 0),
+        Path("resources/center_of_mass.png"),
         constellation_model.center_of_mass,
         label_bottom_right=False,
     ),

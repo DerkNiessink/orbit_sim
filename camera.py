@@ -1,8 +1,15 @@
 """Orbit sim camera."""
 
-import pygame
+from typing import Sequence
 
+import pygame
+from pygame.math import Vector2
+from pygame.surface import Surface
+
+from models.time import Time
+from models.constellation import Constellation
 from constellations.solar_system import AU
+from physicalobject_views import PhysicalObjectView
 
 
 class Camera:
@@ -11,28 +18,34 @@ class Camera:
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
 
-    def __init__(self, window, constellation_model, body_viewers, time):
+    def __init__(
+        self,
+        window: Surface,
+        constellation_model: Constellation,
+        body_viewers: Sequence[PhysicalObjectView],
+        time: Time,
+    ) -> None:
         self.window = window
         self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.bodyToTrack = body_viewers[0]
         self.background_image = pygame.image.load("resources/stars_background.png")
         self.time = time
-        self.zoomLevel = 1
+        self.zoomLevel = 1.0
         self.offset = self.initialOffset()
-        self.elapsed_time_to_draw = 0
+        self.elapsed_time_to_draw = 0.0
         self.show_labels = False
         self.scaled_radius = False
         self.show_tail = False
         self.font = pygame.font.SysFont("monospace", 18)
 
-    def initialOffset(self):
+    def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
-        return (self.window.get_width() / 2, self.window.get_height() / 2)
+        return Vector2(self.window.get_width() / 2, self.window.get_height() / 2)
 
-    def trackBody(self, x: int, y: int) -> None:
+    def trackBody(self, position: Vector2) -> None:
         """Track the body closest the the x and y coordinates."""
-        sorted_bodies = sorted([(body.get_distance_pixels(x, y), body) for body in self.body_viewers])
+        sorted_bodies = sorted([(body.get_distance_pixels(position), body) for body in self.body_viewers])
         self.bodyToTrack = sorted_bodies[0][1]
         self.offset = self.initialOffset()
 
@@ -44,9 +57,9 @@ class Camera:
         """Zoom out to a maximum of 10."""
         self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
 
-    def pan(self, dx: int, dy: int) -> None:
+    def pan(self, delta: Vector2) -> None:
         """Pan the camera."""
-        self.offset = (self.offset[0] + dx, self.offset[1] + dy)
+        self.offset += delta
 
     def toggle_labels(self) -> None:
         """Toggle the display of labels."""
@@ -60,7 +73,7 @@ class Camera:
         "Toogle the tail of the bodies"
         self.show_tail = not self.show_tail
 
-    def update(self, elapsed_time):
+    def update(self, elapsed_time: float) -> None:
 
         # draw background image
         background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))

@@ -1,31 +1,32 @@
+from __future__ import annotations
+
 import collections
 import math
+from pathlib import Path
 from random import randrange
-from typing import cast
+from typing import cast, Sequence
 
 import pygame
+from pygame.math import Vector2
+
+from models.physicalobject_model import PhysicalObjectModel
 
 
-def distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
-    """Return the distance between point 1 and 2."""
-    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
+    return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
 
-def zoom(coordinates, scale_factor, zoom_level):
-    return [(x * scale_factor * zoom_level, y * scale_factor * zoom_level) for x, y in coordinates]
-
-
-def relative_coordinates(coordinates, origin):
+def relative_coordinates(coordinates: Sequence[Vector2], origin: Sequence[Vector2]) -> list[Vector2]:
     """Transform the coordinates into coordinates relative to the origin."""
-    return [(x - origin_x, y - origin_y) for (x, y), (origin_x, origin_y) in zip(coordinates, origin)]
+    return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
 
-def pan(coordinates, offset):
+def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
-    return [(x + offset[0], y + offset[1]) for (x, y) in coordinates]
+    return [coordinate + offset for coordinate in coordinates]
 
 
-def average_colour(image: pygame.Surface) -> tuple[int, int, int]:
+def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
     """Calculate the average colour of an image by sampling a limited number of pixels."""
     width, height = image.get_width(), image.get_height()
     sample_size = round(math.sqrt(width * height))
@@ -42,21 +43,29 @@ class PhysicalObjectView:
 
     DEQUE_MAXLEN = 7000
 
-    def __init__(self, name, scale_factor, colour, image, body, label_bottom_right=True):
+    def __init__(
+        self,
+        name: str,
+        scale_factor: float,
+        colour: tuple[int, int, int],
+        image: Path,
+        body: PhysicalObjectModel,
+        label_bottom_right=True,
+    ) -> None:
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
         self.originalImage = pygame.image.load(image)
         self.colour = colour or average_colour(self.originalImage)
         self.label_bottom_right = label_bottom_right
-        self.positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
-        self._screen_positions = collections.deque(maxlen=self.DEQUE_MAXLEN)
-        self._bodyToTrack = None
-        self._zoomLevel = None
-        self._offset = None
-        self._tail = None
+        self.positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
+        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
+        self._bodyToTrack: PhysicalObjectView | None = None
+        self._zoomLevel: float | None = None
+        self._offset: Vector2 | None = None
+        self._tail: bool | None = None
 
-    def radius(self, zoom_level, scaled_radius: bool):
+    def radius(self, zoom_level: float, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
             return self.body_model.radius * self.scale_factor * zoom_level
         else:
@@ -65,9 +74,9 @@ class PhysicalObjectView:
     def draw(
         self,
         window,
-        zoomLevel,
-        offset,
-        bodyToTrack,
+        zoomLevel: float,
+        offset: Vector2,
+        bodyToTrack: PhysicalObjectView,
         scaled_radius: bool,
         tail: bool,
         label: bool,
@@ -79,7 +88,7 @@ class PhysicalObjectView:
                 window,
                 self.colour,
                 closed=False,
-                points=self._screen_positions,
+                points=[(pos.x, pos.y) for pos in self._screen_positions],
                 width=1,
             )
         window.blit(
@@ -111,7 +120,7 @@ class PhysicalObjectView:
         font = pygame.font.SysFont("monospace", size)
         label_zoom = font.render(
             f"{self.name}",
-            1,
+            True,
             (255, 255, 255),
         )
         radius = self.radius(zoomLevel, scaled_radius)
@@ -125,15 +134,17 @@ class PhysicalObjectView:
 
     def update_position(self):
         """Update the list of physical model object positions."""
-        self.positions.append((self.body_model.position.x, self.body_model.position.y))
+        self.positions.append(self.body_model.position.copy())
 
-    def update_screen_positions(self, zoomLevel, offset, bodyToTrack, tail: bool) -> None:
+    def update_screen_positions(
+        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
+    ) -> None:
         """Calculate the screen positions relative to the body to track."""
         if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions = self.positions
-            bodyToTrack_positions = bodyToTrack.positions
+            my_positions: Sequence[Vector2] = self.positions
+            bodyToTrack_positions: Sequence[Vector2] = bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
@@ -144,10 +155,12 @@ class PhysicalObjectView:
         self._screen_positions.extend(positions)
         self._bodyToTrack = bodyToTrack
         self._zoomLevel = zoomLevel
-        self._offset = offset
+        self._offset = offset.copy()
         self._tail = tail
 
-    def display_parameters_changed(self, zoomLevel, offset, bodyToTrack, tail: bool) -> bool:
+    def display_parameters_changed(
+        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
+    ) -> bool:
         """Return whether the display parameters changed."""
         return (
             bodyToTrack != self._bodyToTrack
@@ -156,6 +169,6 @@ class PhysicalObjectView:
             or tail != self._tail
         )
 
-    def get_distance_pixels(self, x: float, y: float) -> float:
+    def get_distance_pixels(self, position: Vector2) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return distance((self._screen_positions[-1][0], self._screen_positions[-1][1]), (x, y))
+        return (self._screen_positions[-1] - position).length()
