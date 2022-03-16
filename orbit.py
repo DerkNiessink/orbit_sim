@@ -20,7 +20,7 @@ constellation_module = importlib.import_module(module_name)
 window = pygame.display.set_mode(flags=pygame.RESIZABLE)
 pygame.display.set_caption("orbit simulator")
 pygame.init()
-
+font = pygame.font.SysFont("monospace", 15)
 
 body_models = []
 body_viewers = []
@@ -38,6 +38,7 @@ for name, body in constellation_module.constellation.items():
             constellation_module.general_parameters["scale_factor"],
             body.get("colour"),
             body["image"],
+            font,
             body_model,
         )
     )
@@ -51,6 +52,7 @@ body_viewers.insert(
         constellation_module.general_parameters["scale_factor"],
         (255, 0, 0),
         Path("resources/center_of_mass.png"),
+        font,
         constellation_model.center_of_mass,
         label_bottom_right=False,
     ),
