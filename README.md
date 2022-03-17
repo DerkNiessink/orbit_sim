@@ -13,8 +13,21 @@ Application for simulating gravity between bodies with [Newton's law of universa
 
 The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for examples.
 
-## sources
+## Profiling
 
+Since a lot of computations have to be done to calculate the orbits of the celestial bodies, performance is important. To profile the source code, run the following commands:
+
+1. Run the program while profiling: `python -m cProfile -o profile.out orbit.py constellations/solar_system.py`
+1. Analyze the stats: `python -m pstats profile.out`
+
+Alternatively, create a graph of the profile results:
+
+1. Install the development requirements: `pip install -r requirements-dev.txt`
+1. Install [GraphViz](https://graphviz.org)
+1. Convert the profile info into a dot file: `gprof2dot -f pstats profile.out > profile.dot`
+1. Convert the dot file into a png: `dot -Tpng profile.dot > profile.png`
+
+## References
 
 1. [planet images from](https://deep-fold.itch.io/pixel-planet-generator)
 2. [solar system data from](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
