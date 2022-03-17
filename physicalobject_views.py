@@ -85,7 +85,7 @@ class PhysicalObjectView:
 
     def draw(self, window, settings: ViewSettings):
         """Draw the body relative to the body to track."""
-        self.update_screen_positions(settings.zoomLevel, settings.offset, settings.bodyToTrack, settings.tail)
+        self.update_screen_positions(settings)
         if self != settings.bodyToTrack and len(self._screen_positions) > 2 and settings.tail:
             pygame.draw.lines(
                 window,
@@ -131,38 +131,34 @@ class PhysicalObjectView:
         """Update the list of physical model object positions."""
         self.positions.append(self.body_model.position.copy())
 
-    def update_screen_positions(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
-    ) -> None:
+    def update_screen_positions(self, settings: ViewSettings) -> None:
         """Calculate the screen positions relative to the body to track."""
-        if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
+        if settings.tail and self.display_parameters_changed(settings):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
             my_positions: Sequence[Vector3] = self.positions
-            bodyToTrack_positions: Sequence[Vector3] = bodyToTrack.positions
+            bodyToTrack_positions: Sequence[Vector3] = settings.bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
-            bodyToTrack_positions = [bodyToTrack.positions[-1]]
+            bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
         positions = project(positions)
-        positions = zoom(positions, self.scale_factor, zoomLevel)
-        positions = pan(positions, offset)
+        positions = zoom(positions, self.scale_factor, settings.zoomLevel)
+        positions = pan(positions, settings.offset)
         self._screen_positions.extend(positions)
-        self._bodyToTrack = bodyToTrack
-        self._zoomLevel = zoomLevel
-        self._offset = offset.copy()
-        self._tail = tail
+        self._bodyToTrack = settings.bodyToTrack
+        self._zoomLevel = settings.zoomLevel
+        self._offset = settings.offset.copy()
+        self._tail = settings.tail
 
-    def display_parameters_changed(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
-    ) -> bool:
+    def display_parameters_changed(self, settings: ViewSettings) -> bool:
         """Return whether the display parameters changed."""
         return (
-            bodyToTrack != self._bodyToTrack
-            or zoomLevel != self._zoomLevel
-            or offset != self._offset
-            or tail != self._tail
+            settings.bodyToTrack != self._bodyToTrack
+            or settings.zoomLevel != self._zoomLevel
+            or settings.offset != self._offset
+            or settings.tail != self._tail
         )
 
     def get_distance_pixels(self, position: Vector2) -> float:
