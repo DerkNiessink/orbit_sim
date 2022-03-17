@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import collections
 import math
+from dataclasses import dataclass
 from pathlib import Path
 from random import randrange
 from typing import cast, Sequence
@@ -40,6 +41,16 @@ def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
     return (average_r, average_g, average_b)
 
 
+@dataclass
+class ViewSettings:
+    bodyToTrack: PhysicalObjectView
+    zoomLevel: float = 1.0
+    offset: Vector2 = Vector2(0, 0)
+    scaled_radius: bool = False
+    tail: bool = False
+    labels: bool = False
+
+
 class PhysicalObjectView:
     def __init__(
         self,
@@ -72,19 +83,10 @@ class PhysicalObjectView:
         else:
             return math.log(zoom_level * 10)
 
-    def draw(
-        self,
-        window,
-        zoomLevel: float,
-        offset: Vector2,
-        bodyToTrack: PhysicalObjectView,
-        scaled_radius: bool,
-        tail: bool,
-        label: bool,
-    ):
+    def draw(self, window, settings: ViewSettings):
         """Draw the body relative to the body to track."""
-        self.update_screen_positions(zoomLevel, offset, bodyToTrack, tail)
-        if self != bodyToTrack and len(self._screen_positions) > 2 and tail:
+        self.update_screen_positions(settings.zoomLevel, settings.offset, settings.bodyToTrack, settings.tail)
+        if self != settings.bodyToTrack and len(self._screen_positions) > 2 and settings.tail:
             pygame.draw.lines(
                 window,
                 self.colour,
@@ -96,17 +98,17 @@ class PhysicalObjectView:
             pygame.transform.scale(
                 self.originalImage,
                 (
-                    self.radius(zoomLevel, scaled_radius) * 2,
-                    self.radius(zoomLevel, scaled_radius) * 2,
+                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
+                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
                 ),
             ),
             (
-                self._screen_positions[-1][0] - self.radius(zoomLevel, scaled_radius),
-                self._screen_positions[-1][1] - self.radius(zoomLevel, scaled_radius),
+                self._screen_positions[-1][0] - self.radius(settings.zoomLevel, settings.scaled_radius),
+                self._screen_positions[-1][1] - self.radius(settings.zoomLevel, settings.scaled_radius),
             ),
         )
-        if label:
-            self.draw_label(window, zoomLevel, scaled_radius)
+        if settings.labels:
+            self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
 
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""

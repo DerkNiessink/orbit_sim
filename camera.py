@@ -9,7 +9,7 @@ from pygame.surface import Surface
 from models.time import Time
 from models.constellation import Constellation
 from constellations.solar_system import AU
-from physicalobject_views import PhysicalObjectView
+from physicalobject_views import PhysicalObjectView, ViewSettings
 
 
 class Camera:
@@ -87,12 +87,7 @@ class Camera:
         for body in self.body_viewers:
             body.draw(
                 self.window,
-                self.zoomLevel,
-                self.offset,
-                self.bodyToTrack,
-                self.scaled_radius,
-                self.show_tail,
-                self.show_labels,
+                ViewSettings(self.bodyToTrack, self.zoomLevel, self.offset, self.scaled_radius, self.show_tail, self.show_labels)
             )
 
         # draw the elapsed time in steps of 10 days
