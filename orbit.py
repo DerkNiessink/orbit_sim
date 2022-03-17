@@ -7,7 +7,7 @@ from pathlib import Path
 import pygame
 from pygame.math import Vector2
 
-from models.constellation import Constellation
+from models.constellation import CenterOfMass, Constellation
 from models.physicalobject_model import PhysicalObjectModel
 from models.time import Time
 from physicalobject_views import PhysicalObjectView
@@ -40,6 +40,7 @@ for name, body in constellation_module.constellation.items():
             body["image"],
             font,
             body_model,
+            body.get("tail_length", 7000),
         )
     )
 
@@ -54,6 +55,7 @@ body_viewers.insert(
         Path("resources/center_of_mass.png"),
         font,
         constellation_model.center_of_mass,
+        500,
         label_bottom_right=False,
     ),
 )

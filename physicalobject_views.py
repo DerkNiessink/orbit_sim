@@ -40,9 +40,6 @@ def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
 
 
 class PhysicalObjectView:
-
-    DEQUE_MAXLEN = 7000
-
     def __init__(
         self,
         name: str,
@@ -51,6 +48,7 @@ class PhysicalObjectView:
         image: Path,
         font: pygame.font.SysFont,
         body: PhysicalObjectModel,
+        tail_length: int,
         label_bottom_right=True,
     ) -> None:
         self.name = name
@@ -60,8 +58,8 @@ class PhysicalObjectView:
         self.colour = colour or average_colour(self.originalImage)
         self.label_font = font
         self.label_bottom_right = label_bottom_right
-        self.positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
-        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=self.DEQUE_MAXLEN)
+        self.positions: collections.deque[Vector2] = collections.deque(maxlen=7000)
+        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
         self._bodyToTrack: PhysicalObjectView | None = None
         self._zoomLevel: float | None = None
         self._offset: Vector2 | None = None

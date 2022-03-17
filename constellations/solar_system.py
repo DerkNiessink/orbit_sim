@@ -101,7 +101,8 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 970 + 29_800,
         "mass": 0.07346 * 10 ** 24,
-        "image": "resources/planet3.png",
+        "image": "resources/moon1.png",
+        "tail_length": 45,
     },
 }
 

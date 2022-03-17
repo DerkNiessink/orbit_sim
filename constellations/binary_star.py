@@ -10,6 +10,7 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": -10000,
         "mass": 4 * mass_sun,
+        "tail_length": 100,
         "image": "resources/star1.png",
     },
     "Star 2": {
@@ -19,11 +20,12 @@ constellation = {
         "init_velocity_x": 0,
         "init_velocity_y": 0,
         "mass": 1 * mass_sun,
+        "tail_length": 100,
         "image": "resources/star1.png",
     },
 }
 
 general_parameters = {
-    "time_step": 3600 * 0.1,
+    "time_step": 3600 * 0.5,
     "scale_factor": 10 / AU,
 }
