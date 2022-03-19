@@ -5,7 +5,7 @@ import importlib
 from pathlib import Path
 
 import pygame
-from pygame.math import Vector2
+from pygame.math import Vector3
 
 from models.constellation import CenterOfMass, Constellation
 from models.physicalobject_model import PhysicalObjectModel
@@ -26,8 +26,8 @@ body_models = []
 body_viewers = []
 for name, body in constellation_module.constellation.items():
     body_model = PhysicalObjectModel(
-        Vector2(body["x"], body["y"]),
-        Vector2(body["init_velocity_x"], body["init_velocity_y"]),
+        Vector3(body["init_position"]),
+        Vector3(body["init_velocity"]),
         body["radius"],
         body["mass"],
     )

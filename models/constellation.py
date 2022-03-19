@@ -2,7 +2,7 @@ from typing import Sequence
 
 from models.physicalobject_model import PhysicalObjectModel
 
-from pygame.math import Vector2
+from pygame.math import Vector3
 
 
 class CenterOfMass(PhysicalObjectModel):
@@ -19,7 +19,7 @@ class CenterOfMass(PhysicalObjectModel):
 class Constellation:
     def __init__(self, body_models: Sequence[PhysicalObjectModel]) -> None:
         self.body_models = body_models
-        self.center_of_mass = CenterOfMass(Vector2(0, 0), Vector2(0, 0), 100, 0)
+        self.center_of_mass = CenterOfMass(Vector3(0, 0, 0), Vector3(0, 0, 0), 100, 0)
 
     def update_positions(self, time_step: float) -> None:
         for body_model in self.body_models:

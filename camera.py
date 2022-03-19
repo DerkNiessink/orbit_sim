@@ -3,7 +3,7 @@
 from typing import Sequence
 
 import pygame
-from pygame.math import Vector2
+from pygame.math import Vector3
 from pygame.surface import Surface
 
 from models.time import Time
@@ -39,11 +39,11 @@ class Camera:
         self.show_tail = False
         self.font = pygame.font.SysFont("monospace", 18)
 
-    def initialOffset(self) -> Vector2:
+    def initialOffset(self) -> Vector3:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
-        return Vector2(self.window.get_width() / 2, self.window.get_height() / 2)
+        return Vector3(self.window.get_width() / 2, self.window.get_height() / 2, 0)
 
-    def trackBody(self, position: Vector2) -> None:
+    def trackBody(self, position: Vector3) -> None:
         """Track the body closest the the x and y coordinates."""
         sorted_bodies = sorted([(body.get_distance_pixels(position), body) for body in self.body_viewers])
         self.bodyToTrack = sorted_bodies[0][1]
@@ -57,7 +57,7 @@ class Camera:
         """Zoom out to a maximum of 10."""
         self.zoomLevel = min(self.zoomLevel * self.ZOOM_STEP, self.MAX_ZOOM_LEVEL)
 
-    def pan(self, delta: Vector2) -> None:
+    def pan(self, delta: Vector3) -> None:
         """Pan the camera."""
         self.offset += delta
 

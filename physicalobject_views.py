@@ -7,21 +7,21 @@ from random import randrange
 from typing import cast, Sequence
 
 import pygame
-from pygame.math import Vector2
+from pygame.math import Vector3
 
 from models.physicalobject_model import PhysicalObjectModel
 
 
-def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
+def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float) -> list[Vector3]:
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
 
-def relative_coordinates(coordinates: Sequence[Vector2], origin: Sequence[Vector2]) -> list[Vector2]:
+def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
 
-def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
+def pan(coordinates: list[Vector3], offset: Vector3) -> list[Vector3]:
     """Pan the coordinates with the given offset."""
     return [coordinate + offset for coordinate in coordinates]
 
@@ -58,11 +58,11 @@ class PhysicalObjectView:
         self.colour = colour or average_colour(self.originalImage)
         self.label_font = font
         self.label_bottom_right = label_bottom_right
-        self.positions: collections.deque[Vector2] = collections.deque(maxlen=7000)
-        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
+        self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
+        self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
         self._bodyToTrack: PhysicalObjectView | None = None
         self._zoomLevel: float | None = None
-        self._offset: Vector2 | None = None
+        self._offset: Vector3 | None = None
         self._tail: bool | None = None
 
     def radius(self, zoom_level: float, scaled_radius: bool):
@@ -75,7 +75,7 @@ class PhysicalObjectView:
         self,
         window,
         zoomLevel: float,
-        offset: Vector2,
+        offset: Vector3,
         bodyToTrack: PhysicalObjectView,
         scaled_radius: bool,
         tail: bool,
@@ -129,14 +129,14 @@ class PhysicalObjectView:
         self.positions.append(self.body_model.position.copy())
 
     def update_screen_positions(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
+        self, zoomLevel: float, offset: Vector3, bodyToTrack: PhysicalObjectView, tail: bool
     ) -> None:
         """Calculate the screen positions relative to the body to track."""
         if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions: Sequence[Vector2] = self.positions
-            bodyToTrack_positions: Sequence[Vector2] = bodyToTrack.positions
+            my_positions: Sequence[Vector3] = self.positions
+            bodyToTrack_positions: Sequence[Vector3] = bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
@@ -151,7 +151,7 @@ class PhysicalObjectView:
         self._tail = tail
 
     def display_parameters_changed(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
+        self, zoomLevel: float, offset: Vector3, bodyToTrack: PhysicalObjectView, tail: bool
     ) -> bool:
         """Return whether the display parameters changed."""
         return (
@@ -161,6 +161,6 @@ class PhysicalObjectView:
             or tail != self._tail
         )
 
-    def get_distance_pixels(self, position: Vector2) -> float:
+    def get_distance_pixels(self, position: Vector3) -> float:
         """Get the distance in pixels to the given coordinate"""
         return (self._screen_positions[-1] - position).length()
