@@ -7,7 +7,7 @@ from random import randrange
 from typing import cast, Sequence
 
 import pygame
-from pygame.math import Vector2
+from pygame.math import Vector2, Vector3
 
 from models.physicalobject_model import PhysicalObjectModel
 
@@ -15,11 +15,12 @@ from models.physicalobject_model import PhysicalObjectModel
 def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
+def project(coordinates: Sequence[Vector3]) -> list[Vector2]:
+    return [Vector2(x, y) for (x, y, z) in coordinates]
 
-def relative_coordinates(coordinates: Sequence[Vector2], origin: Sequence[Vector2]) -> list[Vector2]:
+def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
-
 
 def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
@@ -58,7 +59,7 @@ class PhysicalObjectView:
         self.colour = colour or average_colour(self.originalImage)
         self.label_font = font
         self.label_bottom_right = label_bottom_right
-        self.positions: collections.deque[Vector2] = collections.deque(maxlen=7000)
+        self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
         self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
         self._bodyToTrack: PhysicalObjectView | None = None
         self._zoomLevel: float | None = None
@@ -135,13 +136,14 @@ class PhysicalObjectView:
         if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
             # We're displaying the tail and the display parameters have changed, so recalculate all positions
             self._screen_positions.clear()
-            my_positions: Sequence[Vector2] = self.positions
-            bodyToTrack_positions: Sequence[Vector2] = bodyToTrack.positions
+            my_positions: Sequence[Vector3] = self.positions
+            bodyToTrack_positions: Sequence[Vector3] = bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
+        positions = project(positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
         self._screen_positions.extend(positions)
