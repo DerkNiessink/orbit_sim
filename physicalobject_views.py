@@ -143,7 +143,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions = project(my_positions)
+        positions = project(positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
         self._screen_positions.extend(positions)
