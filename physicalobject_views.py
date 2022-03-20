@@ -7,21 +7,22 @@ from random import randrange
 from typing import cast, Sequence
 
 import pygame
-from pygame.math import Vector3
+from pygame.math import Vector2, Vector3
 
 from models.physicalobject_model import PhysicalObjectModel
 
 
-def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float) -> list[Vector3]:
+def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
+def project(coordinates: Sequence[Vector3]) -> list[Vector2]:
+    return [Vector2(x, y) for (x, y, z) in coordinates]
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
-
-def pan(coordinates: list[Vector3], offset: Vector3) -> list[Vector3]:
+def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
     return [coordinate + offset for coordinate in coordinates]
 
@@ -59,10 +60,10 @@ class PhysicalObjectView:
         self.label_font = font
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
-        self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
+        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
         self._bodyToTrack: PhysicalObjectView | None = None
         self._zoomLevel: float | None = None
-        self._offset: Vector3 | None = None
+        self._offset: Vector2 | None = None
         self._tail: bool | None = None
 
     def radius(self, zoom_level: float, scaled_radius: bool):
@@ -75,7 +76,7 @@ class PhysicalObjectView:
         self,
         window,
         zoomLevel: float,
-        offset: Vector3,
+        offset: Vector2,
         bodyToTrack: PhysicalObjectView,
         scaled_radius: bool,
         tail: bool,
@@ -129,7 +130,7 @@ class PhysicalObjectView:
         self.positions.append(self.body_model.position.copy())
 
     def update_screen_positions(
-        self, zoomLevel: float, offset: Vector3, bodyToTrack: PhysicalObjectView, tail: bool
+        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
     ) -> None:
         """Calculate the screen positions relative to the body to track."""
         if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
@@ -142,6 +143,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
+        positions = project(my_positions)
         positions = zoom(positions, self.scale_factor, zoomLevel)
         positions = pan(positions, offset)
         self._screen_positions.extend(positions)
@@ -151,7 +153,7 @@ class PhysicalObjectView:
         self._tail = tail
 
     def display_parameters_changed(
-        self, zoomLevel: float, offset: Vector3, bodyToTrack: PhysicalObjectView, tail: bool
+        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
     ) -> bool:
         """Return whether the display parameters changed."""
         return (
@@ -161,6 +163,6 @@ class PhysicalObjectView:
             or tail != self._tail
         )
 
-    def get_distance_pixels(self, position: Vector3) -> float:
+    def get_distance_pixels(self, position: Vector2) -> float:
         """Get the distance in pixels to the given coordinate"""
         return (self._screen_positions[-1] - position).length()

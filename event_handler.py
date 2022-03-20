@@ -4,7 +4,7 @@ import sys
 from typing import TYPE_CHECKING
 
 import pygame
-from pygame.math import Vector3
+from pygame.math import Vector2
 if TYPE_CHECKING:
     from pygame import EventType
 else:
@@ -19,7 +19,7 @@ class EventHandler:
     def __init__(self, camera: Camera, time: Time) -> None:
         self.camera = camera
         self.time = time
-        self._mouse_button_down_position = Vector3(-100, -100, 0)
+        self._mouse_button_down_position = Vector2(-100, -100)
 
     def handle_events(self) -> None:
         """Handle the queued pygame events."""
@@ -33,9 +33,9 @@ class EventHandler:
                 pygame.quit()
                 sys.exit()
             case EventType(type=pygame.MOUSEBUTTONDOWN, button=1):  # type: ignore[misc]
-                self._mouse_button_down_position = Vector3(*event.pos, 0)
+                self._mouse_button_down_position = Vector2(*event.pos)
             case EventType(type=pygame.MOUSEBUTTONUP, button=1):  # type: ignore[misc]
-                mouse_button_up_position = Vector3(*event.pos, 0)
+                mouse_button_up_position = Vector2(*event.pos)
                 if (self._mouse_button_down_position - mouse_button_up_position).length() <= 10:
                     self.camera.trackBody(mouse_button_up_position)
             case EventType(type=pygame.MOUSEBUTTONDOWN, button=4):  # type: ignore[misc]
@@ -44,7 +44,7 @@ class EventHandler:
                 self.camera.zoomIn()
             case EventType(type=pygame.MOUSEMOTION):  # type: ignore[misc]
                 if pygame.mouse.get_pressed()[0]:
-                    self.camera.pan(Vector3(*event.rel, 0))
+                    self.camera.pan(Vector2(*event.rel))
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):  # type: ignore[misc]
                 self.camera.toggle_labels()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):  # type: ignore[misc]
