@@ -8,9 +8,9 @@ import pygame
 from pygame.math import Vector3
 
 from models.constellation import CenterOfMass, Constellation
-from models.physicalobject_model import PhysicalObjectModel
+from models.physicalobject import PhysicalObjectModel
 from models.time import Time
-from physicalobject_views import PhysicalObjectView
+from views.physicalobject import PhysicalObjectView
 from camera import Camera
 from event_handler import EventHandler
 

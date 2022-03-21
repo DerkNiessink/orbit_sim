@@ -9,7 +9,8 @@ from pygame.surface import Surface
 from models.time import Time
 from models.constellation import Constellation
 from constellations.solar_system import AU
-from physicalobject_views import PhysicalObjectView, ViewSettings
+from views.physicalobject import PhysicalObjectView
+from views.settings import ViewSettings
 
 
 class Camera:

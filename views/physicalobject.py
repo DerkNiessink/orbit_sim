@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import collections
 import math
-from dataclasses import dataclass
+import typing
 from pathlib import Path
 from random import randrange
 from typing import cast, Sequence
@@ -10,7 +8,14 @@ from typing import cast, Sequence
 import pygame
 from pygame.math import Vector2, Vector3
 
-from models.physicalobject_model import PhysicalObjectModel
+if typing.TYPE_CHECKING:
+    from pygame import SysFont
+else:
+    from pygame.font import SysFont
+
+from models.physicalobject import PhysicalObjectModel
+
+from .settings import ViewSettings
 
 
 def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
@@ -49,34 +54,6 @@ def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
     return (average_r, average_g, average_b)
 
 
-@dataclass
-class ViewSettings:
-    """Data class to hold settings that determine how the simulation looks."""
-    bodyToTrack: PhysicalObjectView
-    zoomLevel: float = 1.0
-    offset: Vector2 = Vector2(0, 0)
-    normalVector: Vector3 = Vector3(0, 0, 1)
-    scaled_radius: bool = False
-    tail: bool = False
-    labels: bool = False
-
-    def copy(self) -> ViewSettings:
-        """Return a copy of the settings."""
-        return ViewSettings(
-            self.bodyToTrack, self.zoomLevel, self.offset.copy(), self.scaled_radius, self.tail, self.labels
-        )
-
-    def tail_settings_changed(self, other_settings: ViewSettings) -> bool:
-        """Return whether any settings that determine the tail changed."""
-        return (
-            other_settings.bodyToTrack != self.bodyToTrack
-            or other_settings.zoomLevel != self.zoomLevel
-            or other_settings.offset != self.offset
-            or other_settings.tail != self.tail
-            or other_settings.normalVector != self.normalVector
-        )
-
-
 class PhysicalObjectView:
     def __init__(
         self,
@@ -84,7 +61,7 @@ class PhysicalObjectView:
         scale_factor: float,
         colour: tuple[int, int, int],
         image: Path,
-        font: pygame.SysFont,
+        font: SysFont,
         body: PhysicalObjectModel,
         tail_length: int,
         label_bottom_right=True,
