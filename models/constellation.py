@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from models.physicalobject_model import PhysicalObjectModel
+from .physicalobject import PhysicalObjectModel
 
 from pygame.math import Vector3
 
