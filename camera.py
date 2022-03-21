@@ -75,6 +75,10 @@ class Camera:
         "Toogle the tail of the bodies"
         self.settings.tail = not self.settings.tail
 
+    def save_screenshot(self) -> None:
+        """Save a screenshot of the current screen."""
+        pygame.image.save(self.window, "screenshot.png")
+
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
