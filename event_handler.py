@@ -45,6 +45,8 @@ class EventHandler:
             case EventType(type=pygame.MOUSEMOTION):  # type: ignore[misc]
                 if pygame.mouse.get_pressed()[0]:
                     self.camera.pan(Vector2(*event.rel))
+                if pygame.mouse.get_pressed()[2]:
+                    self.camera.rotate(Vector2(*event.rel))
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):  # type: ignore[misc]
                 self.camera.toggle_labels()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):  # type: ignore[misc]
@@ -55,3 +57,6 @@ class EventHandler:
                 self.time.faster()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_DOWN):  # type: ignore[misc]
                 self.time.slower()
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_r): # type: ignore[misc]
+                self.camera.reset_rotation()
+            

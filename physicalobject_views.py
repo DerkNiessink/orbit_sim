@@ -18,20 +18,23 @@ def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float)
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
 
-def project(coordinates: Sequence[Vector3]) -> list[Vector2]:
+def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector2]:
     """Project the 3D coordinates onto a 2D plane."""
-    return [Vector2(coordinate.x, coordinate.y) for coordinate in coordinates]
 
+    a, b, c = 2.1*math.sin(normalVector.x), 2.1*math.sin(normalVector.y), normalVector.z
+    return [
+        Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
+    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) 
+    for coordinate in coordinates
+    ]
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
-
 def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
     return [coordinate + offset for coordinate in coordinates]
-
 
 def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
     """Calculate the average colour of an image by sampling a limited number of pixels."""
@@ -52,6 +55,7 @@ class ViewSettings:
     bodyToTrack: PhysicalObjectView
     zoomLevel: float = 1.0
     offset: Vector2 = Vector2(0, 0)
+    normalVector: Vector3 = Vector3(0, 0, 1)
     scaled_radius: bool = False
     tail: bool = False
     labels: bool = False
@@ -69,6 +73,7 @@ class ViewSettings:
             or other_settings.zoomLevel != self.zoomLevel
             or other_settings.offset != self.offset
             or other_settings.tail != self.tail
+            or other_settings.normalVector != self.normalVector
         )
 
 
@@ -160,7 +165,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
         positions_3d = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions_2d = project(positions_3d)
+        positions_2d = project(positions_3d, settings.normalVector)
         positions_2d = zoom(positions_2d, self.scale_factor, settings.zoomLevel)
         positions_2d = pan(positions_2d, settings.offset)
         self._screen_positions.extend(positions_2d)

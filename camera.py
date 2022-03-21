@@ -3,7 +3,7 @@
 from typing import Sequence
 
 import pygame
-from pygame.math import Vector2
+from pygame.math import Vector2, Vector3
 from pygame.surface import Surface
 
 from models.time import Time
@@ -55,6 +55,12 @@ class Camera:
     def pan(self, delta: Vector2) -> None:
         """Pan the camera."""
         self.settings.offset += delta
+
+    def rotate(self, delta: Vector2) -> None:
+        self.settings.normalVector += Vector3(delta.x/ 200, delta.y/ 200, 0)
+
+    def reset_rotation(self) -> None:
+        self.settings.normalVector = Vector3(0, 0, 1)
 
     def toggle_labels(self) -> None:
         """Toggle the display of labels."""
