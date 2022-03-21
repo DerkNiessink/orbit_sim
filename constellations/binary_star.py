@@ -19,9 +19,9 @@ constellation = {
         "tail_length": 3000,
         "image": "resources/star1.png",
     },
-       "Star 3": {
-        "init_position": (-4 * AU, 0 , 0),
-        "init_velocity": (0, 0, -10000),
+       "Planet": {
+        "init_position": (-2 * AU, 0 , 0),
+        "init_velocity": (0, 0, -15000),
         "radius": 1.711 * radius_sun,
         "mass": 0.0000001 * mass_sun,
         "tail_length": 3000,
