@@ -26,7 +26,7 @@ MOUSE
 * Drag left mouse button: pan the camera.
 * Drag right mouse button: rotate the camera.
 * Press left mouse button: change perspective to the nearest body.
-* mouse wheel: zoom. 
+* Mouse wheel: zoom. 
 
 ## Profiling
 
