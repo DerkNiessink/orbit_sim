@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import collections
 import math
+from dataclasses import dataclass
 from pathlib import Path
 from random import randrange
 from typing import cast, Sequence
@@ -13,14 +14,19 @@ from models.physicalobject_model import PhysicalObjectModel
 
 
 def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
+    """Zoom the coordinates with a scale factor and a zoom level."""
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
+
 def project(coordinates: Sequence[Vector3]) -> list[Vector2]:
-    return [Vector2(x, y) for (x, y, z) in coordinates]
+    """Project the 3D coordinates onto a 2D plane."""
+    return [Vector2(coordinate.x, coordinate.y) for coordinate in coordinates]
+
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
+
 
 def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
@@ -40,6 +46,32 @@ def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
     return (average_r, average_g, average_b)
 
 
+@dataclass
+class ViewSettings:
+    """Data class to hold settings that determine how the simulation looks."""
+    bodyToTrack: PhysicalObjectView
+    zoomLevel: float = 1.0
+    offset: Vector2 = Vector2(0, 0)
+    scaled_radius: bool = False
+    tail: bool = False
+    labels: bool = False
+
+    def copy(self) -> ViewSettings:
+        """Return a copy of the settings."""
+        return ViewSettings(
+            self.bodyToTrack, self.zoomLevel, self.offset.copy(), self.scaled_radius, self.tail, self.labels
+        )
+
+    def tail_settings_changed(self, other_settings: ViewSettings) -> bool:
+        """Return whether any settings that determine the tail changed."""
+        return (
+            other_settings.bodyToTrack != self.bodyToTrack
+            or other_settings.zoomLevel != self.zoomLevel
+            or other_settings.offset != self.offset
+            or other_settings.tail != self.tail
+        )
+
+
 class PhysicalObjectView:
     def __init__(
         self,
@@ -47,7 +79,7 @@ class PhysicalObjectView:
         scale_factor: float,
         colour: tuple[int, int, int],
         image: Path,
-        font: pygame.font.SysFont,
+        font: pygame.SysFont,
         body: PhysicalObjectModel,
         tail_length: int,
         label_bottom_right=True,
@@ -61,10 +93,7 @@ class PhysicalObjectView:
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
         self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
-        self._bodyToTrack: PhysicalObjectView | None = None
-        self._zoomLevel: float | None = None
-        self._offset: Vector2 | None = None
-        self._tail: bool | None = None
+        self._previous_settings = ViewSettings(self)
 
     def radius(self, zoom_level: float, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
@@ -72,19 +101,10 @@ class PhysicalObjectView:
         else:
             return math.log(zoom_level * 10)
 
-    def draw(
-        self,
-        window,
-        zoomLevel: float,
-        offset: Vector2,
-        bodyToTrack: PhysicalObjectView,
-        scaled_radius: bool,
-        tail: bool,
-        label: bool,
-    ):
+    def draw(self, window, settings: ViewSettings):
         """Draw the body relative to the body to track."""
-        self.update_screen_positions(zoomLevel, offset, bodyToTrack, tail)
-        if self != bodyToTrack and len(self._screen_positions) > 2 and tail:
+        self.update_screen_positions(settings)
+        if self != settings.bodyToTrack and len(self._screen_positions) > 2 and settings.tail:
             pygame.draw.lines(
                 window,
                 self.colour,
@@ -96,21 +116,20 @@ class PhysicalObjectView:
             pygame.transform.scale(
                 self.originalImage,
                 (
-                    self.radius(zoomLevel, scaled_radius) * 2,
-                    self.radius(zoomLevel, scaled_radius) * 2,
+                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
+                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
                 ),
             ),
             (
-                self._screen_positions[-1][0] - self.radius(zoomLevel, scaled_radius),
-                self._screen_positions[-1][1] - self.radius(zoomLevel, scaled_radius),
+                self._screen_positions[-1][0] - self.radius(settings.zoomLevel, settings.scaled_radius),
+                self._screen_positions[-1][1] - self.radius(settings.zoomLevel, settings.scaled_radius),
             ),
         )
-        if label:
-            self.draw_label(window, zoomLevel, scaled_radius)
+        if settings.labels:
+            self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
 
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
-
         label_zoom = self.label_font.render(
             f"{self.name}",
             True,
@@ -129,39 +148,23 @@ class PhysicalObjectView:
         """Update the list of physical model object positions."""
         self.positions.append(self.body_model.position.copy())
 
-    def update_screen_positions(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
-    ) -> None:
+    def update_screen_positions(self, settings: ViewSettings) -> None:
         """Calculate the screen positions relative to the body to track."""
-        if tail and self.display_parameters_changed(zoomLevel, offset, bodyToTrack, tail):
-            # We're displaying the tail and the display parameters have changed, so recalculate all positions
+        if settings.tail and settings.tail_settings_changed(self._previous_settings):
+            # We're displaying the tail and settings that determine the tail have changed, so recalculate all positions
             self._screen_positions.clear()
             my_positions: Sequence[Vector3] = self.positions
-            bodyToTrack_positions: Sequence[Vector3] = bodyToTrack.positions
+            bodyToTrack_positions: Sequence[Vector3] = settings.bodyToTrack.positions
         else:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
-            bodyToTrack_positions = [bodyToTrack.positions[-1]]
-        positions = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions = project(positions)
-        positions = zoom(positions, self.scale_factor, zoomLevel)
-        positions = pan(positions, offset)
-        self._screen_positions.extend(positions)
-        self._bodyToTrack = bodyToTrack
-        self._zoomLevel = zoomLevel
-        self._offset = offset.copy()
-        self._tail = tail
-
-    def display_parameters_changed(
-        self, zoomLevel: float, offset: Vector2, bodyToTrack: PhysicalObjectView, tail: bool
-    ) -> bool:
-        """Return whether the display parameters changed."""
-        return (
-            bodyToTrack != self._bodyToTrack
-            or zoomLevel != self._zoomLevel
-            or offset != self._offset
-            or tail != self._tail
-        )
+            bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
+        positions_3d = relative_coordinates(my_positions, bodyToTrack_positions)
+        positions_2d = project(positions_3d)
+        positions_2d = zoom(positions_2d, self.scale_factor, settings.zoomLevel)
+        positions_2d = pan(positions_2d, settings.offset)
+        self._screen_positions.extend(positions_2d)
+        self._previous_settings = settings.copy()
 
     def get_distance_pixels(self, position: Vector2) -> float:
         """Get the distance in pixels to the given coordinate"""
