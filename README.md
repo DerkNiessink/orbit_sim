@@ -13,16 +13,19 @@ Application for simulating gravity between bodies with [Newton's law of universa
 
 The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for examples.
 
-## Button events
+## Controls
 
-### KEYS
+### Keyboard
+
 * Press `t` key: show/hide body tail.
 * Press `s` key: set/unset bodies to scale.
+* Press `S` key: save a screenshot under the name "screenshot.png".
 * Press `UP` key: increase time scale.
 * Press `DOWN` key: decrease time scale.
 * Press `r` key: reset camera rotation. 
 
-### MOUSE
+### Mouse
+
 * Drag left mouse button: pan the camera.
 * Drag right mouse button: rotate the camera.
 * Press left mouse button: change perspective to the nearest body.

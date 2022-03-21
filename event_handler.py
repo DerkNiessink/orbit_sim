@@ -50,7 +50,11 @@ class EventHandler:
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):  # type: ignore[misc]
                 self.camera.toggle_labels()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):  # type: ignore[misc]
-                self.camera.toggle_scaled_radius()
+                if event.mod == pygame.KMOD_NONE:
+                    self.camera.toggle_scaled_radius()
+                else:
+                    print("Shift-S")
+                    self.camera.save_screenshot()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_t):  # type: ignore[misc]
                 self.camera.toggle_tail()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_UP):  # type: ignore[misc]
