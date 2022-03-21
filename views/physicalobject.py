@@ -33,25 +33,15 @@ def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vecto
     for coordinate in coordinates
     ]
 
+
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
     """Transform the coordinates into coordinates relative to the origin."""
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
+
 def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
     """Pan the coordinates with the given offset."""
     return [coordinate + offset for coordinate in coordinates]
-
-def average_colour(image: pygame.surface.Surface) -> tuple[int, int, int]:
-    """Calculate the average colour of an image by sampling a limited number of pixels."""
-    width, height = image.get_width(), image.get_height()
-    sample_size = round(math.sqrt(width * height))
-    random_points = [(randrange(0, width), randrange(0, height)) for _ in range(sample_size)]
-    colours = [cast(pygame.Color, image.get_at(point)) for point in random_points]
-    colours = [colour for colour in colours if colour.a > 0]  # Ignore transparent pixels
-    average_r = round(sum(colour.r for colour in colours) / len(colours))
-    average_g = round(sum(colour.g for colour in colours) / len(colours))
-    average_b = round(sum(colour.b for colour in colours) / len(colours))
-    return (average_r, average_g, average_b)
 
 
 class PhysicalObjectView:
@@ -70,7 +60,7 @@ class PhysicalObjectView:
         self.scale_factor = scale_factor
         self.body_model = body
         self.originalImage = pygame.image.load(image)
-        self.colour = colour or average_colour(self.originalImage)
+        self.colour = colour or pygame.transform.average_color(self.originalImage)
         self.label_font = font
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
