@@ -52,8 +52,7 @@ class EventHandler:
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):  # type: ignore[misc]
                 if event.mod == pygame.KMOD_NONE:
                     self.camera.toggle_scaled_radius()
-                else:
-                    print("Shift-S")
+                elif event.mod & pygame.KMOD_SHIFT:
                     self.camera.save_screenshot()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_t):  # type: ignore[misc]
                 self.camera.toggle_tail()

@@ -77,7 +77,6 @@ class Camera:
 
     def save_screenshot(self) -> None:
         """Save a screenshot of the current screen."""
-        print("screenshot!")
         pygame.image.save(self.window, "screenshot.png")
 
     def update(self, elapsed_time: float) -> None:
