@@ -19,12 +19,20 @@ constellation = {
         "tail_length": 3000,
         "image": "resources/star1.png",
     },
-       "Planet": {
-        "init_position": (-2 * AU, 0 , 0),
-        "init_velocity": (0, 0, -15000),
+       "Planet 1": {
+        "init_position": (-3 * AU, 0 , 0),
+        "init_velocity": (0, 0, -10000),
         "radius": 1.711 * radius_sun,
-        "mass": 0.0000001 * mass_sun,
-        "tail_length": 3000,
+        "mass": 0.000001 * mass_sun,
+        "tail_length": 1000,
+        "image": "resources/planet1.png",
+    },
+        "Planet 2": {
+        "init_position": (2.5 * AU, 0 , 0),
+        "init_velocity": (0, 0, -70000),
+        "radius": 1.711 * radius_sun,
+        "mass": 0.000001 * mass_sun,
+        "tail_length": 100,
         "image": "resources/planet1.png",
     },
 }
