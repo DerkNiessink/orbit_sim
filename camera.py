@@ -18,6 +18,7 @@ class Camera:
     MAX_ZOOM_LEVEL = 100000
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
+    SECONDS_PER_YEAR = 365.25 * 24 * 60 * 60  # One Julian year conform https://en.wikipedia.org/wiki/Julian_year_(astronomy)
 
     def __init__(
         self,
@@ -32,7 +33,6 @@ class Camera:
         self.background_image = pygame.image.load("resources/stars_background.png")
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
-        self.elapsed_time_to_draw = 0.0
         self.font = pygame.font.SysFont("monospace", 18)
 
     def initialOffset(self) -> Vector2:
@@ -93,15 +93,9 @@ class Camera:
         for body in self.body_viewers:
             body.draw(self.window, self.settings)
 
-        # draw the elapsed time in steps of 10 days
-        elapsed_time = elapsed_time / (2400 * 36)  # Convert seconds to days
-        if int(elapsed_time) % 10 == 0:
-            self.elapsed_time_to_draw = elapsed_time
-        if elapsed_time < 600:
-            elapsed_time_text = f"{int(self.elapsed_time_to_draw)} days"
-        else:
-            elapsed_time_text = f"{round(int(self.elapsed_time_to_draw) / 365.25, 1)} years"
-        self.draw_label(f"Elapsed time: {elapsed_time_text}", (25, 25))
+        # draw the elapsed time in years
+        elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
+        self.draw_label(f"Elapsed time: {elapsed_years} years", (25, 25))
 
         # display the spatial scale
         pixel_size = 0.026  # cm
