@@ -58,7 +58,8 @@ class Camera:
         self.settings.offset += delta
 
     def rotate(self, delta: Vector2) -> None:
-        self.settings.normalVector += Vector3(delta.x/ 200, delta.y/ 200, 0)
+        speed_factor = 1/300
+        self.settings.normalVector += Vector3(delta.x, delta.y, 0) * speed_factor
 
     def reset_rotation(self) -> None:
         self.settings.normalVector = Vector3(0, 0, 1)
