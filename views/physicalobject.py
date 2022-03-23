@@ -26,7 +26,8 @@ def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float)
 def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector2]:
     """Project the 3D coordinates onto a 2D plane."""
     
-    a, b, c = min(abs(normalVector.x), 2), min(abs(normalVector.y), 2), normalVector.z
+    boundary_value = 2
+    a, b, c = min(abs(normalVector.x), boundary_value), min(abs(normalVector.y), boundary_value), normalVector.z
     if normalVector.x < 0:
         a = -a
     if normalVector.y < 0:
