@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from typing import Sequence
 
 from pygame.math import Vector3
@@ -43,10 +44,15 @@ class PhysicalObjectModel:
 
     def calculate_two_body_force(self, other_body: PhysicalObjectModel) -> Vector3:
         """Calculate the force between self and other body."""
-        position1, position2 = self.position, other_body.position
-        distance = (position2 - position1).length()
-        force_direction = (position2 - position1).normalize()
-        return force_direction * self.gravitational_constant * self.mass * other_body.mass / (distance ** 2)
+        vector = other_body.position - self.position
+        distance = vector.length()
+        force_direction = vector.normalize()
+        return force_direction * self.mass_product(other_body) / (distance ** 2)
+
+    @cache
+    def mass_product(self, other_body: PhysicalObjectModel) -> float:
+        """Return the product of the masses and the gravitational constant."""
+        return self.gravitational_constant * self.mass * other_body.mass
 
     def update_position(self, bodies: Sequence[PhysicalObjectModel], time_step: float) -> None:
         """Update the position of the body."""
