@@ -28,8 +28,8 @@ def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vecto
     normalVector = normalVector.normalize()
     a, b, c = normalVector.x, normalVector.y, normalVector.z
     return [
-        Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
-    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) 
+        Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z), 
+    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)) 
     for coordinate in coordinates
     ]
 
