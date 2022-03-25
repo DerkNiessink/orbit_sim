@@ -28,11 +28,13 @@ def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vecto
     rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
     normalVector = normalVector.normalize()
     a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
-    return [
+    z_coordinates = [(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) for coordinate in coordinates]
+    projection = [
         Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
     coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2)) 
     for coordinate in coordinates
     ]
+    return projection, z_coordinates 
 
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
@@ -78,13 +80,15 @@ class PhysicalObjectView:
         """Draw the body relative to the body to track."""
         self.update_screen_positions(settings)
         if self != settings.bodyToTrack and len(self._screen_positions) > 2 and settings.tail:
-            pygame.draw.lines(
-                window,
-                self.colour,
-                closed=False,
-                points=[(pos.x, pos.y) for pos in self._screen_positions],
-                width=1,
-            )
+            for index in range(len(self._screen_positions)-1):
+
+                pygame.draw.line(
+                    window,
+                    self.colour,
+                    start_pos=self._screen_positions[index],   
+                    end_pos =self._screen_positions[index+1],
+                    width=1,
+                )
         window.blit(
             pygame.transform.scale(
                 self.originalImage,
@@ -133,7 +137,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
         positions_3d = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions_2d = project(positions_3d, settings.normalVector)
+        positions_2d, z_coordinates = project(positions_3d, settings.normalVector)
         positions_2d = zoom(positions_2d, self.scale_factor, settings.zoomLevel)
         positions_2d = pan(positions_2d, settings.offset)
         self._screen_positions.extend(positions_2d)
