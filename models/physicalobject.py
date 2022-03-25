@@ -25,6 +25,7 @@ class PhysicalObjectModel:
         self.velocity = initial_velocity
         self.radius = radius
         self.mass = mass  # kg
+        self.id = id(self)
 
     def net_force(self, bodies: Sequence[PhysicalObjectModel]) -> Vector3:
         """Calculate the net force on the body."""
@@ -34,7 +35,7 @@ class PhysicalObjectModel:
         """Return the force between self and other body, from the cache or calculated."""
         if self == other_body:
             return self.null_vector
-        key = (self, other_body) if id(self) < id(other_body) else (other_body, self)
+        key = (self, other_body) if self.id < other_body.id else (other_body, self)
         if key in self.force_cache:
             force = -self.force_cache[key]  # Reverse the force direction
             del self.force_cache[key]  # We need the cached force only once
