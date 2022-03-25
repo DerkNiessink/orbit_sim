@@ -25,11 +25,12 @@ def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float)
 
 def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector2]:
     """Project the 3D coordinates onto a 2D plane."""
-
-    a, b, c = 2*math.sin(normalVector.x), 2*math.sin(normalVector.y), normalVector.z
+    rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
+    normalVector = normalVector.normalize()
+    a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
     return [
         Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
-    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) 
+    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2)) 
     for coordinate in coordinates
     ]
 
