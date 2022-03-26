@@ -69,6 +69,7 @@ class PhysicalObjectView:
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
         self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
         self._previous_settings = ViewSettings(self)
+        self._z_coordinates: collections.deque[int] = collections.deque(maxlen=tail_length)
 
     def radius(self, zoom_level: float, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
@@ -78,33 +79,22 @@ class PhysicalObjectView:
 
     def draw(self, window, settings: ViewSettings):
         """Draw the body relative to the body to track."""
-        self.update_screen_positions(settings)
-        if self != settings.bodyToTrack and len(self._screen_positions) > 2 and settings.tail:
-            for index in range(len(self._screen_positions)-1):
-
-                pygame.draw.line(
-                    window,
-                    self.colour,
-                    start_pos=self._screen_positions[index],   
-                    end_pos =self._screen_positions[index+1],
-                    width=1,
-                )
         window.blit(
-            pygame.transform.scale(
-                self.originalImage,
-                (
-                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
-                    self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
-                ),
-            ),
+        pygame.transform.scale(
+            self.originalImage,
             (
-                self._screen_positions[-1][0] - self.radius(settings.zoomLevel, settings.scaled_radius),
-                self._screen_positions[-1][1] - self.radius(settings.zoomLevel, settings.scaled_radius),
+                self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
+                self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
             ),
+        ),
+        (
+            self._screen_positions[-1][0] - self.radius(settings.zoomLevel, settings.scaled_radius),
+            self._screen_positions[-1][1] - self.radius(settings.zoomLevel, settings.scaled_radius),
+        ),
         )
         if settings.labels:
             self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
-
+      
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
         label_zoom = self.label_font.render(
@@ -141,7 +131,9 @@ class PhysicalObjectView:
         positions_2d = zoom(positions_2d, self.scale_factor, settings.zoomLevel)
         positions_2d = pan(positions_2d, settings.offset)
         self._screen_positions.extend(positions_2d)
+        self._z_coordinates.extend(z_coordinates)
         self._previous_settings = settings.copy()
+        
 
     def get_distance_pixels(self, position: Vector2) -> float:
         """Get the distance in pixels to the given coordinate"""

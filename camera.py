@@ -12,6 +12,7 @@ from models.constellation import Constellation
 from constellations.solar_system import AU
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
+from views.draw import draw
 
 
 class Camera:
@@ -92,8 +93,13 @@ class Camera:
             body.update_position()
 
         # render bodies
+        screen_positions = []
         for body in self.body_viewers:
+            body.update_screen_positions(self.settings)
             body.draw(self.window, self.settings)
+            for position in body._screen_positions:
+                screen_positions.append(position)   
+        draw(self.window, self.settings, screen_positions)
 
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
