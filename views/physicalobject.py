@@ -66,7 +66,7 @@ class PhysicalObjectView:
         self.colour = colour or pygame.transform.average_color(self.originalImage)
         self.label_font = font
         self.label_bottom_right = label_bottom_right
-        self.positions: collections.deque[Vector3] = collections.deque(maxlen=7000)
+        self.positions: collections.deque[Vector3] = collections.deque(maxlen=5000)
         self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
         self._previous_settings = ViewSettings(self)
         self._z_coordinates: collections.deque[int] = collections.deque(maxlen=tail_length)
