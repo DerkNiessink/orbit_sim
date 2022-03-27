@@ -95,15 +95,13 @@ class Camera:
 
         # render bodies
         screen_positions = []
-        z_coordinates = []
         colours = []
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             body.draw(self.window, self.settings)
             screen_positions.append(body._screen_positions)   
-            z_coordinates.append(body._z_coordinates)
             colours.append(body.colour)
-        self.DrawTail.draw(self.window, self.settings, screen_positions, z_coordinates, colours)
+        self.DrawTail.draw(self.window, self.settings, screen_positions, colours)
 
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)

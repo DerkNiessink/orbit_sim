@@ -18,7 +18,7 @@ from models.physicalobject import PhysicalObjectModel
 from .settings import ViewSettings
 
 
-def zoom(coordinates: Sequence[Vector2], scale_factor: float, zoom_level: float) -> list[Vector2]:
+def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float) -> list[Vector2]:
     """Zoom the coordinates with a scale factor and a zoom level."""
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
@@ -28,13 +28,13 @@ def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vecto
     rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
     normalVector = normalVector.normalize()
     a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
-    z_coordinates = [(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) for coordinate in coordinates]
     projection = [
-        Vector2(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
-    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2)) 
+        Vector3(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
+    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2), 
+    coordinate.z - c*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) 
     for coordinate in coordinates
     ]
-    return projection, z_coordinates 
+    return projection
 
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
@@ -42,9 +42,9 @@ def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector
     return [coordinate - origin for coordinate, origin in zip(coordinates, origin)]
 
 
-def pan(coordinates: list[Vector2], offset: Vector2) -> list[Vector2]:
+def pan(coordinates: list[Vector3], offset: Vector2) -> list[Vector3]:
     """Pan the coordinates with the given offset."""
-    return [coordinate + offset for coordinate in coordinates]
+    return [coordinate + Vector3(offset.x, offset.y, 0) for coordinate in coordinates]
 
 
 class PhysicalObjectView:
@@ -67,9 +67,8 @@ class PhysicalObjectView:
         self.label_font = font
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=5000)
-        self._screen_positions: collections.deque[Vector2] = collections.deque(maxlen=tail_length)
+        self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
         self._previous_settings = ViewSettings(self)
-        self._z_coordinates: collections.deque[int] = collections.deque(maxlen=tail_length)
 
     def radius(self, zoom_level: float, scaled_radius: bool):
         if scaled_radius and self.name != "Center of mass":
@@ -126,15 +125,14 @@ class PhysicalObjectView:
             # We're not displaying the tail or the display parameters have not changed, so only calculate the new point
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
-        positions_3d = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions_2d, z_coordinates = project(positions_3d, settings.normalVector)
-        positions_2d = zoom(positions_2d, self.scale_factor, settings.zoomLevel)
-        positions_2d = pan(positions_2d, settings.offset)
-        self._screen_positions.extend(positions_2d)
-        self._z_coordinates.extend(z_coordinates)
+        positions = relative_coordinates(my_positions, bodyToTrack_positions)
+        positions = project(positions , settings.normalVector)
+        positions = zoom(positions, self.scale_factor, settings.zoomLevel)
+        positions = pan(positions, settings.offset)
+        self._screen_positions.extend(positions)
         self._previous_settings = settings.copy()
         
 
-    def get_distance_pixels(self, position: Vector2) -> float:
+    def get_distance_pixels(self, position: Vector3) -> float:
         """Get the distance in pixels to the given coordinate"""
-        return (self._screen_positions[-1] - position).length()
+        return (Vector2(self._screen_positions[-1].x, self._screen_positions[-1].y) - position).length()
