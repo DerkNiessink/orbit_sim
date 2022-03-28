@@ -46,6 +46,10 @@ class Camera:
         self.settings.bodyToTrack = sorted_bodies[0][1]
         self.settings.offset = self.initialOffset()
 
+    def reset_BodyToTrack(self):
+        """Reset the bodyToTrack to the center of mass"""
+        self.settings.bodyToTrack = self.body_viewers[0]
+
     def zoomIn(self) -> None:
         """Zoom in to a maximum of 0.1."""
         self.settings.zoomLevel = max(self.settings.zoomLevel / self.ZOOM_STEP, self.MIN_ZOOM_LEVEL)
