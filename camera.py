@@ -12,7 +12,6 @@ from models.constellation import Constellation
 from constellations.solar_system import AU
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
-from views.draw import draw
 
 
 class Camera:

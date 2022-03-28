@@ -1,10 +1,11 @@
 import pygame
 from pygame.math import Vector2, Vector3
+from pygame.surface import Surface
 
 
 class Drawable:
     """Class to represent drawable objects."""
-    def __init__(self, screen_positions: tuple[Vector3, Vector3], colour: pygame.Color) -> None:
+    def __init__(self, screen_positions: tuple[Vector3, Vector3], colour: tuple[int, int, int]) -> None:
         self.start_position = Vector2(screen_positions[0].x, screen_positions[0].y)
         self.end_position = Vector2(screen_positions[1].x, screen_positions[1].y)
         self.z = screen_positions[0].z
@@ -21,6 +22,6 @@ class Drawable:
         assert isinstance(other, Drawable)
         return self.z == other.z
 
-    def draw(self, window: pygame.Surface) -> None:
+    def draw(self, window: Surface) -> None:
         """Draw the drawable on the window."""
         pygame.draw.line(window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width)
