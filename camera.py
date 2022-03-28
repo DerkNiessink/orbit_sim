@@ -1,6 +1,5 @@
 """Orbit sim camera."""
 
-from re import S
 from typing import Sequence
 
 import pygame
@@ -10,6 +9,7 @@ from pygame.surface import Surface
 from models.time import Time
 from models.constellation import Constellation
 from constellations.solar_system import AU
+from views.draw import Drawable
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
 
@@ -92,8 +92,12 @@ class Camera:
             body.update_position()
 
         # render bodies
+        drawables: list[Drawable] = []
         for body in self.body_viewers:
-            body.draw(self.window, self.settings)
+            body.update_screen_positions(self.settings)
+            drawables.extend(body.drawables(self.settings))
+        for drawable in sorted(drawables):
+            drawable.draw(self.window)
 
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
