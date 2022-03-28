@@ -28,13 +28,15 @@ def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vecto
     rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
     normalVector = normalVector.normalize()
     a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
-    projection = [
-        Vector3(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2),
-    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2),
-    coordinate.z - c*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2))
-    for coordinate in coordinates
+    denominator = math.sqrt(a**2 + b**2 + c**2)
+    return [
+        Vector3(
+            coordinate.x - a * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator,
+            coordinate.y - b * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator,
+            coordinate.z - c * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator
+        )
+        for coordinate in coordinates
     ]
-    return projection
 
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
@@ -126,7 +128,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions = project(positions , settings.normalVector)
+        positions = project(positions, settings.normalVector)
         positions = zoom(positions, self.scale_factor, settings.zoomLevel)
         positions = pan(positions, settings.offset)
         self._screen_positions.extend(positions)
