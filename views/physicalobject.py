@@ -15,7 +15,7 @@ else:
 
 from models.physicalobject import PhysicalObjectModel
 
-from .draw import Drawable
+from .draw import Drawable, Image, Label, Line
 from .settings import ViewSettings
 
 
@@ -79,47 +79,25 @@ class PhysicalObjectView:
         else:
             return math.log(zoom_level * 10)
 
-    def draw(self, window, settings: ViewSettings):
-        """Draw the body relative to the body to track."""
-        window.blit(
-        pygame.transform.scale(
-            self.originalImage,
-            (
-                self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
-                self.radius(settings.zoomLevel, settings.scaled_radius) * 2,
-            ),
-        ),
-        (
-            self._screen_positions[-1][0] - self.radius(settings.zoomLevel, settings.scaled_radius),
-            self._screen_positions[-1][1] - self.radius(settings.zoomLevel, settings.scaled_radius),
-        ),
-        )
-        if settings.labels:
-            self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
-
-    def drawables(self, settings: ViewSettings) -> list[Drawable]:
+    def drawables(self, settings: ViewSettings) -> Sequence[Drawable]:
         """Return the drawables."""
-        drawables = []
+        radius = self.radius(settings.zoomLevel, settings.scaled_radius)
+        current_position = self._screen_positions[-1]
+        image_position = Vector3(current_position.x - radius, current_position.y - radius, current_position.z)
+        scaled_image = pygame.transform.scale(self.originalImage, (radius * 2, radius * 2))
+        drawables: list[Drawable] = [Image(image_position, scaled_image)]
+        if settings.labels:
+            label = self.label_font.render(f"{self.name}", True, (255, 255, 255))
+            label_position = Vector3(
+                current_position.x + radius,
+                current_position.y + radius if self.label_bottom_right else current_position.y - radius,
+                current_position.z
+            )
+            drawables.append(Label(label_position, label))
         if settings.tail:
             for index in range(len(self._screen_positions) - 1):
-                drawables.append(Drawable((self._screen_positions[index], self._screen_positions[index + 1]), self.colour))
+                drawables.append(Line((self._screen_positions[index], self._screen_positions[index + 1]), self.colour))
         return drawables
-
-    def draw_label(self, window, zoomLevel, scaled_radius: bool):
-        """Draw a label of the name of the body"""
-        label_zoom = self.label_font.render(
-            f"{self.name}",
-            True,
-            (255, 255, 255),
-        )
-        radius = self.radius(zoomLevel, scaled_radius)
-        label_x = self._screen_positions[-1][0] + radius
-        label_y = (
-            self._screen_positions[-1][1] + radius
-            if self.label_bottom_right
-            else self._screen_positions[-1][1] - radius
-        )
-        window.blit(label_zoom, (label_x, label_y))
 
     def update_position(self):
         """Update the list of physical model object positions."""
@@ -142,7 +120,6 @@ class PhysicalObjectView:
         positions = pan(positions, settings.offset)
         self._screen_positions.extend(positions)
         self._previous_settings = settings.copy()
-
 
     def get_distance_pixels(self, position: Vector2) -> float:
         """Get the distance in pixels to the given coordinate."""
