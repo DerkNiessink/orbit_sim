@@ -18,20 +18,20 @@ from models.physicalobject import PhysicalObjectModel
 from .settings import ViewSettings
 
 
-def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float) -> list[Vector2]:
+def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float) -> list[Vector3]:
     """Zoom the coordinates with a scale factor and a zoom level."""
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
 
-def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector2]:
+def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector3]:
     """Project the 3D coordinates onto a 2D plane."""
     rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
     normalVector = normalVector.normalize()
     a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
     projection = [
-        Vector3(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2), 
-    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2), 
-    coordinate.z - c*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2)) 
+        Vector3(coordinate.x - a*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2),
+    coordinate.y - b*(a*coordinate.x+ b*coordinate.y + c*coordinate.z)/ math.sqrt(a**2 + b**2 + c**2),
+    coordinate.z - c*(a*coordinate.x+ b*coordinate.y + c*coordinate.z) / math.sqrt(a**2 + b**2 + c**2))
     for coordinate in coordinates
     ]
     return projection
@@ -93,7 +93,7 @@ class PhysicalObjectView:
         )
         if settings.labels:
             self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
-      
+
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""
         label_zoom = self.label_font.render(
@@ -131,8 +131,8 @@ class PhysicalObjectView:
         positions = pan(positions, settings.offset)
         self._screen_positions.extend(positions)
         self._previous_settings = settings.copy()
-        
 
-    def get_distance_pixels(self, position: Vector3) -> float:
-        """Get the distance in pixels to the given coordinate"""
+
+    def get_distance_pixels(self, position: Vector2) -> float:
+        """Get the distance in pixels to the given coordinate."""
         return (Vector2(self._screen_positions[-1].x, self._screen_positions[-1].y) - position).length()
