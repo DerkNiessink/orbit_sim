@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 
 import pygame
@@ -6,26 +8,37 @@ from pygame.math import Vector2, Vector3
 from .settings import ViewSettings
 
 
-class DrawTail:
-    def __init__(self):
-        self.drawables = []
+class Drawable:
+    """Class to represent drawable objects."""
+    def __init__(self, screen_positions: tuple[Vector3, Vector3], colour: pygame.Color) -> None:
+        self.start_position = Vector2(screen_positions[0].x, screen_positions[0].y)
+        self.end_position = Vector2(screen_positions[1].x, screen_positions[1].y)
+        self.z = screen_positions[0].z
+        self.colour = colour
+        self.width = 5
 
-    def make_drawable(self, screen_positions, colours):
-        self.drawables = []
-        for (body_screen_positions, colour) in zip(screen_positions, colours):
-            for index in range(len(body_screen_positions)-1):
-                self.drawables.append((body_screen_positions[index], body_screen_positions[index + 1], colour))
+    def __lt__(self, other: object) -> bool:
+        """Return whether this drawable is 'closer' than the other."""
+        assert isinstance(other, Drawable)
+        return self.z < other.z
 
-        self.drawables = sorted(self.drawables, key=lambda tup: tup[0].z)
+    def __eq__(self, other: object) -> bool:
+        """Return whether this drawable is equally 'close' as the other."""
+        assert isinstance(other, Drawable)
+        return self.z == other.z
 
-    def draw(self, window, settings: ViewSettings, screen_positions: list[collections.deque[Vector3]], colours: list):
-        if settings.tail:
-            self.make_drawable(screen_positions, colours)
-            for line_segment in self.drawables:
-                pygame.draw.line(
-                    window,
-                    line_segment[2],
-                    start_pos=Vector2(line_segment[0].x, line_segment[0].y),
-                    end_pos=Vector2(line_segment[1].x, line_segment[1].y),
-                    width=5,
-                )
+    def draw(self, window: pygame.Surface) -> None:
+        """Draw the drawable on the window."""
+        pygame.draw.line(window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width)
+
+
+def draw(window, settings: ViewSettings, screen_positions: list[collections.deque[Vector3]], colours: list):
+    if not settings.tail:
+        return
+    drawables = []
+    for (body_screen_positions, colour) in zip(screen_positions, colours):
+        for index in range(len(body_screen_positions) - 1):
+            drawables.append(Drawable((body_screen_positions[index], body_screen_positions[index + 1]), colour))
+
+    for drawable in sorted(drawables):
+        drawable.draw(window)

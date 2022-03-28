@@ -12,7 +12,7 @@ from models.constellation import Constellation
 from constellations.solar_system import AU
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
-from views.draw import DrawTail
+from views.draw import draw
 
 
 class Camera:
@@ -36,7 +36,6 @@ class Camera:
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
         self.font = pygame.font.SysFont("monospace", 18)
-        self.DrawTail = DrawTail()
 
     def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
@@ -99,9 +98,9 @@ class Camera:
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             body.draw(self.window, self.settings)
-            screen_positions.append(body._screen_positions)   
+            screen_positions.append(body._screen_positions)
             colours.append(body.colour)
-        self.DrawTail.draw(self.window, self.settings, screen_positions, colours)
+        draw(self.window, self.settings, screen_positions, colours)
 
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
