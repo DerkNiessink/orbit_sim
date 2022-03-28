@@ -15,6 +15,7 @@ else:
 
 from models.physicalobject import PhysicalObjectModel
 
+from .draw import Drawable
 from .settings import ViewSettings
 
 
@@ -95,6 +96,14 @@ class PhysicalObjectView:
         )
         if settings.labels:
             self.draw_label(window, settings.zoomLevel, settings.scaled_radius)
+
+    def drawables(self, settings: ViewSettings) -> list[Drawable]:
+        """Return the drawables."""
+        drawables = []
+        if settings.tail:
+            for index in range(len(self._screen_positions) - 1):
+                drawables.append(Drawable((self._screen_positions[index], self._screen_positions[index + 1]), self.colour))
+        return drawables
 
     def draw_label(self, window, zoomLevel, scaled_radius: bool):
         """Draw a label of the name of the body"""

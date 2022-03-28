@@ -1,11 +1,5 @@
-from __future__ import annotations
-
-import collections
-
 import pygame
 from pygame.math import Vector2, Vector3
-
-from .settings import ViewSettings
 
 
 class Drawable:
@@ -30,15 +24,3 @@ class Drawable:
     def draw(self, window: pygame.Surface) -> None:
         """Draw the drawable on the window."""
         pygame.draw.line(window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width)
-
-
-def draw(window, settings: ViewSettings, screen_positions: list[collections.deque[Vector3]], colours: list):
-    if not settings.tail:
-        return
-    drawables = []
-    for (body_screen_positions, colour) in zip(screen_positions, colours):
-        for index in range(len(body_screen_positions) - 1):
-            drawables.append(Drawable((body_screen_positions[index], body_screen_positions[index + 1]), colour))
-
-    for drawable in sorted(drawables):
-        drawable.draw(window)
