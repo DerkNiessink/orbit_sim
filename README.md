@@ -22,7 +22,7 @@ The constellations that Orbit sim can simulate are defined in Python files. See 
 * Press `S` key: save a screenshot under the name "screenshot.png".
 * Press `UP` key: increase time scale.
 * Press `DOWN` key: decrease time scale.
-* Press `r` key: reset camera rotation. 
+* Press `r` key: reset camera rotation and set perspective to center of mass. 
 
 ### Mouse
 

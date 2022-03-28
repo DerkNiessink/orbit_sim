@@ -62,4 +62,4 @@ class EventHandler:
                 self.time.slower()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_r): # type: ignore[misc]
                 self.camera.reset_rotation()
-            
+                self.camera.reset_BodyToTrack()
