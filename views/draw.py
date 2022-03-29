@@ -16,7 +16,7 @@ class Drawable:
     def __lt__(self, other: object) -> bool:
         """Return whether this drawable is 'closer' than the other."""
         assert isinstance(other, Drawable)
-        return self.z < other.z
+        return self.z > other.z
 
     def __eq__(self, other: object) -> bool:
         """Return whether this drawable is equally 'close' as the other."""

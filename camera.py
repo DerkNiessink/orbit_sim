@@ -66,9 +66,9 @@ class Camera:
 
     def rotate(self, position: Vector2) -> None:
         """Rotate the camera."""
-        half_width, half_height = self.window.get_width() / 2.0, self.window.get_height() / 2.0
-        self.settings.x_rotation = ((position.y - half_height) / half_height) * 180.0
-        self.settings.y_rotation = -((position.x - half_width) / half_width) * 180.0
+        speed_factor = 1/4
+        self.settings.x_rotation += position.y * speed_factor
+        self.settings.y_rotation += -position.x * speed_factor
 
     def reset_rotation(self) -> None:
         """Reset the camera rotation."""
