@@ -34,7 +34,7 @@ class Line(Drawable):
     def __init__(self, screen_positions: Sequence[Vector3], colour: tuple[int, int, int]) -> None:
         super().__init__(screen_positions)
         self.colour = colour
-        self.width = 5
+        self.width = 2
 
     def draw(self, window: Surface) -> None:
         """Draw the drawable on the window."""
