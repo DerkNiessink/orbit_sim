@@ -34,21 +34,19 @@ class Line(Drawable):
     def __init__(self, screen_positions: Sequence[Vector3], colour: tuple[int, int, int]) -> None:
         super().__init__(screen_positions)
         self.colour = colour
-        self.start_position = self.screen_positions[0]
-        self.end_position = self.screen_positions[1]
         self.width = 5
 
     def draw(self, window: Surface) -> None:
         """Draw the drawable on the window."""
         pygame.draw.line(
-            window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width
+            window, self.colour, start_pos=self.screen_positions[0], end_pos=self.screen_positions[1], width=self.width
         )
 
 
 class Image(Drawable):
     """Class to represent a drawable image."""
 
-    def __init__(self, screen_position: Vector3, image) -> None:
+    def __init__(self, screen_position: Vector3, image: Surface) -> None:
         super().__init__([screen_position])
         self.image = image
 
@@ -60,7 +58,7 @@ class Image(Drawable):
 class Label(Drawable):
     """Class to represent a drawable label."""
 
-    def __init__(self, screen_position: Vector3, label) -> None:
+    def __init__(self, screen_position: Vector3, label: Surface) -> None:
         super().__init__([screen_position])
         self.label = label
 

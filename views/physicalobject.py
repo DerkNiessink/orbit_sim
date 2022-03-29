@@ -1,4 +1,5 @@
 import collections
+import functools
 import math
 import typing
 from pathlib import Path
@@ -54,7 +55,7 @@ class PhysicalObjectView:
         self.body_model = body
         self.originalImage = pygame.image.load(image)
         self.colour = colour or pygame.transform.average_color(self.originalImage)
-        self.label_font = font
+        self.label = font.render(f"{self.name}", True, (255, 255, 255))
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=5000)
         self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
@@ -71,20 +72,23 @@ class PhysicalObjectView:
         radius = self.radius(settings.zoomLevel, settings.scaled_radius)
         current_position = self._screen_positions[-1]
         image_position = Vector3(current_position.x - radius, current_position.y - radius, current_position.z)
-        scaled_image = pygame.transform.scale(self.originalImage, (radius * 2, radius * 2))
-        drawables: list[Drawable] = [Image(image_position, scaled_image)]
+        drawables: list[Drawable] = [Image(image_position, self.scaled_image(radius))]
         if settings.labels:
-            label = self.label_font.render(f"{self.name}", True, (255, 255, 255))
             label_position = Vector3(
                 current_position.x + radius,
                 current_position.y + radius if self.label_bottom_right else current_position.y - radius,
                 current_position.z,
             )
-            drawables.append(Label(label_position, label))
+            drawables.append(Label(label_position, self.label))
         if settings.tail:
             for index in range(len(self._screen_positions) - 1):
                 drawables.append(Line((self._screen_positions[index], self._screen_positions[index + 1]), self.colour))
         return drawables
+
+    @functools.lru_cache(maxsize=20)
+    def scaled_image(self, radius: float):
+        """Return the scaled image."""
+        return pygame.transform.scale(self.originalImage, (radius * 2, radius * 2))
 
     def update_position(self):
         """Update the list of physical model object positions."""
