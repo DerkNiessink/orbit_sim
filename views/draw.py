@@ -8,6 +8,7 @@ from pygame.surface import Surface
 
 class Drawable:
     """Class to represent drawable objects."""
+
     def __init__(self, screen_positions: Sequence[Vector3]) -> None:
         self.screen_positions = [Vector2(position.x, position.y) for position in screen_positions]
         self.z = screen_positions[0].z
@@ -29,6 +30,7 @@ class Drawable:
 
 class Line(Drawable):
     """Class to represent a drawable line."""
+
     def __init__(self, screen_positions: Sequence[Vector3], colour: tuple[int, int, int]) -> None:
         super().__init__(screen_positions)
         self.colour = colour
@@ -38,11 +40,14 @@ class Line(Drawable):
 
     def draw(self, window: Surface) -> None:
         """Draw the drawable on the window."""
-        pygame.draw.line(window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width)
+        pygame.draw.line(
+            window, self.colour, start_pos=self.start_position, end_pos=self.end_position, width=self.width
+        )
 
 
 class Image(Drawable):
     """Class to represent a drawable image."""
+
     def __init__(self, screen_position: Vector3, image) -> None:
         super().__init__([screen_position])
         self.image = image
@@ -54,6 +59,7 @@ class Image(Drawable):
 
 class Label(Drawable):
     """Class to represent a drawable label."""
+
     def __init__(self, screen_position: Vector3, label) -> None:
         super().__init__([screen_position])
         self.label = label

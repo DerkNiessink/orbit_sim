@@ -2,8 +2,7 @@ import collections
 import math
 import typing
 from pathlib import Path
-from random import randrange
-from typing import cast, Sequence
+from typing import Sequence
 
 import pygame
 from pygame.math import Vector2, Vector3
@@ -24,20 +23,8 @@ def zoom(coordinates: Sequence[Vector3], scale_factor: float, zoom_level: float)
     return [coordinate * scale_factor * zoom_level for coordinate in coordinates]
 
 
-def project(coordinates: Sequence[Vector3], normalVector: Vector3) -> list[Vector3]:
-    """Project the 3D coordinates onto a 2D plane."""
-    rotation_constant = 2.3 # Making this number too high will cause the plane to stretch.
-    normalVector = normalVector.normalize()
-    a, b, c = rotation_constant * math.sin(normalVector.x), rotation_constant * math.sin(normalVector.y), normalVector.z
-    denominator = math.sqrt(a**2 + b**2 + c**2)
-    return [
-        Vector3(
-            coordinate.x - a * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator,
-            coordinate.y - b * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator,
-            coordinate.z - c * (a * coordinate.x + b * coordinate.y + c * coordinate.z) / denominator
-        )
-        for coordinate in coordinates
-    ]
+def rotate(coordinates: Sequence[Vector3], x_rotation: float, y_rotation: float) -> list[Vector3]:
+    return [coordinate.rotate_x(x_rotation).rotate_y(y_rotation) for coordinate in coordinates]
 
 
 def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector3]) -> list[Vector3]:
@@ -91,7 +78,7 @@ class PhysicalObjectView:
             label_position = Vector3(
                 current_position.x + radius,
                 current_position.y + radius if self.label_bottom_right else current_position.y - radius,
-                current_position.z
+                current_position.z,
             )
             drawables.append(Label(label_position, label))
         if settings.tail:
@@ -115,7 +102,7 @@ class PhysicalObjectView:
             my_positions = [self.positions[-1]]
             bodyToTrack_positions = [settings.bodyToTrack.positions[-1]]
         positions = relative_coordinates(my_positions, bodyToTrack_positions)
-        positions = project(positions, settings.normalVector)
+        positions = rotate(positions, settings.x_rotation, settings.y_rotation)
         positions = zoom(positions, self.scale_factor, settings.zoomLevel)
         positions = pan(positions, settings.offset)
         self._screen_positions.extend(positions)
