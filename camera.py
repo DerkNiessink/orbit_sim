@@ -3,7 +3,7 @@
 from typing import Sequence
 
 import pygame
-from pygame.math import Vector2, Vector3
+from pygame.math import Vector2
 from pygame.surface import Surface
 
 from models.time import Time
@@ -19,7 +19,9 @@ class Camera:
     MAX_ZOOM_LEVEL = 100000
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
-    SECONDS_PER_YEAR = 365.25 * 24 * 60 * 60  # One Julian year conform https://en.wikipedia.org/wiki/Julian_year_(astronomy)
+    SECONDS_PER_YEAR = (
+        365.25 * 24 * 60 * 60
+    )  # One Julian year conform https://en.wikipedia.org/wiki/Julian_year_(astronomy)
 
     def __init__(
         self,
@@ -62,12 +64,16 @@ class Camera:
         """Pan the camera."""
         self.settings.offset += delta
 
-    def rotate(self, delta: Vector2) -> None:
-        speed_factor = 1/200
-        self.settings.normalVector += Vector3(delta.x, delta.y, 0) * speed_factor
+    def rotate(self, position: Vector2) -> None:
+        """Rotate the camera."""
+        half_width, half_height = self.window.get_width() / 2.0, self.window.get_height() / 2.0
+        self.settings.x_rotation = ((position.y - half_height) / half_height) * 180.0
+        self.settings.y_rotation = -((position.x - half_width) / half_width) * 180.0
 
     def reset_rotation(self) -> None:
-        self.settings.normalVector = Vector3(0, 0, 1)
+        """Reset the camera rotation."""
+        self.settings.x_rotation = 0.0
+        self.settings.y_rotation = 0.0
 
     def toggle_labels(self) -> None:
         """Toggle the display of labels."""
