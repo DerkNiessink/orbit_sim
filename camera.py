@@ -1,10 +1,12 @@
 """Orbit sim camera."""
 
+import threading
 from typing import Sequence
 
 import pygame
 from pygame.math import Vector2
 from pygame.surface import Surface
+from PIL import Image
 
 from models.time import Time
 from models.constellation import Constellation
@@ -37,6 +39,8 @@ class Camera:
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
         self.font = pygame.font.SysFont("monospace", 18)
+        self.images = []
+        self.images_to_save = 0
 
     def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
@@ -66,7 +70,7 @@ class Camera:
 
     def rotate(self, position: Vector2) -> None:
         """Rotate the camera."""
-        speed_factor = 1/4
+        speed_factor = 1 / 4
         self.settings.x_rotation += position.y * speed_factor
         self.settings.y_rotation += -position.x * speed_factor
 
@@ -90,6 +94,11 @@ class Camera:
     def save_screenshot(self) -> None:
         """Save a screenshot of the current screen."""
         pygame.image.save(self.window, "screenshot.png")
+
+    def save_gif(self) -> None:
+        """Save a number of screenshots to create an animated gif."""
+        self.images_to_save = 200
+        self.images = []
 
     def update(self, elapsed_time: float) -> None:
 
@@ -124,6 +133,16 @@ class Camera:
 
         # display whether radius is scaled or not
         self.draw_label(f"Bodies to scale: {'Yes' if self.settings.scaled_radius else 'No'}", (25, 94))
+
+        if self.images_to_save > 0:
+            size = (self.window.get_width(), self.window.get_height())
+            self.images.append(Image.frombytes("RGB", size, pygame.image.tostring(self.window, "RGB")))
+            self.images_to_save -= 1
+            if self.images_to_save == 0:
+                # Save into a GIF file that loops forever
+                kwargs = dict(append_images=self.images[1:], save_all=True, duration=30, loop=0)
+                thread = threading.Thread(target=self.images[0].save, args=("animated.gif",), kwargs=kwargs)
+                thread.start()
 
     def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
         """Draw the label."""
