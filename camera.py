@@ -97,7 +97,7 @@ class Camera:
 
     def save_gif(self) -> None:
         """Save a number of screenshots to create an animated gif."""
-        self.images_to_save = 200
+        self.images_to_save = 400
         self.images = []
 
     def update(self, elapsed_time: float) -> None:
