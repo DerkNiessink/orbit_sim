@@ -2,7 +2,7 @@
 
 Application for simulating gravity between bodies with [Newton's law of universal gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation).
 
-![Animated GIF of a binary star](docs/animated.gif)
+![Animated GIF of a binary star](docs/animated2.gif)
 
 ## Installation
 
