@@ -41,6 +41,7 @@ class Camera:
         self.font = pygame.font.SysFont("monospace", 18)
         self.images = []
         self.images_to_save = 0
+        self.thread = threading.Thread(target=None)
 
     def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
@@ -133,7 +134,7 @@ class Camera:
 
         # display whether radius is scaled or not
         self.draw_label(f"Bodies to scale: {'Yes' if self.settings.scaled_radius else 'No'}", (25, 94))
-
+        
         if self.images_to_save > 0:
             size = (self.window.get_width(), self.window.get_height())
             self.images.append(Image.frombytes("RGB", size, pygame.image.tostring(self.window, "RGB")))
@@ -141,8 +142,11 @@ class Camera:
             if self.images_to_save == 0:
                 # Save into a GIF file that loops forever
                 kwargs = dict(append_images=self.images[1:], save_all=True, duration=30, loop=0)
-                thread = threading.Thread(target=self.images[0].save, args=("animated.gif",), kwargs=kwargs)
-                thread.start()
+                self.thread = threading.Thread(target=self.images[0].save, args=("animated.gif",), kwargs=kwargs)
+                self.thread.start()
+
+        if self.thread.is_alive():
+            self.draw_label("Saving gif...", (self.window.get_width()/2 - 20, 50))
 
     def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
         """Draw the label."""
