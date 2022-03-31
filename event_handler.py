@@ -47,6 +47,8 @@ class EventHandler:
                     self.camera.pan(Vector2(*event.rel))
                 if pygame.mouse.get_pressed()[2]:
                     self.camera.rotate(Vector2(*event.rel))
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_g):  # type: ignore[misc]
+                self.camera.save_gif()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):  # type: ignore[misc]
                 self.camera.toggle_labels()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_s):  # type: ignore[misc]

@@ -2,6 +2,8 @@
 
 Application for simulating gravity between bodies with [Newton's law of universal gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation).
 
+![Animated GIF of a binary star](docs/animated.gif)
+
 ## Installation
 
 1. Clone the repository.
@@ -20,16 +22,17 @@ The constellations that Orbit sim can simulate are defined in Python files. See 
 * Press `t` key: show/hide body tail.
 * Press `s` key: set/unset bodies to scale.
 * Press `S` key: save a screenshot under the name "screenshot.png".
+* Press `g` key: save an animated GIF under the name "animated.gif".
 * Press `UP` key: increase time scale.
 * Press `DOWN` key: decrease time scale.
-* Press `r` key: reset camera rotation and set perspective to center of mass. 
+* Press `r` key: reset camera rotation and set perspective to center of mass.
 
 ### Mouse
 
 * Drag left mouse button: pan the camera.
 * Drag right mouse button: rotate the camera.
 * Press left mouse button: change perspective to the nearest body.
-* Mouse wheel: zoom. 
+* Mouse wheel: zoom.
 
 ## Profiling
 
@@ -47,6 +50,6 @@ Alternatively, create a graph of the profile results:
 
 ## References
 
-1. [planet images from](https://deep-fold.itch.io/pixel-planet-generator)
-2. [solar system data from](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
-3. [background image](https://pixabay.com/illustrations/stars-night-dark-sky-space-3750824/)
+1. [Planet images](https://deep-fold.itch.io/pixel-planet-generator)
+2. [Solar system data](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
+3. [Background image](https://pixabay.com/illustrations/stars-night-dark-sky-space-3750824/)
