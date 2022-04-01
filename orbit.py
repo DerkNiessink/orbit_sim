@@ -25,9 +25,12 @@ font = pygame.font.SysFont("monospace", 15)
 body_models = []
 body_viewers = []
 for name, body in constellation_module.constellation.items():
+    init_position = body.get("init_position")
+    init_velocity = body.get("init_velocity")
     body_model = PhysicalObjectModel(
-        Vector3(body["init_position"]),
-        Vector3(body["init_velocity"]),
+        body.get("aphelion", init_position),
+        body.get("min_orbital_velocity", init_velocity),
+        body.get("inclination", 0),
         body["radius"],
         body["mass"],
     )

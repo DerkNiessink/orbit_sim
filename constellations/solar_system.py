@@ -2,6 +2,8 @@
 
 
 AU = 149_597_871 * 10 ** 3
+mass_earth = 5.772 * 10 ** 24
+radius_earth = 6_371_000
 
 constellation = {
     "Sun": {
@@ -21,8 +23,8 @@ constellation = {
     "Earth": {
         "init_position": (-AU, 0, 0),
         "init_velocity": (0, 29_800, 0),
-        "radius": 6_371_000,
-        "mass": 5.772 * 10 ** 24,
+        "radius": radius_earth,
+        "mass": mass_earth,
         "image": "resources/planet1.png",
     },
     "Mars": {
@@ -40,10 +42,11 @@ constellation = {
         "image": "resources/planet4.png",
     },
     "Pluto": {
-        "init_position": (-7304.326 * 10 ** 9, 0, 0),
-        "init_velocity": (0, 3710, 0),
-        "radius": 1_188_300,
-        "mass": 0.01303 * 10 ** 24,
+        "aphelion": -48.023 * AU,
+        "min_orbital_velocity": 3710,
+        "inclination": 17.16, 
+        "radius": 0.186 * radius_earth,
+        "mass": 0.0022 * mass_earth,
         "image": "resources/planet3.png",
     },
     "Venus": {
