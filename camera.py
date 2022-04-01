@@ -41,7 +41,7 @@ class Camera:
         self.font = pygame.font.SysFont("monospace", 18)
         self.images = []
         self.images_to_save = 0
-        self.thread = threading.Thread(target=None)
+        self.thread = None
 
     def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
@@ -104,8 +104,7 @@ class Camera:
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
-        background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
-        self.window.blit(background, (0, 0))
+        self.window.fill((0,0,0))
 
         # update positions
         for body in self.body_viewers:
@@ -138,6 +137,8 @@ class Camera:
         if self.images_to_save > 0:
             size = (self.window.get_width(), self.window.get_height())
             self.images.append(Image.frombytes("RGB", size, pygame.image.tostring(self.window, "RGB")))
+            self.draw_label("Recording gif...", (self.window.get_width()/2 - 20, 50))
+
             self.images_to_save -= 1
             if self.images_to_save == 0:
                 # Save into a GIF file that loops forever
@@ -145,7 +146,7 @@ class Camera:
                 self.thread = threading.Thread(target=self.images[0].save, args=("animated.gif",), kwargs=kwargs)
                 self.thread.start()
 
-        if self.thread.is_alive():
+        if self.thread and self.thread.is_alive():
             self.draw_label("Saving gif...", (self.window.get_width()/2 - 20, 50))
 
     def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
