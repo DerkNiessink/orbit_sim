@@ -13,7 +13,7 @@ constellation = {
     },
     "Planet 1": {
         "aphelion": -3*AU,
-        "min_orbital_velocity": 10000,
+        "min_orbital_velocity": 15000,
         "inclination": 30,
         "radius": 1.711 * radius_sun,
         "mass": 0.000001 * mass_sun,
@@ -22,7 +22,7 @@ constellation = {
     },
     "Planet 2": {
         "init_position": (2.5 * AU, 0, 0),
-        "init_velocity": (0, 7000, 0),
+        "init_velocity": (0, 15000, 0),
         "radius": 1.711 * radius_sun,
         "mass": 0.000001 * mass_sun,
         "tail_length": 3000,
