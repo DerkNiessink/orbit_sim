@@ -13,16 +13,6 @@ class Drawable:
         self.screen_positions = [Vector2(position.x, position.y) for position in screen_positions]
         self.z = screen_positions[0].z
 
-    def __lt__(self, other: object) -> bool:
-        """Return whether this drawable is 'closer' than the other."""
-        assert isinstance(other, Drawable)
-        return self.z > other.z
-
-    def __eq__(self, other: object) -> bool:
-        """Return whether this drawable is equally 'close' as the other."""
-        assert isinstance(other, Drawable)
-        return self.z == other.z
-
     @abstractmethod
     def draw(self, window: Surface) -> None:
         """Draw the drawable on the window."""

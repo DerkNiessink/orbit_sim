@@ -32,6 +32,8 @@ class EventHandler:
             case EventType(type=pygame.QUIT) | EventType(type=pygame.KEYDOWN, key=pygame.K_q):  # type: ignore[misc]
                 pygame.quit()
                 sys.exit()
+            case EventType(type=pygame.VIDEORESIZE):  # type: ignore[misc]
+                self.camera.resize()
             case EventType(type=pygame.MOUSEBUTTONDOWN, button=1):  # type: ignore[misc]
                 self._mouse_button_down_position = Vector2(*event.pos)
             case EventType(type=pygame.MOUSEBUTTONUP, button=1):  # type: ignore[misc]

@@ -59,6 +59,7 @@ class PhysicalObjectView:
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=5000)
         self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
+        self._tail_lines: collections.deque[Line] = collections.deque(maxlen=tail_length)
         self._previous_settings = ViewSettings(self)
 
     def radius(self, zoom_level: float, scaled_radius: bool):
@@ -81,8 +82,11 @@ class PhysicalObjectView:
             )
             drawables.append(Label(label_position, self.label))
         if settings.tail:
-            for index in range(len(self._screen_positions) - 1):
-                drawables.append(Line((self._screen_positions[index], self._screen_positions[index + 1]), self.colour))
+            if len(self._tail_lines) == 0:
+                self._tail_lines.extend([Line((self._screen_positions[i], self._screen_positions[i+1]), self.colour) for i in range(len(self._screen_positions) - 1)])
+            else:
+                self._tail_lines.append(Line((self._screen_positions[-2], self._screen_positions[-1]), self.colour))
+            drawables.extend(self._tail_lines)
         return drawables
 
     @functools.lru_cache(maxsize=20)
@@ -99,6 +103,7 @@ class PhysicalObjectView:
         if settings.tail and settings.tail_settings_changed(self._previous_settings):
             # We're displaying the tail and settings that determine the tail have changed, so recalculate all positions
             self._screen_positions.clear()
+            self._tail_lines.clear()
             my_positions: Sequence[Vector3] = self.positions
             bodyToTrack_positions: Sequence[Vector3] = settings.bodyToTrack.positions
         else:
