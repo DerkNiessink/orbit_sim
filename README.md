@@ -14,7 +14,7 @@ Application for simulating gravity between bodies with [Newton's law of universa
 ## Constellations
 
 The constellations that Orbit sim can simulate are defined in Python files. See the `constellations` folder for examples. Note that all parameters are in SI units and that users can choose between the vector input and 
-the aphelion/min_orbital_velocity/inclination input.  
+the aphelion/min. orbital velocity/inclination input.  
 
 ## Controls
 
