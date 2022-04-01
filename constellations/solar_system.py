@@ -1,6 +1,3 @@
-# Note, all measures are in SI units (kg, m, s, etc.)
-
-
 AU = 149_597_871 * 10 ** 3
 mass_earth = 5.772 * 10 ** 24
 radius_earth = 6_371_000
