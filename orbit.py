@@ -7,7 +7,7 @@ from pathlib import Path
 import pygame
 from pygame.math import Vector3
 
-from models.constellation import CenterOfMass, Constellation
+from models.constellation import Constellation
 from models.physicalobject import PhysicalObjectModel
 from models.time import Time
 from views.physicalobject import PhysicalObjectView
@@ -40,7 +40,7 @@ for name, body in constellation_module.constellation.items():
             body["image"],
             font,
             body_model,
-            body.get("tail_length", 7000),
+            body.get("tail_length", 5000),
         )
     )
 

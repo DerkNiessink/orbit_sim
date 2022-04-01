@@ -1,6 +1,7 @@
 """Orbit sim camera."""
 
 import threading
+from operator import attrgetter
 from typing import Sequence
 
 import pygame
@@ -36,6 +37,7 @@ class Camera:
         self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.background_image = pygame.image.load("resources/stars_background.png").convert_alpha()
+        self.scaled_background_image = self.get_scaled_background_image()
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
         self.font = pygame.font.SysFont("monospace", 18)
@@ -48,7 +50,7 @@ class Camera:
         return Vector2(self.window.get_width() / 2, self.window.get_height() / 2)
 
     def trackBody(self, position: Vector2) -> None:
-        """Track the body closest the the x and y coordinates."""
+        """Track the body closest to the x and y coordinates."""
         sorted_bodies = sorted([(body.get_distance_pixels(position), body) for body in self.body_viewers])
         self.settings.bodyToTrack = sorted_bodies[0][1]
         self.settings.offset = self.initialOffset()
@@ -92,6 +94,14 @@ class Camera:
         "Toogle the tail of the bodies"
         self.settings.tail = not self.settings.tail
 
+    def resize(self) -> None:
+        """The window was resized by the user."""
+        self.scaled_background_image = self.get_scaled_background_image()
+
+    def get_scaled_background_image(self) -> Surface:
+        """Return the scaled background image."""
+        return pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
+
     def save_screenshot(self) -> None:
         """Save a screenshot of the current screen."""
         pygame.image.save(self.window, "screenshot.png")
@@ -104,8 +114,8 @@ class Camera:
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
-        background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
-        self.window.blit(background, (0, 0))
+        self.window.blit(self.scaled_background_image, (0,0))
+
         # update positions
         for body in self.body_viewers:
             body.update_position()
@@ -115,7 +125,7 @@ class Camera:
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             drawables.extend(body.drawables(self.settings))
-        for drawable in sorted(drawables):
+        for drawable in sorted(drawables, key=attrgetter("z")):
             drawable.draw(self.window)
 
         # draw the elapsed time in years
