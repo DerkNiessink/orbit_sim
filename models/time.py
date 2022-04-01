@@ -19,7 +19,8 @@ class Time:
         elapsed_time = self.time_step * self.calculations
         self.elapsed_time += elapsed_time
         now = time.time()
-        self.speedups.append(elapsed_time / (now - self._timestamp))
+        if now - self._timestamp != 0:     
+            self.speedups.append(elapsed_time / (now - self._timestamp))
         self.speedup = sum(self.speedups) / len(self.speedups)
         self._timestamp = now
 
