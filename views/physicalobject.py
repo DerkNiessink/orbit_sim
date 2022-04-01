@@ -53,7 +53,7 @@ class PhysicalObjectView:
         self.name = name
         self.scale_factor = scale_factor
         self.body_model = body
-        self.originalImage = pygame.image.load(image)
+        self.originalImage = pygame.image.load(image).convert_alpha()
         self.colour = colour or pygame.transform.average_color(self.originalImage)
         self.label = font.render(f"{self.name}", True, (255, 255, 255))
         self.label_bottom_right = label_bottom_right

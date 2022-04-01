@@ -35,7 +35,7 @@ class Camera:
         self.window = window
         self.constellation_model = constellation_model
         self.body_viewers = body_viewers
-        self.background_image = pygame.image.load("resources/stars_background.png")
+        self.background_image = pygame.image.load("resources/stars_background.png").convert_alpha()
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
         self.font = pygame.font.SysFont("monospace", 18)
@@ -104,8 +104,8 @@ class Camera:
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
-        self.window.fill((0,0,0))
-
+        background = pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
+        self.window.blit(background, (0,0))
         # update positions
         for body in self.body_viewers:
             body.update_position()
