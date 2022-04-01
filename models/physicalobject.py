@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from functools import cache
 from typing import Sequence
+import math
 
 from pygame.math import Vector3
+
 
 
 class PhysicalObjectModel:
@@ -16,14 +18,26 @@ class PhysicalObjectModel:
 
     def __init__(
         self,
-        initial_position: Vector3,
-        initial_velocity: Vector3,
+        initial_position,
+        initial_velocity,
+        inclination: float,
         radius: float,
         mass: float,
     ) -> None:
-        self.position = initial_position
-        self.velocity = initial_velocity
-        self.radius = radius
+        
+
+        # If the input was inclination, aphelion and min_orbital_velocity, compute the position and velocity vector 
+        if type(initial_position) == float or type(initial_position) == int:
+            inclination_rad = math.radians(inclination)
+            self.position = Vector3(initial_position * math.cos(inclination_rad), 0, initial_position * math.sin(inclination_rad))
+            self.velocity = Vector3(0, initial_velocity, 0)
+
+        # If the input was a vector with type tuple, just convert to pygame.Vector3
+        else:
+            self.position = Vector3(initial_position)
+            self.velocity = Vector3(initial_velocity)
+
+        self.radius = radius # m
         self.mass = mass  # kg
         self.id = id(self)
 
