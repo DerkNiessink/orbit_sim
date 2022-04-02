@@ -79,8 +79,8 @@ class Camera:
 
     def reset_rotation(self) -> None:
         """Reset the camera rotation."""
-        self.settings.x_rotation = 0.0
-        self.settings.y_rotation = 0.0
+        self.settings.x_rotation = self.settings.y_rotation = 0.0
+        self.settings.offset = self.initialOffset()
 
     def toggle_labels(self) -> None:
         """Toggle the display of labels."""
@@ -97,6 +97,7 @@ class Camera:
     def resize(self) -> None:
         """The window was resized by the user."""
         self.scaled_background_image = self.get_scaled_background_image()
+        self.settings.offset = self.initialOffset()
 
     def get_scaled_background_image(self) -> Surface:
         """Return the scaled background image."""
