@@ -8,7 +8,7 @@ import pygame
 from pygame.math import Vector3
 
 from models.constellation import Constellation
-from models.physicalobject import PhysicalObjectModel, PhysicalObjectModelInclination
+from models.physicalobject import InclinedPhysicalObjectModel, PhysicalObjectModel
 from models.time import Time
 from views.physicalobject import PhysicalObjectView
 from camera import Camera
@@ -27,14 +27,14 @@ body_viewers = []
 for name, body in constellation_module.constellation.items():
     aphelion = body.get("aphelion")
     if aphelion:
-        body_model = PhysicalObjectModelInclination(
+        body_model = InclinedPhysicalObjectModel(
             aphelion,
             body["min_orbital_velocity"],
             body["inclination"],
             body["radius"],
             body["mass"]
         )
-    else: 
+    else:
         body_model = PhysicalObjectModel(
             Vector3(body["init_position"]),
             Vector3(body["init_velocity"]),
