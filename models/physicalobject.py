@@ -18,25 +18,14 @@ class PhysicalObjectModel:
 
     def __init__(
         self,
-        initial_position,
-        initial_velocity,
-        inclination: float,
+        initial_position: Vector3,
+        initial_velocity: Vector3,
         radius: float,
         mass: float,
     ) -> None:
         
-
-        # If the input was inclination, aphelion and min_orbital_velocity, compute the position and velocity vector 
-        if type(initial_position) == float or type(initial_position) == int:
-            inclination_rad = math.radians(inclination)
-            self.position = Vector3(initial_position * math.cos(inclination_rad), 0, initial_position * math.sin(inclination_rad))
-            self.velocity = Vector3(0, initial_velocity, 0)
-
-        # If the input was a vector with type tuple, just convert to pygame.Vector3
-        else:
-            self.position = Vector3(initial_position)
-            self.velocity = Vector3(initial_velocity)
-
+        self.position = initial_position
+        self.velocity = initial_velocity
         self.radius = radius # m
         self.mass = mass  # kg
         self.id = id(self)
@@ -74,3 +63,20 @@ class PhysicalObjectModel:
         acceleration = self.net_force(bodies) / self.mass
         self.velocity += acceleration * time_step
         self.position += self.velocity * time_step
+        
+
+class PhysicalObjectModelInclination(PhysicalObjectModel):
+    def __init__(
+        self, 
+        aphelion: float, 
+        min_orbital_velocity: float, 
+        inclination: float, 
+        radius: float, 
+        mass: float,
+    ) -> None:
+
+        inclination_rad = math.radians(inclination)
+        position = Vector3(aphelion * math.cos(inclination_rad), 0, aphelion * math.sin(inclination_rad))
+        velocity = Vector3(0, min_orbital_velocity, 0)
+        super().__init__(position, velocity, radius, mass)
+        
