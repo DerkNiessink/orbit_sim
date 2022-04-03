@@ -65,7 +65,7 @@ class PhysicalObjectModel:
         self.position += self.velocity * time_step
         
 
-class PhysicalObjectModelInclination(PhysicalObjectModel):
+class InclinedPhysicalObjectModel(PhysicalObjectModel):
     def __init__(
         self, 
         aphelion: float, 
