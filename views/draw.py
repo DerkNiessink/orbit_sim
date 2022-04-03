@@ -12,6 +12,13 @@ class Drawable:
     def __init__(self, screen_positions: Sequence[Vector3]) -> None:
         self.screen_positions = [Vector2(position.x, position.y) for position in screen_positions]
         self.z = screen_positions[0].z
+        self._hash_value = hash((self.screen_positions[0].x, self.screen_positions[0].y))
+
+    def __hash__(self) -> int:
+        return self._hash_value
+
+    def __eq__(self, other) -> bool:
+        return self.screen_positions[0] == other.screen_positions[0]
 
     @abstractmethod
     def draw(self, window: Surface) -> None:

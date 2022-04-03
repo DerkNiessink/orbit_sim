@@ -16,6 +16,7 @@ else:
 from models.physicalobject import PhysicalObjectModel
 
 from .draw import Drawable, Image, Label, Line
+from .ordered_set import OrderedSet
 from .settings import ViewSettings
 
 
@@ -36,6 +37,10 @@ def relative_coordinates(coordinates: Sequence[Vector3], origin: Sequence[Vector
 def pan(coordinates: list[Vector3], offset: Vector2) -> list[Vector3]:
     """Pan the coordinates with the given offset."""
     return [coordinate + Vector3(offset.x, offset.y, 0) for coordinate in coordinates]
+
+
+def round_coordinates(coordinates: list[Vector3]) -> list[Vector3]:
+    return [Vector3(round(coordinate.x), round(coordinate.y), round(coordinate.x)) for coordinate in coordinates]
 
 
 class PhysicalObjectView:
@@ -59,7 +64,7 @@ class PhysicalObjectView:
         self.label_bottom_right = label_bottom_right
         self.positions: collections.deque[Vector3] = collections.deque(maxlen=5000)
         self._screen_positions: collections.deque[Vector3] = collections.deque(maxlen=tail_length)
-        self._tail_lines: collections.deque[Line] = collections.deque(maxlen=tail_length)
+        self._tail_lines: OrderedSet[Line] = OrderedSet(maxlen=tail_length)
         self._previous_settings = ViewSettings(self)
 
     def radius(self, zoom_level: float, scaled_radius: bool):
@@ -68,7 +73,7 @@ class PhysicalObjectView:
         else:
             return math.log(zoom_level * 10)
 
-    def drawables(self, settings: ViewSettings) -> Sequence[Drawable]:
+    def drawables(self, settings: ViewSettings) -> list[Drawable]:
         """Return the drawables."""
         radius = self.radius(settings.zoomLevel, settings.scaled_radius)
         current_position = self._screen_positions[-1]
@@ -114,6 +119,7 @@ class PhysicalObjectView:
         positions = rotate(positions, settings.x_rotation, settings.y_rotation)
         positions = zoom(positions, self.scale_factor, settings.zoomLevel)
         positions = pan(positions, settings.offset)
+        positions = round_coordinates(positions)
         self._screen_positions.extend(positions)
         self._previous_settings = settings.copy()
 
