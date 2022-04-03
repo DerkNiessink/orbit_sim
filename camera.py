@@ -51,8 +51,8 @@ class Camera:
 
     def trackBody(self, position: Vector2) -> None:
         """Track the body closest to the x and y coordinates."""
-        sorted_bodies = sorted([(body.get_distance_pixels(position), body) for body in self.body_viewers])
-        self.settings.bodyToTrack = sorted_bodies[0][1]
+        sorted_bodies = sorted(self.body_viewers, key=lambda body: body.get_distance_pixels(position))
+        self.settings.bodyToTrack = sorted_bodies[0]
         self.settings.offset = self.initialOffset()
 
     def reset_BodyToTrack(self):
