@@ -14,6 +14,11 @@ class Drawable:
         self.z = screen_positions[0].z
         self._hash_value = hash((self.screen_positions[0].x, self.screen_positions[0].y))
 
+    def in_window(self, window) -> bool:
+        for screen_position in self.screen_positions:
+            if 0 < screen_position.x < window.get_width() and 0 < screen_position.y < window.get_height():
+                return True
+
     def __hash__(self) -> int:
         return self._hash_value
 
