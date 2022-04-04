@@ -14,10 +14,12 @@ class Drawable:
         self.z = screen_positions[0].z
         self._hash_value = hash((self.screen_positions[0].x, self.screen_positions[0].y))
 
-    def in_window(self, window) -> bool:
+    def in_window(self, width: int, height: int) -> bool:
+        """Return whether the drawable is visible."""
         for screen_position in self.screen_positions:
-            if 0 < screen_position.x < window.get_width() and 0 < screen_position.y < window.get_height():
+            if 0 < screen_position.x < width and 0 < screen_position.y < height:
                 return True
+        return False
 
     def __hash__(self) -> int:
         return self._hash_value

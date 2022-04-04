@@ -115,7 +115,7 @@ class Camera:
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
-        self.window.blit(self.scaled_background_image, (0,0))
+        self.window.blit(self.scaled_background_image, (0, 0))
 
         # update positions
         for body in self.body_viewers:
@@ -126,7 +126,9 @@ class Camera:
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             drawables.extend(body.drawables(self.settings))
-        drawables = [drawable for drawable in drawables if drawable.in_window(self.window)]
+        drawables = [
+            drawable for drawable in drawables if drawable.in_window(self.window.get_width(), self.window.get_height())
+        ]
         for drawable in sorted(drawables, key=attrgetter("z")):
             drawable.draw(self.window)
 
