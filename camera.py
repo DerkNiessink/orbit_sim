@@ -126,9 +126,8 @@ class Camera:
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             drawables.extend(body.drawables(self.settings))
-        drawables = [
-            drawable for drawable in drawables if drawable.in_window(self.window.get_width(), self.window.get_height())
-        ]
+        width, height = self.window.get_width(), self.window.get_height()
+        drawables = [drawable for drawable in drawables if drawable.in_window(width, height)]
         for drawable in sorted(drawables, key=attrgetter("z")):
             drawable.draw(self.window)
 
@@ -149,9 +148,8 @@ class Camera:
         self.draw_label(f"Bodies to scale: {'Yes' if self.settings.scaled_radius else 'No'}", (25, 94))
 
         if self.images_to_save > 0:
-            size = (self.window.get_width(), self.window.get_height())
-            self.images.append(Image.frombytes("RGB", size, pygame.image.tostring(self.window, "RGB")))
-            self.draw_label("Recording gif...", (self.window.get_width() // 2 - 20, 50))
+            self.images.append(Image.frombytes("RGB", (width, height), pygame.image.tostring(self.window, "RGB")))
+            self.draw_label("Recording gif...", (width // 2 - 20, 50))
 
             self.images_to_save -= 1
             if self.images_to_save == 0:
@@ -161,7 +159,7 @@ class Camera:
                 self.thread.start()
 
         if self.thread and self.thread.is_alive():
-            self.draw_label("Saving gif...", (self.window.get_width() // 2 - 20, 50))
+            self.draw_label("Saving gif...", (width // 2 - 20, 50))
 
     def draw_label(self, text: str, coordinate: tuple[int, int], color=(255, 255, 255)) -> None:
         """Draw the label."""
