@@ -126,9 +126,9 @@ class Camera:
         for body in self.body_viewers:
             body.update_screen_positions(self.settings)
             drawables.extend(body.drawables(self.settings))
+        drawables = [drawable for drawable in drawables if drawable.in_window(self.window)]
         for drawable in sorted(drawables, key=attrgetter("z")):
-            if drawable.in_window(self.window):
-                drawable.draw(self.window)
+            drawable.draw(self.window)
 
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
