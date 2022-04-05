@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import QCoreApplication
-import pkg_resources
+
 import threading
 import sys
 from orbit import orbit_sim
@@ -9,7 +8,6 @@ from orbit import orbit_sim
 class OrbitSimGui(QtWidgets.QMainWindow):
     
     def __init__(self):
-        self.app = QtWidgets.QApplication(sys.argv)
         super().__init__()
         uic.loadUi(
             open("orbit_sim.ui"),
