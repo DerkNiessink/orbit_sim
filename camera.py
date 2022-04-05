@@ -11,7 +11,7 @@ from PIL import Image
 
 from models.time import Time
 from models.constellation import Constellation
-from constellations.solar_system import AU
+from constellations.Solar import AU
 from views.draw import Drawable
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Setup</class>
+ <widget class="QMainWindow" name="Setup">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,21 +11,66 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Setup</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="start_button">
+   <widget class="QPushButton" name="start_PushButton">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>180</y>
-      <width>171</width>
-      <height>101</height>
+      <x>650</x>
+      <y>490</y>
+      <width>131</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string>Start Sim</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>30</y>
+      <width>160</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_1">
+       <property name="text">
+        <string>Constellation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="constellation_ComboBox">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentText">
+        <string/>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_1">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

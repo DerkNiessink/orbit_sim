@@ -16,10 +16,11 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             self,
         )
 
-        self.start_button.clicked.connect(self.start_orbit)
+        self.start_PushButton.clicked.connect(self.start_orbit)
+        self.constellation_ComboBox.addItems(["Solar", "Inclined", "Binary"])
 
     def start_orbit(self, event):
-        self.thread = threading.Thread(target=orbit_sim)
+        self.thread = threading.Thread(target=orbit_sim, args=(f"constellations.{self.constellation_ComboBox.currentText()}",))
         self.thread.start()
 
 def main():

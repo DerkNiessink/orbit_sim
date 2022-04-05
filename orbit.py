@@ -7,7 +7,6 @@ from pathlib import Path
 import pygame
 from pygame.math import Vector3
 
-from constellations import inclination_system
 from models.constellation import Constellation
 from models.physicalobject import InclinedPhysicalObjectModel, PhysicalObjectModel
 from models.time import Time
@@ -15,10 +14,8 @@ from views.physicalobject import PhysicalObjectView
 from camera import Camera
 from event_handler import EventHandler
 
-def orbit_sim():
-    #module_name = sys.argv[1].replace("/", ".").removeprefix(".\\").replace("\\", ".").removesuffix(".py")
-    #constellation_module = importlib.import_module(module_name)
-    constellation_module = inclination_system
+def orbit_sim(module_name):
+    constellation_module = importlib.import_module(module_name)
     window = pygame.display.set_mode(flags=pygame.RESIZABLE)
     pygame.display.set_caption("orbit simulator")
     pygame.init()
@@ -90,4 +87,4 @@ def orbit_sim():
 
 
 if __name__ == "__main__":
-    orbit_sim()
+    orbit_sim(sys.argv[1].replace("/", ".").removeprefix(".\\").replace("\\", ".").removesuffix(".py"))
