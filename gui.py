@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, uic
 
+from multiprocessing import Process
 import threading
 import sys
 from orbit import orbit_sim
@@ -18,8 +19,8 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.constellation_ComboBox.addItems(["Solar", "Inclined", "Binary"])
 
     def start_orbit(self, event):
-        self.thread = threading.Thread(target=orbit_sim, args=(f"constellations.{self.constellation_ComboBox.currentText()}",))
-        self.thread.start()
+        p = Process(target=orbit_sim, args=(f"constellations.{self.constellation_ComboBox.currentText()}",))
+        p.start()
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
