@@ -3,7 +3,8 @@ from PyQt5 import QtWidgets, uic
 from multiprocessing import Process
 import sys
 from orbit import orbit_sim
-import constellations
+import qdarktheme
+
 
 
 class OrbitSimGui(QtWidgets.QMainWindow):
@@ -29,6 +30,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyleSheet(qdarktheme.load_stylesheet())
     ui = OrbitSimGui()
     ui.show()
     sys.exit(app.exec())
