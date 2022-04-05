@@ -40,7 +40,7 @@
      <item>
       <widget class="QLabel" name="label_1">
        <property name="text">
-        <string>Constellation</string>
+        <string>Example Constellations</string>
        </property>
       </widget>
      </item>
