@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>930</width>
+    <width>851</width>
     <height>691</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="start_PushButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>630</x>
       <y>550</y>
       <width>131</width>
       <height>51</height>
@@ -30,10 +30,10 @@
    <widget class="QTextEdit" name="constellation_textEdit">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>200</y>
-      <width>401</width>
-      <height>421</height>
+      <x>380</x>
+      <y>210</y>
+      <width>431</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="html">
@@ -47,8 +47,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QScrollArea" name="scrollArea_2">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>50</y>
+      <x>410</x>
+      <y>20</y>
       <width>321</width>
       <height>121</height>
      </rect>
@@ -127,8 +127,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>210</y>
+      <x>530</x>
+      <y>180</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -149,12 +149,12 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>30</x>
       <y>30</y>
-      <width>371</width>
+      <width>321</width>
       <height>591</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -186,7 +186,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>20</x>
           <y>40</y>
-          <width>331</width>
+          <width>281</width>
           <height>501</height>
          </rect>
         </property>
@@ -229,7 +229,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="x_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>999998.000000000000000</double>
@@ -253,7 +253,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="y_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>9999999.000000000000000</double>
@@ -277,7 +277,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="z_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
@@ -312,7 +312,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="xv_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
@@ -336,7 +336,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="yv_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>9999999.000000000000000</double>
@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QDoubleSpinBox" name="zv_DoubleSpinBox">
                <property name="decimals">
-                <number>4</number>
+                <number>2</number>
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
@@ -384,7 +384,7 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QDoubleSpinBox" name="mass_DoubleSpinBox">
            <property name="decimals">
-            <number>4</number>
+            <number>2</number>
            </property>
            <property name="maximum">
             <double>9999999.000000000000000</double>
@@ -439,7 +439,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_2">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>120</x>
           <y>20</y>
           <width>171</width>
           <height>20</height>
@@ -467,7 +467,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>-20</x>
         <y>-70</y>
-        <width>431</width>
+        <width>401</width>
         <height>651</height>
        </rect>
       </property>
@@ -479,7 +479,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>429</width>
+         <width>399</width>
          <height>649</height>
         </rect>
        </property>
@@ -488,7 +488,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>30</x>
           <y>100</y>
-          <width>331</width>
+          <width>281</width>
           <height>501</height>
          </rect>
         </property>
@@ -520,7 +520,7 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QDoubleSpinBox" name="aphelion_DoubleSpinBox">
            <property name="decimals">
-            <number>4</number>
+            <number>2</number>
            </property>
            <property name="maximum">
             <double>999998.000000000000000</double>
@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QDoubleSpinBox" name="velocity_DoubleSpinBox">
            <property name="decimals">
-            <number>4</number>
+            <number>2</number>
            </property>
            <property name="maximum">
             <double>999999.000000000000000</double>
@@ -570,7 +570,7 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QDoubleSpinBox" name="mass_DoubleSpinBox_2">
            <property name="decimals">
-            <number>4</number>
+            <number>2</number>
            </property>
            <property name="maximum">
             <double>9999999.000000000000000</double>
@@ -644,7 +644,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_15">
         <property name="geometry">
          <rect>
-          <x>150</x>
+          <x>130</x>
           <y>80</y>
           <width>171</width>
           <height>20</height>
@@ -675,7 +675,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>930</width>
+     <width>851</width>
      <height>21</height>
     </rect>
    </property>
