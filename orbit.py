@@ -13,6 +13,8 @@ from models.time import Time
 from views.physicalobject import PhysicalObjectView
 from camera import Camera
 from event_handler import EventHandler
+from resources.image_type import images
+
 
 def orbit_sim(module_name):
     constellation_module = importlib.import_module(module_name)
@@ -46,7 +48,7 @@ def orbit_sim(module_name):
                 name,
                 constellation_module.general_parameters["scale_factor"],
                 body.get("colour"),
-                body["image"],
+                images[body["type"]],
                 font,
                 body_model,
                 body.get("tail_length", 5000),

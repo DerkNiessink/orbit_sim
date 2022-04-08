@@ -9,7 +9,7 @@ constellation = {
         "radius": 1.711 * radius_sun,
         "mass": 4 * mass_sun,
         "tail_length": 3000,
-        "image": "resources/star1.png",
+        "type": "star",
     },
     "Star 2": {
         "init_position": (2 * AU, 0, 0),
@@ -17,7 +17,7 @@ constellation = {
         "radius": 1.711 * radius_sun,
         "mass": 3 * mass_sun,
         "tail_length": 3000,
-        "image": "resources/star1.png",
+        "type": "star",
     },
     "Planet 1": {
         "init_position": (-3 * AU, 0, 0),
@@ -25,7 +25,7 @@ constellation = {
         "radius": 1.711 * radius_sun,
         "mass": 0.000001 * mass_sun,
         "tail_length": 1000,
-        "image": "resources/planet1.png",
+        "type": "terrestrial hot",
     },
     "Planet 2": {
         "init_position": (2.5 * AU, 0, 0),
@@ -33,7 +33,7 @@ constellation = {
         "radius": 1.711 * radius_sun,
         "mass": 0.000001 * mass_sun,
         "tail_length": 100,
-        "image": "resources/planet1.png",
+        "type": "gas giant",
     },
 }
 
