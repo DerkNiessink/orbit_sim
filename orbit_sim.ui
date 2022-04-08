@@ -86,7 +86,7 @@
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="text">
-       <string>Example Constellations</string>
+       <string>Constellations</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
