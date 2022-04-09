@@ -74,9 +74,13 @@ class InclinedPhysicalObjectModel(PhysicalObjectModel):
         radius: float, 
         mass: float,
     ) -> None:
-
-        inclination_rad = math.radians(inclination)
-        position = Vector3(aphelion * math.cos(inclination_rad), 0, aphelion * math.sin(inclination_rad))
-        velocity = Vector3(0, min_orbital_velocity, 0)
-        super().__init__(position, velocity, radius, mass)
         
+        position, velocity = elements_to_cartesian(aphelion, min_orbital_velocity, inclination)
+        super().__init__(Vector3(position), Vector3(velocity), radius, mass)
+    
+def elements_to_cartesian(aphelion, min_orbital_velocity, inclination) -> tuple: 
+    # convert orbital elements to cartesian position and velocity vectors
+    inclination_rad = math.radians(inclination)
+    position = (aphelion * math.cos(inclination_rad), 0, aphelion * math.sin(inclination_rad))
+    velocity = (0, min_orbital_velocity, 0)
+    return position, velocity

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>851</width>
-    <height>691</height>
+    <width>736</width>
+    <height>595</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,88 +17,21 @@
    <widget class="QPushButton" name="start_PushButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>580</y>
-      <width>101</width>
-      <height>51</height>
+      <x>640</x>
+      <y>50</y>
+      <width>71</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Start Sim</string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea_2">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>50</y>
-      <width>311</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents_4">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>309</width>
-       <height>89</height>
-      </rect>
-     </property>
-     <widget class="QComboBox" name="constellation_ComboBox">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>40</y>
-        <width>249</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <property name="currentText">
-       <string/>
-      </property>
-      <property name="currentIndex">
-       <number>-1</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_1">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>10</y>
-        <width>249</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string>Constellations</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>150</y>
+      <x>280</x>
+      <y>20</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -114,541 +47,21 @@
      <string>Constellation</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>321</width>
-      <height>591</height>
-     </rect>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Cartesian</string>
-     </attribute>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="geometry">
-       <rect>
-        <x>-10</x>
-        <y>-10</y>
-        <width>391</width>
-        <height>581</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>389</width>
-         <height>579</height>
-        </rect>
-       </property>
-       <widget class="QWidget" name="verticalLayoutWidget_3">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>40</y>
-          <width>281</width>
-          <height>501</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="name_LineEdit">
-           <property name="inputMask">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Body Name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Initial Position (AU)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>x </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="x_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>999998.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>y</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="y_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>9999999.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>z</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="z_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>999999.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Initial Velocity (km/s)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>x </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="xv_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>999999.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_6">
-             <item>
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>y</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="yv_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>9999999.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
-             <item>
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>z</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="zv_DoubleSpinBox">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="maximum">
-                <double>999999.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>Mass (Solar Mass)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="mass_DoubleSpinBox">
-           <property name="decimals">
-            <number>2</number>
-           </property>
-           <property name="maximum">
-            <double>9999999.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.001000000000000</double>
-           </property>
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_18">
-           <property name="text">
-            <string>Radius (km)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="radius_DoubleSpinBox"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>Class</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="image_ComboBox">
-           <property name="editable">
-            <bool>false</bool>
-           </property>
-           <property name="currentText">
-            <string/>
-           </property>
-           <property name="currentIndex">
-            <number>-1</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="add_cartesian_PushButton">
-           <property name="text">
-            <string>Add Body</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>20</y>
-          <width>171</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Add Body</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Orbital Elements</string>
-     </attribute>
-     <widget class="QScrollArea" name="scrollArea_3">
-      <property name="geometry">
-       <rect>
-        <x>-20</x>
-        <y>-70</y>
-        <width>401</width>
-        <height>651</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents_5">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>399</width>
-         <height>649</height>
-        </rect>
-       </property>
-       <widget class="QWidget" name="verticalLayoutWidget_6">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>100</y>
-          <width>281</width>
-          <height>501</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-         <item>
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="name_LineEdit_2">
-           <property name="inputMask">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Body Name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_16">
-           <property name="text">
-            <string>Aphelion (AU)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="aphelion_DoubleSpinBox">
-           <property name="decimals">
-            <number>2</number>
-           </property>
-           <property name="maximum">
-            <double>999998.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.100000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_19">
-           <property name="text">
-            <string>Minimum Orbital Velociy (km/s)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="velocity_DoubleSpinBox">
-           <property name="decimals">
-            <number>2</number>
-           </property>
-           <property name="maximum">
-            <double>999999.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.100000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string>Inclination (degrees)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="inclination_DoubleSpinBox"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_23">
-           <property name="text">
-            <string>Mass (Solar Mass)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="mass_DoubleSpinBox_2">
-           <property name="decimals">
-            <number>2</number>
-           </property>
-           <property name="maximum">
-            <double>9999999.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.001000000000000</double>
-           </property>
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_20">
-           <property name="text">
-            <string>Radius (km)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="radius_DoubleSpinBox_2"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_24">
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="image_ComboBox_2">
-           <property name="editable">
-            <bool>true</bool>
-           </property>
-           <property name="currentText">
-            <string/>
-           </property>
-           <property name="currentIndex">
-            <number>-1</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="add_aphelion_PushButton">
-           <property name="text">
-            <string>Add Body</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label_25">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>0</y>
-          <width>171</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Add Body</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_15">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>80</y>
-          <width>171</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Add Body</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>191</y>
-      <width>401</width>
-      <height>371</height>
+      <x>20</x>
+      <y>110</y>
+      <width>691</width>
+      <height>421</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="add_PushButton">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>510</y>
+      <x>650</x>
+      <y>480</y>
       <width>41</width>
       <height>31</height>
      </rect>
@@ -657,11 +70,43 @@
      <string>+</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="constellation_ComboBox">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>60</y>
+      <width>249</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+    <property name="currentText">
+     <string/>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="add_constellation_PushButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>60</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+   </widget>
    <zorder>tableWidget</zorder>
    <zorder>start_PushButton</zorder>
-   <zorder>scrollArea_2</zorder>
    <zorder>label_13</zorder>
-   <zorder>tabWidget</zorder>
+   <zorder>constellation_ComboBox</zorder>
+   <zorder>add_constellation_PushButton</zorder>
    <zorder>add_PushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -669,8 +114,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>851</width>
-     <height>26</height>
+     <width>736</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
