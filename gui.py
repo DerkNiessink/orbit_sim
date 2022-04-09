@@ -85,7 +85,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.constellation_ComboBox.setCurrentIndex(0)
 
     def addItem(self, input) -> None:
-        # add an item to the current column
+        """add an item to the current column"""
         self.column += 1
         self.tableWidget.setItem(0, self.column, QTableWidgetItem(f"{input}"))
 
