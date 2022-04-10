@@ -4,7 +4,7 @@ from multiprocessing import Process
 import sys
 
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
 import qdarktheme
 import numpy as np
 
@@ -28,16 +28,17 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         
         self.example_constellations = ["Solar", "Inclined", "Binary"]
         self.start_PushButton.clicked.connect(self.start_orbit)
-        self.constellation_ComboBox.addItems(self.example_constellations)
-        self.constellation_ComboBox.currentTextChanged.connect(self.show_current_constellation)
-        self.constellation_ComboBox.textActivated.connect(self.make_uneditable)
+        self.const_ComboBox.addItems(self.example_constellations)
+        self.const_ComboBox.currentTextChanged.connect(self.show_current_constellation)
+        self.const_ComboBox.textActivated.connect(self.make_uneditable)
         self.show_current_constellation()
         self.set_header()
         self.add_PushButton.clicked.connect(self.add_body)
-        self.add_constellation_PushButton.clicked.connect(self.add_constellation)
+        self.add_const_PushButton.clicked.connect(self.add_constellation)
+        
         
     def start_orbit(self):
-        p = Process(target=orbit_sim, args=(f"constellations.{self.constellation_ComboBox.currentText()}",))
+        p = Process(target=orbit_sim, args=(f"constellations.{self.const_ComboBox.currentText()}",))
         p.start()
 
     def show_current_constellation(self):
@@ -46,12 +47,12 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.set_header()
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setColumnWidth(1, 130)
-        if self.constellation_ComboBox.currentText() in self.example_constellations:  
+        if self.const_ComboBox.currentText() in self.example_constellations:  
             self.make_uneditable()
-            constellation = importlib.import_module(f".{self.constellation_ComboBox.currentText()}", "constellations")
+            constellation = importlib.import_module(f".{self.const_ComboBox.currentText()}", "constellations")
             self.const_to_table(constellation.constellation)
+        
             
-
     def const_to_table(self, constellation) -> None:
         """add the constellation items to the table"""
         for name, body in constellation.items():
@@ -72,17 +73,17 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             self.addItem(scientific(body["mass"]))
             self.addItem(body["type"])
             self.addItem(body.get("tail_length", 5000))
-
+        
     def add_body(self) -> None:
         self.tableWidget.insertRow(self.tableWidget.rowCount())
 
     def make_uneditable(self) -> None:
-        self.constellation_ComboBox.setEditable(False)
+        self.const_ComboBox.setEditable(False)
 
     def add_constellation(self) -> None:
-        self.constellation_ComboBox.setEditable(True)
-        self.constellation_ComboBox.setInsertPolicy(self.constellation_ComboBox.InsertAtTop)
-        self.constellation_ComboBox.setCurrentIndex(0)
+        self.const_ComboBox.setEditable(True)
+        self.const_ComboBox.setInsertPolicy(self.const_ComboBox.InsertAtTop)
+        self.const_ComboBox.setCurrentIndex(0)
 
     def addItem(self, input) -> None:
         """add an item to the current column"""
@@ -91,6 +92,9 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
     def set_header(self) -> None:
         self.tableWidget.setHorizontalHeaderLabels(["Name" ,"Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"])
+
+    
+
 
 
 def scientific(input) -> str:
