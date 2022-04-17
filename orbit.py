@@ -1,8 +1,8 @@
 """Orbit sim main program."""
 
 import sys
-import importlib
 from pathlib import Path
+import json
 
 import pygame
 from pygame.math import Vector3
@@ -17,7 +17,10 @@ from resources.image_type import images
 
 
 def orbit_sim(module_name):
-    constellation_module = importlib.import_module(module_name)
+
+    with open(module_name) as json_file:
+        constellation_module = json.load(json_file)
+
     window = pygame.display.set_mode(flags=pygame.RESIZABLE)
     pygame.display.set_caption("orbit simulator")
     pygame.init()
@@ -25,7 +28,8 @@ def orbit_sim(module_name):
 
     body_models = []
     body_viewers = []
-    for name, body in constellation_module.constellation.items():
+    for name, body in constellation_module["Constellation"].items():
+        
         aphelion = body.get("aphelion")
         if aphelion:
             body_model = InclinedPhysicalObjectModel(
@@ -41,12 +45,12 @@ def orbit_sim(module_name):
                 Vector3(body["init_velocity"]),
                 body["radius"],
                 body["mass"],
-            )
+                )
         body_models.append(body_model)
         body_viewers.append(
             PhysicalObjectView(
                 name,
-                constellation_module.general_parameters["scale_factor"],
+                constellation_module["scale_factor"],
                 body.get("colour"),
                 images[body["type"]],
                 font,
@@ -61,7 +65,7 @@ def orbit_sim(module_name):
         0,
         PhysicalObjectView(
             "Center of mass",
-            constellation_module.general_parameters["scale_factor"],
+            constellation_module["scale_factor"],
             (255, 0, 0),
             Path("resources/center_of_mass.png"),
             font,
@@ -72,7 +76,7 @@ def orbit_sim(module_name):
     )
 
     clock = pygame.time.Clock()
-    time = Time(constellation_module.general_parameters["time_step"])
+    time = Time(constellation_module["time_step"])
     camera = Camera(window, constellation_model, body_viewers, time)
     event_handler = EventHandler(camera, time)
     while True:

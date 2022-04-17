@@ -1,0 +1,70 @@
+{
+    "Constellation": {
+        "Star 1": {
+            "init_position": [
+                0,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                -50000,
+                25000
+            ],
+            "radius": 1191441162,
+            "mass": 8000000000000000000000000000000,
+            "tail_length": 3000,
+            "type": "star"
+        },
+        "Star 2": {
+            "init_position": [
+                299195742000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                0,
+                0
+            ],
+            "radius": 1191441162,
+            "mass": 6000000000000000000000000000000,
+            "tail_length": 3000,
+            "type": "star"
+        },
+        "Planet 1": {
+            "init_position": [
+                -448793613000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                0,
+                -10000
+            ],
+            "radius": 1191441162,
+            "mass": 200000000000000000000000,
+            "tail_length": 2000,
+            "type": "terrestrial hot"
+        },
+        "Planet 2": {
+            "init_position": [
+                373994677500,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                0,
+                -70000
+            ],
+            "radius": 1191441162,
+            "mass": 200000000000000000000000,
+            "tail_length": 100,
+            "type": "gas giant"
+        }
+    },
+    "time_step": 1800,
+    "scale_factor": 0.00000000006684587109
+}

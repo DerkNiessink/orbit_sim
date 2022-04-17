@@ -11,11 +11,12 @@ from PIL import Image
 
 from models.time import Time
 from models.constellation import Constellation
-from constellations.Solar import AU
 from views.draw import Drawable
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
 
+
+AU = 149_597_871_000
 
 class Camera:
 

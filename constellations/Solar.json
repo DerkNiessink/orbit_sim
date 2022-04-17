@@ -1,0 +1,165 @@
+{
+    "Constellation": {
+        "Sun": {
+            "init_position": [
+                0,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                0,
+                0
+            ],
+            "radius": 696342000,
+            "mass": 1988470000000000000000000000000,
+            "type": "star"
+        },
+        "Mercury": {
+            "init_position": [
+                -69818000000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                38860,
+                0
+            ],
+            "radius": 2479000,
+            "mass": 330100000000000000000000,
+            "type": "terrestrial hot"
+        },
+        "Earth": {
+            "init_position": [
+                -149597871000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                29800,
+                0
+            ],
+            "radius": 6371000,
+            "mass": 5772000000000000000000000,
+            "type": "terrestrial oceanic"
+        },
+        "Mars": {
+            "init_position": [
+                -249000000000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                21970,
+                0
+            ],
+            "radius": 3389500,
+            "mass": 639000000000000000000000,
+            "type": "terrestrial dry"
+        },
+        "Jupiter": {
+            "init_position": [
+                -802891773700,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                12440,
+                0
+            ],
+            "radius": 71492000,
+            "mass": 1898000000000000000000000000,
+            "type": "gas giant"
+        },
+        "Pluto": {
+            "aphelion": -7184138559000,
+            "min_orbital_velocity": 3710,
+            "inclination": 17.16,
+            "radius": 1185006,
+            "mass": 12698400000000000000000,
+            "type": "terrestrial dry"
+        },
+        "Venus": {
+            "init_position": [
+                -107112075600,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                34790,
+                0
+            ],
+            "radius": 6051800,
+            "mass": 4867300000000000000000000,
+            "type": "terrestrial hot"
+        },
+        "Saturn": {
+            "init_position": [
+                -1481766912000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                9090,
+                0
+            ],
+            "radius": 60268000,
+            "mass": 568320000000000000000000000,
+            "type": "gas giant"
+        },
+        "Uranus": {
+            "init_position": [
+                -2952014788000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                6490,
+                0
+            ],
+            "radius": 25559000,
+            "mass": 86811000000000000000000000,
+            "type": "terrestrial dry"
+        },
+        "Neptune": {
+            "init_position": [
+                -4483896987000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                5370,
+                0
+            ],
+            "radius": 24764000,
+            "mass": 102409000000000000000000000,
+            "type": "terrestrial dry"
+        },
+        "Moon": {
+            "init_position": [
+                -150003371000,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                30770,
+                0
+            ],
+            "radius": 1736000,
+            "mass": 7.3460000000000000000000,
+            "type": "moon",
+            "tail_length": 45
+        }
+    },
+    "time_step": 1800,
+    "scale_factor": 0.00000000006684587109
+}

@@ -7,6 +7,7 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
 import qdarktheme
 import numpy as np
+import json
 
 from orbit import orbit_sim
 from models.physicalobject import elements_to_cartesian
@@ -26,7 +27,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             self,
         )
         
-        self.example_constellations = ["Solar", "Inclined", "Binary"]
+        self.example_constellations = ["Inclined", "solar", "Binary"]
         self.start_PushButton.clicked.connect(self.start_orbit)
         self.const_ComboBox.addItems(self.example_constellations)
         self.const_ComboBox.currentTextChanged.connect(self.show_current_constellation)
@@ -38,7 +39,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         
         
     def start_orbit(self):
-        p = Process(target=orbit_sim, args=(f"constellations.{self.const_ComboBox.currentText()}",))
+        p = Process(target=orbit_sim, args=(f"./constellations/{self.const_ComboBox.currentText()}.json",))
         p.start()
 
     def show_current_constellation(self):
@@ -46,16 +47,17 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.tableWidget.setRowCount(0)
         self.set_header()
         self.tableWidget.setColumnCount(7)
-        self.tableWidget.setColumnWidth(1, 130)
+        self.tableWidget.setColumnWidth(1, 150)
         if self.const_ComboBox.currentText() in self.example_constellations:  
             self.make_uneditable()
-            constellation = importlib.import_module(f".{self.const_ComboBox.currentText()}", "constellations")
-            self.const_to_table(constellation.constellation)
-        
+
+            with open(f"./constellations/{self.const_ComboBox.currentText()}.json") as json_file:
+                constellation = json.load(json_file)
+            self.const_to_table(constellation)
             
     def const_to_table(self, constellation) -> None:
         """add the constellation items to the table"""
-        for name, body in constellation.items():
+        for name, body in constellation["Constellation"].items():
             self.column = 0
             self.tableWidget.insertRow(0)
             self.tableWidget.setItem(0, 0, QTableWidgetItem(name))
