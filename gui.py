@@ -96,9 +96,6 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.tableWidget.setHorizontalHeaderLabels(["Name" ,"Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"])
 
     
-
-
-
 def scientific(input) -> str:
     return np.format_float_scientific(input, precision = 2)
 
