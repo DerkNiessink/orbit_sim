@@ -13,7 +13,7 @@ from models.physicalobject import elements_to_cartesian
 AU = 149_597_871 * 10 ** 3
 
 class OrbitSimGui(QtWidgets.QMainWindow):
-    
+
     def __init__(self):
         super().__init__()
         self.column = 0
@@ -21,7 +21,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             open("orbit_sim.ui"),
             self,
         )
-        
+
         self.example_constellations = ["Binary","Solar", "Inclined"]
         self.conversion = Conversion(self.tableWidget, self.const_ComboBox)
         self.start_PushButton.clicked.connect(self.start_orbit)
@@ -34,7 +34,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.add_const_PushButton.clicked.connect(self.add_constellation)
         self.tableWidget.itemChanged.connect(self.conversion.table_to_json)
         self.delete_PushButton.clicked.connect(self.delete_body)
-        
+
     def start_orbit(self):
         p = Process(target=orbit_sim, args=(f"./constellations/{self.const_ComboBox.currentText()}.json",))
         p.start()
@@ -45,12 +45,12 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.set_header()
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setColumnWidth(1, 150)
-        if self.const_ComboBox.currentText() in self.example_constellations:  
+        if self.const_ComboBox.currentText() in self.example_constellations:
             self.make_uneditable()
 
             constellation = self.conversion.open_current_constellation()
             self.const_to_table(constellation)
-            
+
     def const_to_table(self, constellation) -> None:
         """add the constellation items to the table"""
         for name, body in constellation["Constellation"].items():
@@ -71,7 +71,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             self.addItem(scientific(body["mass"]))
             self.addItem(body["type"])
             self.addItem(body.get("tail_length", 5000))
-        
+
     def add_body(self) -> None:
         self.tableWidget.insertRow(self.tableWidget.rowCount())
 
@@ -90,7 +90,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
     def set_header(self) -> None:
         self.tableWidget.setHorizontalHeaderLabels(["Name" ,"Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"])
-  
+
     def delete_body(self) -> None:
         """delete the selected body from the table and json file"""
 
@@ -99,7 +99,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         # delete current body in dict (if exists)
         if self.tableWidget.item(self.tableWidget.currentRow(), 0) != None:
             del constellation["Constellation"][f"{self.tableWidget.item(self.tableWidget.currentRow(), 0).text()}"]
-        
+
         # delete current body in table
         self.tableWidget.removeRow(self.tableWidget.currentRow())
         self.conversion.save_constellation(constellation)
@@ -127,17 +127,19 @@ class Conversion:
         """if updated, save data in table as json file"""
 
         # Check if all columns are filled
-        for column in range(self.table.columnCount()):
-            if self.table.item(self.table.rowCount()-1, column) == None:
-                return
+        for row in range(self.table.rowCount()):
+            for column in range(self.table.columnCount()):
+                if self.table.item(row, column) == None:
+                    return
 
-        constellation = self.open_current_constellation()
+        constellation = dict(Constellation=dict())
 
         # add items to constellations dict
-        new_body = {}
-        for column in range(1, self.table.columnCount()): 
-            new_body[f"{self.table.horizontalHeaderItem(column).text()}"] = str(self.table.item(self.table.rowCount()-1, column).text())
-        constellation["Constellation"][f"{self.table.item(self.table.rowCount()-1, 0).text()}"] = new_body
+        for row in range(self.table.rowCount()):
+            body = {}
+            for column in range(1, self.table.columnCount()):
+                body[f"{self.table.horizontalHeaderItem(column).text()}"] = str(self.table.item(row, column).text())
+            constellation["Constellation"][f"{self.table.item(row, 0).text()}"] = body
 
         self.convert_to_data(constellation["Constellation"])
         self.save_constellation(constellation)
@@ -159,15 +161,15 @@ class Conversion:
     def string_to_data(self, body_data):
         """Convert the strings to data that can be stored in the json file"""
 
-        # Convert to list of floats with unit meters 
+        # Convert to list of floats with unit meters
         body_data["init_position"] = [val*AU for val in self.string_to_list(body_data["init_position"])]
-        
+
         # Convert to list of floats with unit m/s
         body_data["init_velocity"] = [val*1000 for val in self.string_to_list(body_data["init_velocity"])]
 
         # Convert to float with unit meters
         body_data["radius"] = float(body_data["radius"]) * 1000
-        
+
         body_data["mass"] = float(body_data["mass"])
         body_data["tail length"] = int(body_data["tail length"])
 
@@ -182,10 +184,10 @@ class Conversion:
         for key in new_keys:
             data = body_data.get(key, "not found")
             if data == "not found":
-                return True         
+                return True
         return False
 
-    
+
 def scientific(input) -> str:
     return np.format_float_scientific(input, precision = 2)
 
@@ -195,7 +197,7 @@ def main():
     ui = OrbitSimGui()
     ui.show()
     sys.exit(app.exec())
-    
+
 
 if __name__ == "__main__":
     main()
