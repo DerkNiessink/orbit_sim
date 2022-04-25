@@ -143,6 +143,8 @@ class Conversion:
         self.save_constellation(constellation)
 
     def convert_to_data(self, constellation):
+        """Convert the constellation dict to a json file that can be used for the simulation"""
+
         new_keys = {"Position (AU)": "init_position", "Velocity (km/s)": "init_velocity", "Radius (km)": "radius", "Mass (kg)": "mass", "Type": "type", "Tail Length (px)": "tail length"}
         for body in constellation:
             # Check if the body is in the json format
@@ -155,6 +157,7 @@ class Conversion:
                 self.string_to_data(constellation[body])
 
     def string_to_data(self, body_data):
+        """Convert the strings to data that can be stored in the json file"""
 
         # Convert to list of floats with unit meters 
         body_data["init_position"] = [val*AU for val in self.string_to_list(body_data["init_position"])]

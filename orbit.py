@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 
 import pygame
+from pygame.locals import *
 from pygame.math import Vector3
 
 from models.constellation import Constellation
@@ -22,6 +23,7 @@ def orbit_sim(module_name):
         constellation_module = json.load(json_file)
 
     window = pygame.display.set_mode(flags=pygame.RESIZABLE)
+    window.set_alpha(None)
     pygame.display.set_caption("orbit simulator")
     pygame.init()
     font = pygame.font.SysFont("monospace", 15)
