@@ -23,6 +23,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         )
         
         self.example_constellations = ["Binary","Solar", "Inclined"]
+        self.conversion = Conversion(self.tableWidget, self.const_ComboBox)
         self.start_PushButton.clicked.connect(self.start_orbit)
         self.const_ComboBox.addItems(self.example_constellations)
         self.const_ComboBox.currentTextChanged.connect(self.show_current_constellation)
@@ -31,7 +32,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.set_header()
         self.add_PushButton.clicked.connect(self.add_body)
         self.add_const_PushButton.clicked.connect(self.add_constellation)
-        self.tableWidget.itemChanged.connect(self.table_to_json)
+        self.tableWidget.itemChanged.connect(self.conversion.table_to_json)
         self.delete_PushButton.clicked.connect(self.delete_body)
         
     def start_orbit(self):
@@ -47,8 +48,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         if self.const_ComboBox.currentText() in self.example_constellations:  
             self.make_uneditable()
 
-            with open(f"./constellations/{self.const_ComboBox.currentText()}.json") as json_file:
-                constellation = json.load(json_file)
+            constellation = self.conversion.open_current_constellation()
             self.const_to_table(constellation)
             
     def const_to_table(self, constellation) -> None:
@@ -83,17 +83,6 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.const_ComboBox.setInsertPolicy(self.const_ComboBox.InsertAtTop)
         self.const_ComboBox.setCurrentIndex(0)
 
-    
-    def save_constellation(self, constellation) -> None:
-        """save dict as json file"""
-        with open(f"./constellations/{self.const_ComboBox.currentText()}.json", "w") as fp:
-            json.dump(constellation, fp, indent = 4)
-
-    def open_current_constellation(self) -> None:
-        """open json file as dict"""
-        with open(f"./constellations/{self.const_ComboBox.currentText()}.json") as json_file:
-            return json.load(json_file)
-
     def addItem(self, input) -> None:
         """add an item to the current column"""
         self.column += 1
@@ -101,26 +90,58 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
     def set_header(self) -> None:
         self.tableWidget.setHorizontalHeaderLabels(["Name" ,"Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"])
+  
+    def delete_body(self) -> None:
+        """delete the selected body from the table and json file"""
+
+        constellation = self.conversion.open_current_constellation()
+
+        # delete current body in dict (if exists)
+        if self.tableWidget.item(self.tableWidget.currentRow(), 0) != None:
+            del constellation["Constellation"][f"{self.tableWidget.item(self.tableWidget.currentRow(), 0).text()}"]
+        
+        # delete current body in table
+        self.tableWidget.removeRow(self.tableWidget.currentRow())
+        self.conversion.save_constellation(constellation)
+
+
+
+class Conversion:
+    """Class for converting and saving the table as a json file"""
+
+    def __init__(self, table, comboBox):
+        self.table = table
+        self.comboBox = comboBox
+
+    def save_constellation(self, constellation) -> None:
+        """save dict as json file"""
+        with open(f"./constellations/{self.comboBox.currentText()}.json", "w") as fp:
+            json.dump(constellation, fp, indent = 4)
+
+    def open_current_constellation(self) -> None:
+        """open json file as dict"""
+        with open(f"./constellations/{self.comboBox.currentText()}.json") as json_file:
+            return json.load(json_file)
 
     def table_to_json(self) -> None:
         """if updated, save data in table as json file"""
 
         # Check if all columns are filled
-        for column in range(self.tableWidget.columnCount()):
-            if self.tableWidget.item(self.tableWidget.rowCount()-1, column) == None:
+        for column in range(self.table.columnCount()):
+            if self.table.item(self.table.rowCount()-1, column) == None:
                 return
 
         constellation = self.open_current_constellation()
-        
+
         # add items to constellations dict
         new_body = {}
-        for column in range(1, self.tableWidget.columnCount()): 
-            new_body[f"{self.tableWidget.horizontalHeaderItem(column).text()}"] = str(self.tableWidget.item(self.tableWidget.rowCount()-1, column).text())
-        constellation["Constellation"][f"{self.tableWidget.item(self.tableWidget.rowCount()-1, 0).text()}"] = new_body
+        for column in range(1, self.table.columnCount()): 
+            new_body[f"{self.table.horizontalHeaderItem(column).text()}"] = str(self.table.item(self.table.rowCount()-1, column).text())
+        constellation["Constellation"][f"{self.table.item(self.table.rowCount()-1, 0).text()}"] = new_body
 
         self.convert_to_data(constellation["Constellation"])
         self.save_constellation(constellation)
-        
+
     def convert_to_data(self, constellation):
         new_keys = {"Position (AU)": "init_position", "Velocity (km/s)": "init_velocity", "Radius (km)": "radius", "Mass (kg)": "mass", "Type": "type", "Tail Length (px)": "tail length"}
         for body in constellation:
@@ -132,8 +153,6 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
                 # Convert the string properties of the body to json data
                 self.string_to_data(constellation[body])
-
-        return constellation
 
     def string_to_data(self, body_data):
 
@@ -155,29 +174,15 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         string = string.replace(")", "")
         return [float(value) for value in list(string.split(","))]
 
-
     def converted(self, body_data, new_keys):
+        """Check if the body is already converted to json data"""
         for key in new_keys:
             data = body_data.get(key, "not found")
             if data == "not found":
                 return True         
         return False
-        
 
-    def delete_body(self) -> None:
-        """delete the selected body from the table and json file"""
-
-        constellation = self.open_current_constellation()
-
-        # delete current body in dict (if exists)
-        if self.tableWidget.item(self.tableWidget.currentRow(), 0) != None:
-            del constellation["Constellation"][f"{self.tableWidget.item(self.tableWidget.currentRow(), 0).text()}"]
-        
-        # delete current body in table
-        self.tableWidget.removeRow(self.tableWidget.currentRow())
-        self.save_constellation(constellation)
-
-
+    
 def scientific(input) -> str:
     return np.format_float_scientific(input, precision = 2)
 
