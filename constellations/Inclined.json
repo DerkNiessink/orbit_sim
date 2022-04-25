@@ -1,0 +1,63 @@
+{
+    "Constellation": {
+        "Star 1": {
+            "init_position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 1.99e+30,
+            "type": "star",
+            "tail length": 5000
+        },
+        "Planet 1": {
+            "aphelion": 448793613000,
+            "min_orbital_velocity": 15000,
+            "inclination": 30,
+            "radius": 1191441162,
+            "mass": 1988470000000000000000000,
+            "tail_length": 3000,
+            "type": "terrestrial oceanic"
+        },
+        "Planet 2": {
+            "init_position": [
+                373994677500,
+                0,
+                0
+            ],
+            "init_velocity": [
+                0,
+                15000,
+                0
+            ],
+            "radius": 1191441162,
+            "mass": 1988470000000000000000000,
+            "tail_length": 3000,
+            "type": "gas giant"
+        },
+        "planet 3": {
+            "init_position": [
+                433833825900.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                15000.0,
+                0.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 1.99e+24,
+            "type": "terrestrial dry",
+            "tail length": 3000
+        }
+    },
+    "time_step": 1800,
+    "scale_factor": 6.684587109e-11
+}
