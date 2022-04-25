@@ -1,5 +1,165 @@
 {
     "Constellation": {
+        "Moon": {
+            "init_position": [
+                -149597871000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                30770.0,
+                0.0
+            ],
+            "radius": 1736000.0,
+            "mass": 7.35,
+            "type": "moon",
+            "tail length": 45
+        },
+        "Neptune": {
+            "init_position": [
+                -4483448193870.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                5370.0,
+                0.0
+            ],
+            "radius": 24764000.0,
+            "mass": 1.02e+26,
+            "type": "terrestrial dry",
+            "tail length": 5000
+        },
+        "Uranus": {
+            "init_position": [
+                -2951565994830.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                6490.0,
+                0.0
+            ],
+            "radius": 25559000.0,
+            "mass": 8.68e+25,
+            "type": "terrestrial dry",
+            "tail length": 5000
+        },
+        "Saturn": {
+            "init_position": [
+                -1481018922900.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                9090.0,
+                0.0
+            ],
+            "radius": 60268000.0,
+            "mass": 5.68e+26,
+            "type": "gas giant",
+            "tail length": 5000
+        },
+        "Venus": {
+            "init_position": [
+                -107710467120.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                34790.0,
+                0.0
+            ],
+            "radius": 6052000.0,
+            "mass": 4.87e+24,
+            "type": "terrestrial hot",
+            "tail length": 5000
+        },
+        "Pluto": {
+            "init_position": [
+                -6865046300190.0,
+                0.0,
+                -2119801832070.0
+            ],
+            "init_velocity": [
+                0.0,
+                3710.0,
+                0.0
+            ],
+            "radius": 1185000.0,
+            "mass": 1.27e+22,
+            "type": "terrestrial dry",
+            "tail length": 5000
+        },
+        "Jupiter": {
+            "init_position": [
+                -803340567270.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                12440.0,
+                0.0
+            ],
+            "radius": 71492000.0,
+            "mass": 1.9e+27,
+            "type": "gas giant",
+            "tail length": 5000
+        },
+        "Mars": {
+            "init_position": [
+                -248332465860.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                21970.0,
+                0.0
+            ],
+            "radius": 3390000.0,
+            "mass": 6.39e+23,
+            "type": "terrestrial dry",
+            "tail length": 5000
+        },
+        "Earth": {
+            "init_position": [
+                -149597871000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                29800.0,
+                0.0
+            ],
+            "radius": 6371000.0,
+            "mass": 5.77e+24,
+            "type": "terrestrial oceanic",
+            "tail length": 5000
+        },
+        "Mercury": {
+            "init_position": [
+                -70310999370.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                38860.0,
+                0.0
+            ],
+            "radius": 2479000.0,
+            "mass": 3.3e+23,
+            "type": "terrestrial hot",
+            "tail length": 5000
+        },
         "Sun": {
             "init_position": [
                 0.0,
@@ -15,152 +175,8 @@
             "mass": 1.99e+30,
             "type": "star",
             "tail length": 5000
-        },
-        "Mercury": {
-            "init_position": [
-                -69818000000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                38860,
-                0
-            ],
-            "radius": 2479000,
-            "mass": 330100000000000000000000,
-            "type": "terrestrial hot"
-        },
-        "Earth": {
-            "init_position": [
-                -149597871000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                29800,
-                0
-            ],
-            "radius": 6371000,
-            "mass": 5772000000000000000000000,
-            "type": "terrestrial oceanic"
-        },
-        "Mars": {
-            "init_position": [
-                -249000000000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                21970,
-                0
-            ],
-            "radius": 3389500,
-            "mass": 639000000000000000000000,
-            "type": "terrestrial dry"
-        },
-        "Jupiter": {
-            "init_position": [
-                -802891773700,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                12440,
-                0
-            ],
-            "radius": 71492000,
-            "mass": 1898000000000000000000000000,
-            "type": "gas giant"
-        },
-        "Pluto": {
-            "aphelion": -7184138559000,
-            "min_orbital_velocity": 3710,
-            "inclination": 17.16,
-            "radius": 1185006,
-            "mass": 12698400000000000000000,
-            "type": "terrestrial dry"
-        },
-        "Venus": {
-            "init_position": [
-                -107112075600,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                34790,
-                0
-            ],
-            "radius": 6051800,
-            "mass": 4867300000000000000000000,
-            "type": "terrestrial hot"
-        },
-        "Saturn": {
-            "init_position": [
-                -1481766912000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                9090,
-                0
-            ],
-            "radius": 60268000,
-            "mass": 568320000000000000000000000,
-            "type": "gas giant"
-        },
-        "Uranus": {
-            "init_position": [
-                -2952014788000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                6490,
-                0
-            ],
-            "radius": 25559000,
-            "mass": 86811000000000000000000000,
-            "type": "terrestrial dry"
-        },
-        "Neptune": {
-            "init_position": [
-                -4483896987000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                5370,
-                0
-            ],
-            "radius": 24764000,
-            "mass": 102409000000000000000000000,
-            "type": "terrestrial dry"
-        },
-        "Moon": {
-            "init_position": [
-                -150003371000,
-                0,
-                0
-            ],
-            "init_velocity": [
-                0,
-                30770,
-                0
-            ],
-            "radius": 1736000,
-            "mass": 7.346,
-            "type": "moon",
-            "tail_length": 45
         }
     },
-    "time_step": 1800,
-    "scale_factor": 6.684587109e-11
+    "scale_factor": 6.684587109e-11,
+    "time_step": 1800
 }

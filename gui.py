@@ -142,6 +142,10 @@ class Conversion:
             constellation["Constellation"][f"{self.table.item(row, 0).text()}"] = body
 
         self.convert_to_data(constellation["Constellation"])
+
+        constellation["scale_factor"] = 10/AU
+        constellation["time_step"] = 1800
+
         self.save_constellation(constellation)
 
     def convert_to_data(self, constellation):
