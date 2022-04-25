@@ -2,18 +2,19 @@
     "Constellation": {
         "Sun": {
             "init_position": [
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0
             ],
             "init_velocity": [
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0
             ],
-            "radius": 696342000,
-            "mass": 1988470000000000000000000000000,
-            "type": "star"
+            "radius": 696342000.0,
+            "mass": 1.99e+30,
+            "type": "star",
+            "tail length": 5000
         },
         "Mercury": {
             "init_position": [
@@ -155,11 +156,11 @@
                 0
             ],
             "radius": 1736000,
-            "mass": 7.3460000000000000000000,
+            "mass": 7.346,
             "type": "moon",
             "tail_length": 45
         }
     },
     "time_step": 1800,
-    "scale_factor": 0.00000000006684587109
+    "scale_factor": 6.684587109e-11
 }

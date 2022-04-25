@@ -2,19 +2,19 @@
     "Constellation": {
         "Star 1": {
             "init_position": [
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0
             ],
             "init_velocity": [
-                0,
-                -50000,
-                25000
+                0.0,
+                -50000.0,
+                25000.0
             ],
-            "radius": 1191441162,
-            "mass": 8000000000000000000000000000000,
-            "tail_length": 3000,
-            "type": "star"
+            "radius": 1191441000.0,
+            "mass": 8e+30,
+            "type": "star",
+            "tail length": 5000
         },
         "Star 2": {
             "init_position": [
@@ -66,5 +66,5 @@
         }
     },
     "time_step": 1800,
-    "scale_factor": 0.00000000006684587109
+    "scale_factor": 6.684587109e-11
 }
