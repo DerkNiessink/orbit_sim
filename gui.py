@@ -132,7 +132,7 @@ class Conversion:
                 if self.table.item(row, column) == None:
                     return
 
-        constellation = self.open_current_constellation()
+        constellation = dict(Constellation=dict())
 
         # add items to constellations dict
         for row in range(self.table.rowCount()):
