@@ -1,53 +1,5 @@
 {
     "Constellation": {
-        "Planet 2": {
-            "init_position": [
-                373994677500.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                0.0,
-                -70000.0
-            ],
-            "radius": 1191441000.0,
-            "mass": 2e+23,
-            "type": "gas giant",
-            "tail length": 100
-        },
-        "Planet 1": {
-            "init_position": [
-                -448793613000.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                0.0,
-                -10000.0
-            ],
-            "radius": 1191441000.0,
-            "mass": 2e+23,
-            "type": "terrestrial hot",
-            "tail length": 2000
-        },
-        "Star 2": {
-            "init_position": [
-                299195742000.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "radius": 1191441000.0,
-            "mass": 6e+30,
-            "type": "star",
-            "tail length": 3000
-        },
         "Star 1": {
             "init_position": [
                 0.0,
@@ -63,8 +15,56 @@
             "mass": 8e+30,
             "type": "star",
             "tail length": 5000
+        },
+        "Star 2": {
+            "init_position": [
+                299195742000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 6e+30,
+            "type": "star",
+            "tail length": 5000
+        },
+        "Planet 1": {
+            "init_position": [
+                -448793613000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                -10000.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 2e+23,
+            "type": "terrestrial hot",
+            "tail length": 5000
+        },
+        "Planet 2": {
+            "init_position": [
+                373994677500.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                -70000.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 2e+23,
+            "type": "gas giant",
+            "tail length": 5000
         }
     },
-    "scale_factor": 6.684587109e-11,
+    "scale_factor": 6.684587108863334e-11,
     "time_step": 1800
 }
