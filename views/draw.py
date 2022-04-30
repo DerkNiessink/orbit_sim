@@ -40,11 +40,10 @@ class Line(Drawable):
         self.colour = colour
         self.width = 1
 
-    def draw(self, window: Surface) -> None:
+    def draw(self, window: Surface, line=pygame.draw.line) -> None:
         """Draw the drawable on the window."""
-        pygame.draw.line(
-            window, self.colour, start_pos=self.screen_positions[0], end_pos=self.screen_positions[1], width=self.width
-        )
+        start_pos, end_pos = self.screen_positions
+        line(window, self.colour, start_pos=start_pos, end_pos=end_pos, width=self.width)
 
 
 class Image(Drawable):
