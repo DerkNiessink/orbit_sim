@@ -1,52 +1,52 @@
 {
     "Constellation": {
-        "Star 1": {
+        "star 2": {
             "init_position": [
-                0.0,
+                598391484000.0,
                 0.0,
                 0.0
             ],
             "init_velocity": [
                 0.0,
-                0.0,
+                30000.0,
                 0.0
             ],
-            "radius": 1191441000.0,
-            "mass": 1.99e+30,
+            "radius": 1000000000000.0,
+            "mass": 5e+30,
             "type": "star",
-            "tail_length": 5000
+            "tail_length": 100
         },
-        "Planet 1": {
+        "planet": {
             "init_position": [
-                747989355000.0,
+                74798935500.0,
                 0.0,
-                224396806500.0
+                0.0
             ],
             "init_velocity": [
                 0.0,
-                5000.0,
+                50000.0,
                 0.0
             ],
-            "radius": 1191441000.0,
-            "mass": 1.99e+24,
+            "radius": 10000000.0,
+            "mass": 2e+24,
             "type": "terrestrial oceanic",
-            "tail_length": 5000
+            "tail_length": 100
         },
-        "Planet 2": {
+        "star": {
             "init_position": [
-                373994677500.0,
+                0.0,
                 0.0,
                 0.0
             ],
             "init_velocity": [
                 0.0,
-                15000.0,
+                0.0,
                 0.0
             ],
-            "radius": 1191441000.0,
-            "mass": 1.99e+24,
-            "type": "gas giant",
-            "tail_length": 5000
+            "radius": 100000000000.0,
+            "mass": 5e+30,
+            "type": "star",
+            "tail_length": 100
         }
     },
     "scale_factor": 6.684587108863334e-11,

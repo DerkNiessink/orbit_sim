@@ -14,7 +14,7 @@
             "radius": 1191441000.0,
             "mass": 8e+30,
             "type": "star",
-            "tail length": 5000
+            "tail_length": 5000
         },
         "Star 2": {
             "init_position": [
@@ -30,7 +30,7 @@
             "radius": 1191441000.0,
             "mass": 6e+30,
             "type": "star",
-            "tail length": 5000
+            "tail_length": 5000
         },
         "Planet 1": {
             "init_position": [
@@ -46,7 +46,7 @@
             "radius": 1191441000.0,
             "mass": 2e+23,
             "type": "terrestrial hot",
-            "tail length": 5000
+            "tail_length": 5000
         },
         "Planet 2": {
             "init_position": [
@@ -62,7 +62,7 @@
             "radius": 1191441000.0,
             "mass": 2e+23,
             "type": "gas giant",
-            "tail length": 5000
+            "tail_length": 5000
         }
     },
     "scale_factor": 6.684587108863334e-11,

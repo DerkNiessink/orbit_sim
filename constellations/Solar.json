@@ -1,38 +1,6 @@
 {
     "Constellation": {
-        "Sun": {
-            "init_position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "radius": 696342000.0,
-            "mass": 1.99e+30,
-            "type": "star",
-            "tail length": 5000
-        },
-        "Mercury": {
-            "init_position": [
-                -70310999370.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                38860.0,
-                0.0
-            ],
-            "radius": 2479000.0,
-            "mass": 3.3e+23,
-            "type": "terrestrial hot",
-            "tail length": 5000
-        },
-        "Earth": {
+        "Moon": {
             "init_position": [
                 -149597871000.0,
                 0.0,
@@ -40,109 +8,13 @@
             ],
             "init_velocity": [
                 0.0,
-                29800.0,
+                30770.0,
                 0.0
             ],
-            "radius": 6371000.0,
-            "mass": 5.77e+24,
-            "type": "terrestrial oceanic",
-            "tail length": 5000
-        },
-        "Mars": {
-            "init_position": [
-                -248332465860.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                21970.0,
-                0.0
-            ],
-            "radius": 3390000.0,
-            "mass": 6.39e+23,
-            "type": "terrestrial dry",
-            "tail length": 5000
-        },
-        "Jupiter": {
-            "init_position": [
-                -803340567270.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                12440.0,
-                0.0
-            ],
-            "radius": 71492000.0,
-            "mass": 1.9e+27,
-            "type": "gas giant",
-            "tail length": 5000
-        },
-        "Pluto": {
-            "init_position": [
-                -6865046300190.0,
-                0.0,
-                -2119801832070.0
-            ],
-            "init_velocity": [
-                0.0,
-                3710.0,
-                0.0
-            ],
-            "radius": 1185000.0,
-            "mass": 1.27e+22,
-            "type": "terrestrial dry",
-            "tail length": 5000
-        },
-        "Venus": {
-            "init_position": [
-                -107710467120.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                34790.0,
-                0.0
-            ],
-            "radius": 6052000.0,
-            "mass": 4.87e+24,
-            "type": "terrestrial hot",
-            "tail length": 5000
-        },
-        "Saturn": {
-            "init_position": [
-                -1481018922900.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                9090.0,
-                0.0
-            ],
-            "radius": 60268000.0,
-            "mass": 5.68e+26,
-            "type": "gas giant",
-            "tail length": 5000
-        },
-        "Uranus": {
-            "init_position": [
-                -2951565994830.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                6490.0,
-                0.0
-            ],
-            "radius": 25559000.0,
-            "mass": 8.68e+25,
-            "type": "terrestrial dry",
-            "tail length": 5000
+            "radius": 1736000.0,
+            "mass": 7.35,
+            "type": "moon",
+            "tail_length": 5000
         },
         "Neptune": {
             "init_position": [
@@ -158,9 +30,105 @@
             "radius": 24764000.0,
             "mass": 1.02e+26,
             "type": "terrestrial dry",
-            "tail length": 5000
+            "tail_length": 5000
         },
-        "Moon": {
+        "Uranus": {
+            "init_position": [
+                -2951565994830.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                6490.0,
+                0.0
+            ],
+            "radius": 25559000.0,
+            "mass": 8.68e+25,
+            "type": "terrestrial dry",
+            "tail_length": 5000
+        },
+        "Saturn": {
+            "init_position": [
+                -1481018922900.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                9090.0,
+                0.0
+            ],
+            "radius": 60268000.0,
+            "mass": 5.68e+26,
+            "type": "gas giant",
+            "tail_length": 5000
+        },
+        "Venus": {
+            "init_position": [
+                -107710467120.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                34790.0,
+                0.0
+            ],
+            "radius": 6052000.0,
+            "mass": 4.87e+24,
+            "type": "terrestrial hot",
+            "tail_length": 5000
+        },
+        "Pluto": {
+            "init_position": [
+                -6865046300190.0,
+                0.0,
+                -2119801832070.0
+            ],
+            "init_velocity": [
+                0.0,
+                3710.0,
+                0.0
+            ],
+            "radius": 1185000.0,
+            "mass": 1.27e+22,
+            "type": "terrestrial dry",
+            "tail_length": 5000
+        },
+        "Jupiter": {
+            "init_position": [
+                -803340567270.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                12440.0,
+                0.0
+            ],
+            "radius": 71492000.0,
+            "mass": 1.9e+27,
+            "type": "gas giant",
+            "tail_length": 5000
+        },
+        "Mars": {
+            "init_position": [
+                -248332465860.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                21970.0,
+                0.0
+            ],
+            "radius": 3390000.0,
+            "mass": 6.39e+23,
+            "type": "terrestrial dry",
+            "tail_length": 5000
+        },
+        "Earth": {
             "init_position": [
                 -149597871000.0,
                 0.0,
@@ -168,13 +136,45 @@
             ],
             "init_velocity": [
                 0.0,
-                30770.0,
+                29800.0,
                 0.0
             ],
-            "radius": 1736000.0,
-            "mass": 7.35,
-            "type": "moon",
-            "tail length": 5000
+            "radius": 6371000.0,
+            "mass": 5.77e+24,
+            "type": "terrestrial oceanic",
+            "tail_length": 5000
+        },
+        "Mercury": {
+            "init_position": [
+                -70310999370.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                38860.0,
+                0.0
+            ],
+            "radius": 2479000.0,
+            "mass": 3.3e+23,
+            "type": "terrestrial hot",
+            "tail_length": 5000
+        },
+        "Sun": {
+            "init_position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 696342000.0,
+            "mass": 1.99e+30,
+            "type": "star",
+            "tail_length": 5000
         }
     },
     "scale_factor": 6.684587108863334e-11,

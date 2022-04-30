@@ -152,7 +152,7 @@ class Conversion:
     def convert_to_data(self, constellation):
         """Convert the constellation dict to a json file that can be used for the simulation"""
 
-        new_keys = {"Position (AU)": "init_position", "Velocity (km/s)": "init_velocity", "Radius (km)": "radius", "Mass (kg)": "mass", "Type": "type", "Tail Length (px)": "tail length"}
+        new_keys = {"Position (AU)": "init_position", "Velocity (km/s)": "init_velocity", "Radius (km)": "radius", "Mass (kg)": "mass", "Type": "type", "Tail Length (px)": "tail_length"}
         for body in constellation:
             # Check if the body is in the json format
             if not self.converted(constellation[body], new_keys):
@@ -176,7 +176,7 @@ class Conversion:
         body_data["radius"] = float(body_data["radius"]) * 1000
 
         body_data["mass"] = float(body_data["mass"])
-        body_data["tail length"] = int(body_data["tail length"])
+        body_data["tail_length"] = int(body_data["tail_length"])
 
     def string_to_list(self, string):
         """Convert string of a tuple to list"""
