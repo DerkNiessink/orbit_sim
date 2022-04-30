@@ -1,5 +1,6 @@
 from multiprocessing import Process
 import sys
+import os
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
@@ -21,8 +22,8 @@ class OrbitSimGui(QtWidgets.QMainWindow):
             open("orbit_sim.ui"),
             self,
         )
-
-        self.example_constellations = ["Binary","Solar", "Inclined"]
+            
+        self.example_constellations = [filename.strip(".json") for filename in os.listdir("constellations") if ".json" in filename]
         self.conversion = Conversion(self.tableWidget, self.const_ComboBox)
         self.start_PushButton.clicked.connect(self.start_orbit)
         self.const_ComboBox.addItems(self.example_constellations)
