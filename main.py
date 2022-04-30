@@ -7,7 +7,7 @@ import qdarktheme
 import numpy as np
 import json
 
-from orbit import orbit_sim
+from sim import orbit_sim
 from models.physicalobject import elements_to_cartesian
 
 AU = 149_597_871 * 10 ** 3
