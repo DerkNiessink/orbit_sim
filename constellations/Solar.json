@@ -14,7 +14,7 @@
             "radius": 1736000.0,
             "mass": 7.35,
             "type": "moon",
-            "tail length": 45
+            "tail length": 5000
         },
         "Neptune": {
             "init_position": [
@@ -177,6 +177,6 @@
             "tail length": 5000
         }
     },
-    "scale_factor": 6.684587109e-11,
+    "scale_factor": 6.684587108863334e-11,
     "time_step": 1800
 }

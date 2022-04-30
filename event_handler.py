@@ -32,8 +32,6 @@ class EventHandler:
             case EventType(type=pygame.QUIT) | EventType(type=pygame.KEYDOWN, key=pygame.K_q):  # type: ignore[misc]
                 pygame.quit()
                 sys.exit()
-            case EventType(type=pygame.VIDEORESIZE):  # type: ignore[misc]
-                self.camera.resize()
             case EventType(type=pygame.MOUSEBUTTONDOWN, button=1):  # type: ignore[misc]
                 self._mouse_button_down_position = Vector2(*event.pos)
             case EventType(type=pygame.MOUSEBUTTONUP, button=1):  # type: ignore[misc]
@@ -49,6 +47,7 @@ class EventHandler:
                     self.camera.pan(Vector2(*event.rel))
                 if pygame.mouse.get_pressed()[2]:
                     self.camera.rotate(Vector2(*event.rel))
+                    self.camera.rotate_background(Vector2(*event.rel))
             case EventType(type=pygame.KEYDOWN, key=pygame.K_g):  # type: ignore[misc]
                 self.camera.save_gif()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_l):  # type: ignore[misc]

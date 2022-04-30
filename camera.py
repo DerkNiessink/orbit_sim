@@ -38,14 +38,18 @@ class Camera:
         self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.background_image = pygame.image.load("resources/stars_background.png").convert_alpha()
-        self.scaled_background_image = self.get_scaled_background_image()
+        self.rect_background = self.background_image.get_rect()
+        self.bg1Coord = Vector2(0, 0) 
+        self.bg2Coord = Vector2(0, self.rect_background.height)
+        self.bg3Coord = Vector2(0, -self.rect_background.height)
         self.time = time
         self.settings = ViewSettings(body_viewers[0], 1.0, self.initialOffset())
         self.font = pygame.font.SysFont("monospace", 18)
         self.images: list[Image.Image] = []
         self.images_to_save = 0
         self.thread: threading.Thread | None = None
-
+        
+ 
     def initialOffset(self) -> Vector2:
         """The initial offset for the camera is the center of the window. Panning may change the offset."""
         return Vector2(self.window.get_width() / 2, self.window.get_height() / 2)
@@ -77,7 +81,16 @@ class Camera:
         speed_factor = 1 / 4
         self.settings.x_rotation += position.y * speed_factor
         self.settings.y_rotation += -position.x * speed_factor
-
+  
+    def rotate_background(self, position: Vector2) -> None:
+        "Rotate the background"
+        self.bg1Coord.y -= position.y 
+        self.bg2Coord.y -= position.y
+        if self.bg1Coord.y <= -self.rect_background.height:
+            self.bg1Coord.y = self.rect_background.height
+        if self.bg2Coord.y <= -self.rect_background.height:
+            self.bg2Coord.y = self.rect_background.height
+ 
     def reset_rotation(self) -> None:
         """Reset the camera rotation."""
         self.settings.x_rotation = self.settings.y_rotation = 0.0
@@ -95,15 +108,6 @@ class Camera:
         "Toogle the tail of the bodies"
         self.settings.tail = not self.settings.tail
 
-    def resize(self) -> None:
-        """The window was resized by the user."""
-        self.scaled_background_image = self.get_scaled_background_image()
-        self.settings.offset = self.initialOffset()
-
-    def get_scaled_background_image(self) -> Surface:
-        """Return the scaled background image."""
-        return pygame.transform.scale(self.background_image, (self.window.get_width(), self.window.get_height()))
-
     def save_screenshot(self) -> None:
         """Save a screenshot of the current screen."""
         pygame.image.save(self.window, "screenshot.png")
@@ -116,7 +120,9 @@ class Camera:
     def update(self, elapsed_time: float) -> None:
 
         # draw background image
-        self.window.blit(self.scaled_background_image, (0, 0))
+        self.window.blit(self.background_image, (self.bg1Coord.x, self.bg1Coord.y))
+        self.window.blit(self.background_image, (self.bg2Coord.x, self.bg2Coord.y))
+        self.window.blit(self.background_image, (self.bg3Coord.x, self.bg3Coord.y))
 
         # update positions
         for body in self.body_viewers:
