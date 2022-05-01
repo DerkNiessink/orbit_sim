@@ -1,19 +1,35 @@
 {
     "Constellation": {
-        "Star 1": {
+        "Planet 2": {
             "init_position": [
-                0.0,
+                373994677500.0,
                 0.0,
                 0.0
             ],
             "init_velocity": [
                 0.0,
-                -50000.0,
-                25000.0
+                0.0,
+                -70000.0
             ],
             "radius": 1191441000.0,
-            "mass": 8e+30,
-            "type": "star",
+            "mass": 2e+23,
+            "type": "terrestrial hot",
+            "tail_length": 5000
+        },
+        "Planet 1": {
+            "init_position": [
+                -448793613000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                0.0,
+                0.0,
+                -10000.0
+            ],
+            "radius": 1191441000.0,
+            "mass": 2e+23,
+            "type": "terrestrial oceanic",
             "tail_length": 5000
         },
         "Star 2": {
@@ -32,36 +48,20 @@
             "type": "star",
             "tail_length": 5000
         },
-        "Planet 1": {
+        "Star 1": {
             "init_position": [
-                -448793613000.0,
+                0.0,
                 0.0,
                 0.0
             ],
             "init_velocity": [
                 0.0,
-                0.0,
-                -10000.0
+                -50000.0,
+                25000.0
             ],
             "radius": 1191441000.0,
-            "mass": 2e+23,
-            "type": "terrestrial hot",
-            "tail_length": 5000
-        },
-        "Planet 2": {
-            "init_position": [
-                373994677500.0,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                0.0,
-                -70000.0
-            ],
-            "radius": 1191441000.0,
-            "mass": 2e+23,
-            "type": "gas giant",
+            "mass": 8e+30,
+            "type": "star",
             "tail_length": 5000
         }
     },
