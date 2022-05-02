@@ -100,7 +100,6 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         """Add an empty constellation to the constellations combobox"""
         self.const_ComboBox.setEditable(True)
         self.const_ComboBox.setInsertPolicy(self.const_ComboBox.InsertAtTop)
-        self.const_ComboBox.setCurrentIndex(0)
 
     def addTypes(self) -> None:
         """Add the combobox containing the body types to column 5"""
