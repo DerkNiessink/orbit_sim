@@ -95,4 +95,4 @@ def orbit_sim(module_name):
 
 
 if __name__ == "__main__":
-    orbit_sim(sys.argv[1].replace("/", ".").removeprefix(".\\").replace("\\", ".").removesuffix(".py"))
+    orbit_sim(sys.argv[1])
