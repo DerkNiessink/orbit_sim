@@ -4,7 +4,7 @@ import os
 from functools import partial
 
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QTableWidgetItem, QComboBox
+from PyQt5.QtWidgets import QTableWidgetItem, QComboBox, QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QMessageBox
 import qdarktheme
 import numpy as np
 
@@ -46,6 +46,7 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.add_const_PushButton.clicked.connect(self.add_constellation)
         self.tableWidget.itemChanged.connect(partial(self.conversion.table_to_json, self.types_ComboBoxes))
         self.delete_PushButton.clicked.connect(self.delete_body)
+        self.delete_const_PushButton.clicked.connect(self.delete_constellation)
 
     def start_sim(self):
         """Start the simulation"""
@@ -95,11 +96,20 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
     def make_uneditable(self) -> None:
         self.const_ComboBox.setEditable(False)
+        self.types_ComboBoxes[self.const_ComboBox.currentText()] = {}
 
     def add_constellation(self) -> None:
         """Add an empty constellation to the constellations combobox"""
         self.const_ComboBox.setEditable(True)
         self.const_ComboBox.setInsertPolicy(self.const_ComboBox.InsertAtTop)
+
+    def delete_constellation(self) -> None:
+        """Delete a constellation from the constellations combobox and json file"""
+
+        button = QMessageBox.question(self, "Confirm", f'Are you sure you want to delete "{self.const_ComboBox.currentText()}"?')
+        if button == QMessageBox.Yes:
+            self.conversion.delete_constellation()
+            self.const_ComboBox.removeItem(self.const_ComboBox.currentIndex())
 
     def addTypes(self) -> None:
         """Add the combobox containing the body types to column 5"""

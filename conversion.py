@@ -1,4 +1,5 @@
 import json
+import os
 
 AU = 149_597_871 * 10 ** 3
 
@@ -19,6 +20,14 @@ class Conversion:
         """open json file as dict"""
         with open(f"./constellations/{self.ComboBox.currentText()}.json") as json_file:
             return json.load(json_file)
+
+    def delete_constellation(self) -> None:
+        """delete current constellation json file"""
+        try:
+            os.remove(f"./constellations/{self.ComboBox.currentText()}.json")
+        except:
+            # Ignore error when constellation was added to combobox but not yet saved
+            FileNotFoundError 
 
     def table_to_json(self, types_ComboBoxes) -> None:
         """if updated, save data in table as json file"""
