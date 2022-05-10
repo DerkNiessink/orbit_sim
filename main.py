@@ -39,7 +39,6 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.start_PushButton.clicked.connect(self.start_sim)
         self.const_ComboBox.addItems(self.constellations)
         self.const_ComboBox.currentTextChanged.connect(self.show_current_constellation)
-        self.const_ComboBox.textActivated.connect(self.make_uneditable)
         self.show_current_constellation()
         self.set_header()
         self.add_PushButton.clicked.connect(self.add_body)
