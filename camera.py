@@ -129,9 +129,9 @@ class Camera:
             drawables.extend(body.drawables(self.settings))
         width, height = self.window.get_width(), self.window.get_height()
         drawables = [drawable for drawable in drawables if drawable.in_window(width, height)]
-        for drawable in sorted(drawables, key=attrgetter("z")):
+        for drawable in sorted(drawables, key=attrgetter("z"), reverse = True):
             drawable.draw(self.window)
-
+        
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
         self.draw_label(f"Elapsed time: {elapsed_years} years", (25, 25))
