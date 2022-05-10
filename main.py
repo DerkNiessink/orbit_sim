@@ -59,7 +59,8 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.tableWidget.setRowCount(0)
         self.set_header()
         self.tableWidget.setColumnCount(7)
-        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(1, 125)
+        self.tableWidget.setColumnWidth(5, 125)
         if self.const_ComboBox.currentText() in self.constellations:
             self.make_uneditable()
             constellation = self.conversion.open_current_constellation()
