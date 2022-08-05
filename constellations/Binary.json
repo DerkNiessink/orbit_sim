@@ -1,5 +1,21 @@
 {
     "Constellation": {
+        "planet3": {
+            "init_position": [
+                747989355000.0,
+                0.0,
+                0.0
+            ],
+            "init_velocity": [
+                1000.0,
+                0.0,
+                0.0
+            ],
+            "radius": 143242000.0,
+            "mass": 2e+23,
+            "type": "gas giant",
+            "tail_length": 5000
+        },
         "Planet 2": {
             "init_position": [
                 373994677500.0,
