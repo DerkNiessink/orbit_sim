@@ -9,7 +9,6 @@ import math
 from pygame.math import Vector3
 
 
-
 class PhysicalObjectModel:
 
     gravitational_constant = 6.67408 * 10 ** (-11)
@@ -23,10 +22,11 @@ class PhysicalObjectModel:
         radius: float,
         mass: float,
     ) -> None:
-        
+
         self.position = initial_position
         self.velocity = initial_velocity
-        self.radius = radius # m
+        self.acceleration = self.null_vector
+        self.radius = radius  # m
         self.mass = mass  # kg
         self.id = id(self)
 
@@ -51,7 +51,7 @@ class PhysicalObjectModel:
         vector = other_body.position - self.position
         distance = vector.length()
         force_direction = vector.normalize()
-        return force_direction * self.mass_product(other_body) / (distance ** 2)
+        return force_direction * self.mass_product(other_body) / (distance**2)
 
     @cache
     def mass_product(self, other_body: PhysicalObjectModel) -> float:
@@ -61,24 +61,26 @@ class PhysicalObjectModel:
     def update_position(self, bodies: Sequence[PhysicalObjectModel], time_step: float) -> None:
         """Update the position of the body."""
         acceleration = self.net_force(bodies) / self.mass
-        self.velocity += acceleration * time_step
-        self.position += self.velocity * time_step
-        
+        self.velocity += time_step * ((acceleration + self.acceleration) / 2)
+        self.position += time_step * self.velocity + (time_step**2 / 2) * self.acceleration
+        self.acceleration = acceleration
+
 
 class InclinedPhysicalObjectModel(PhysicalObjectModel):
     def __init__(
-        self, 
-        aphelion: float, 
-        min_orbital_velocity: float, 
-        inclination: float, 
-        radius: float, 
+        self,
+        aphelion: float,
+        min_orbital_velocity: float,
+        inclination: float,
+        radius: float,
         mass: float,
     ) -> None:
-        
+
         position, velocity = elements_to_cartesian(aphelion, min_orbital_velocity, inclination)
         super().__init__(Vector3(position), Vector3(velocity), radius, mass)
-    
-def elements_to_cartesian(aphelion, min_orbital_velocity, inclination) -> tuple: 
+
+
+def elements_to_cartesian(aphelion, min_orbital_velocity, inclination) -> tuple:
     # convert orbital elements to cartesian position and velocity vectors
     inclination_rad = math.radians(inclination)
     position = (aphelion * math.cos(inclination_rad), 0, aphelion * math.sin(inclination_rad))
