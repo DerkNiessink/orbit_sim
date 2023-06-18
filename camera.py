@@ -9,8 +9,7 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 from PIL import Image
 
-from models.time import Time
-from models.constellation import Constellation
+from views.time import Time
 from views.draw import Drawable
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings
@@ -18,8 +17,8 @@ from views.settings import ViewSettings
 
 AU = 149_597_871_000
 
-class Camera:
 
+class Camera:
     MAX_ZOOM_LEVEL = 100000
     MIN_ZOOM_LEVEL = 0.1
     ZOOM_STEP = 1.1
@@ -30,12 +29,10 @@ class Camera:
     def __init__(
         self,
         window: Surface,
-        constellation_model: Constellation,
         body_viewers: Sequence[PhysicalObjectView],
         time: Time,
     ) -> None:
         self.window = window
-        self.constellation_model = constellation_model
         self.body_viewers = body_viewers
         self.background_image = pygame.image.load("resources/stars_background.png").convert_alpha()
         self.scaled_background_image = self.get_scaled_background_image()
@@ -114,7 +111,6 @@ class Camera:
         self.images = []
 
     def update(self, elapsed_time: float) -> None:
-
         # draw background image
         self.window.blit(self.scaled_background_image, (0, 0))
 
@@ -129,9 +125,9 @@ class Camera:
             drawables.extend(body.drawables(self.settings))
         width, height = self.window.get_width(), self.window.get_height()
         drawables = [drawable for drawable in drawables if drawable.in_window(width, height)]
-        for drawable in sorted(drawables, key=attrgetter("z"), reverse = True):
+        for drawable in sorted(drawables, key=attrgetter("z"), reverse=True):
             drawable.draw(self.window)
-        
+
         # draw the elapsed time in years
         elapsed_years = round(elapsed_time / self.SECONDS_PER_YEAR, 1)
         self.draw_label(f"Elapsed time: {elapsed_years} years", (25, 25))

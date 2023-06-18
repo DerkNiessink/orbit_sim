@@ -5,17 +5,19 @@ from typing import TYPE_CHECKING
 
 import pygame
 from pygame.math import Vector2
+
 if TYPE_CHECKING:
     from pygame import EventType
 else:
     from pygame.event import EventType
 
 from camera import Camera
-from models.time import Time
+from views.time import Time
 
 
 class EventHandler:
     """Handle user input in the form of pygame events, such as keyboard and mouse events."""
+
     def __init__(self, camera: Camera, time: Time) -> None:
         self.camera = camera
         self.time = time
@@ -64,6 +66,6 @@ class EventHandler:
                 self.time.faster()
             case EventType(type=pygame.KEYDOWN, key=pygame.K_DOWN):  # type: ignore[misc]
                 self.time.slower()
-            case EventType(type=pygame.KEYDOWN, key=pygame.K_r): # type: ignore[misc]
+            case EventType(type=pygame.KEYDOWN, key=pygame.K_r):  # type: ignore[misc]
                 self.camera.reset_rotation()
                 self.camera.reset_BodyToTrack()

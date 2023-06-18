@@ -10,7 +10,7 @@ from pygame.math import Vector3
 
 from models.constellation import Constellation
 from models.physicalobject import InclinedPhysicalObjectModel, PhysicalObjectModel
-from models.time import Time
+from views.time import Time
 from views.physicalobject import PhysicalObjectView
 from camera import Camera
 from event_handler import EventHandler
@@ -18,7 +18,6 @@ from resources.image_type import images
 
 
 def orbit_sim(module_name):
-
     with open(module_name) as json_file:
         constellation_module = json.load(json_file)
 
@@ -31,15 +30,10 @@ def orbit_sim(module_name):
     body_models = []
     body_viewers = []
     for name, body in constellation_module["Constellation"].items():
-        
         aphelion = body.get("aphelion")
         if aphelion:
             body_model = InclinedPhysicalObjectModel(
-                aphelion,
-                body["min_orbital_velocity"],
-                body["inclination"],
-                body["radius"],
-                body["mass"]
+                aphelion, body["min_orbital_velocity"], body["inclination"], body["radius"], body["mass"]
             )
         else:
             body_model = PhysicalObjectModel(
@@ -47,7 +41,7 @@ def orbit_sim(module_name):
                 Vector3(body["init_velocity"]),
                 body["radius"],
                 body["mass"],
-                )
+            )
         body_models.append(body_model)
         body_viewers.append(
             PhysicalObjectView(
@@ -79,7 +73,7 @@ def orbit_sim(module_name):
 
     clock = pygame.time.Clock()
     time = Time(constellation_module["time_step"])
-    camera = Camera(window, constellation_model, body_viewers, time)
+    camera = Camera(window, body_viewers, time)
     event_handler = EventHandler(camera, time)
     while True:
         clock.tick()
