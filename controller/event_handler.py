@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 else:
     from pygame.event import EventType
 
-from camera import Camera
-from views.time import Time
+from controller.camera import Camera
+from controller.time import Time
 
 
 class EventHandler:

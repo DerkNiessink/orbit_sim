@@ -10,10 +10,10 @@ from pygame.math import Vector3
 
 from models.constellation import Constellation
 from models.physicalobject import InclinedPhysicalObjectModel, PhysicalObjectModel
-from views.time import Time
+from controller.time import Time
 from views.physicalobject import PhysicalObjectView
-from camera import Camera
-from event_handler import EventHandler
+from controller.camera import Camera
+from controller.event_handler import EventHandler
 from resources.image_type import images
 
 
