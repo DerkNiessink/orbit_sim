@@ -7,16 +7,16 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidgetItem, QComboBox, QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QMessageBox
 import qdarktheme
 import numpy as np
+import math
 
 from sim import orbit_sim
 from resources.image_type import images
-from models.physicalobject import elements_to_cartesian
 from conversion import Conversion
 
-AU = 149_597_871 * 10 ** 3
+AU = 149_597_871 * 10**3
+
 
 class OrbitSimGui(QtWidgets.QMainWindow):
-
     def __init__(self):
         super().__init__()
         self.column = 0
@@ -26,12 +26,14 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         )
 
         # Load in the names of the saved constellations in the resources repository
-        self.constellations = [filename.strip(".json") for filename in os.listdir("constellations") if ".json" in filename]
+        self.constellations = [
+            filename.strip(".json") for filename in os.listdir("constellations") if ".json" in filename
+        ]
 
         self.conversion = Conversion(self.tableWidget, self.const_ComboBox)
 
         # Make dict for the type-ComboBoxes per constellation
-        self.types_ComboBoxes = {} 
+        self.types_ComboBoxes = {}
         for constellation in self.constellations:
             self.types_ComboBoxes[constellation] = {}
 
@@ -71,22 +73,26 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         # Iterate over reversed dict, so that order of the table stays the same
         for name, body in reversed(constellation["Constellation"].items()):
             self.column = 0
-            
+
             # determine if user input was orbital elements or cartesian
             init_position = body.get("init_position")
             init_velocity = body.get("init_velocity")
             if init_position == None:
-                init_position, init_velocity = elements_to_cartesian(body["aphelion"], body["min_orbital_velocity"], body["inclination"])
+                init_position, init_velocity = elements_to_cartesian(
+                    body["aphelion"], body["min_orbital_velocity"], body["inclination"]
+                )
 
             # add body parameters to columns
             self.add_body()
             self.addItem(name)
-            self.addItem(tuple([round(x/AU, 2) for x in init_position]))
-            self.addItem(tuple([round(x/1000,2) for x in init_velocity]))
-            self.addItem(round(body["radius"]/1000))
+            self.addItem(tuple([round(x / AU, 2) for x in init_position]))
+            self.addItem(tuple([round(x / 1000, 2) for x in init_velocity]))
+            self.addItem(round(body["radius"] / 1000))
             self.addItem(scientific(body["mass"]))
-            self.types_ComboBoxes[self.const_ComboBox.currentText()][self.tableWidget.rowCount()].setCurrentText(body["type"])
-            self.column +=1 
+            self.types_ComboBoxes[self.const_ComboBox.currentText()][self.tableWidget.rowCount()].setCurrentText(
+                body["type"]
+            )
+            self.column += 1
             self.addItem(body.get("tail_length", 5000))
 
     def add_body(self) -> None:
@@ -106,7 +112,9 @@ class OrbitSimGui(QtWidgets.QMainWindow):
     def delete_constellation(self) -> None:
         """Delete a constellation from the constellations combobox and json file"""
 
-        button = QMessageBox.question(self, "Confirm", f'Are you sure you want to delete "{self.const_ComboBox.currentText()}"?')
+        button = QMessageBox.question(
+            self, "Confirm", f'Are you sure you want to delete "{self.const_ComboBox.currentText()}"?'
+        )
         if button == QMessageBox.Yes:
             self.conversion.delete_constellation()
             self.const_ComboBox.removeItem(self.const_ComboBox.currentIndex())
@@ -117,7 +125,9 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         constellation = self.const_ComboBox.currentText()
         self.types_ComboBoxes[constellation][index] = QComboBox()
         self.types_ComboBoxes[constellation][index].addItems([key for key in images])
-        self.types_ComboBoxes[constellation][index].currentTextChanged.connect(partial(self.conversion.table_to_json, self.types_ComboBoxes))
+        self.types_ComboBoxes[constellation][index].currentTextChanged.connect(
+            partial(self.conversion.table_to_json, self.types_ComboBoxes)
+        )
         self.tableWidget.setCellWidget(0, 5, self.types_ComboBoxes[constellation][index])
 
     def addItem(self, input) -> None:
@@ -126,7 +136,9 @@ class OrbitSimGui(QtWidgets.QMainWindow):
         self.column += 1
 
     def set_header(self) -> None:
-        self.tableWidget.setHorizontalHeaderLabels(["Name" ,"Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"])
+        self.tableWidget.setHorizontalHeaderLabels(
+            ["Name", "Position (AU)", "Velocity (km/s)", "Radius (km)", "Mass (kg)", "Type", "Tail Length (px)"]
+        )
 
     def delete_body(self) -> None:
         """delete the selected body from the table and json file"""
@@ -143,7 +155,16 @@ class OrbitSimGui(QtWidgets.QMainWindow):
 
 
 def scientific(input) -> str:
-    return np.format_float_scientific(input, precision = 2)
+    return np.format_float_scientific(input, precision=2)
+
+
+def elements_to_cartesian(aphelion, min_orbital_velocity, inclination) -> tuple:
+    # convert orbital elements to cartesian position and velocity vectors
+    inclination_rad = math.radians(inclination)
+    position = (aphelion * math.cos(inclination_rad), 0, aphelion * math.sin(inclination_rad))
+    velocity = (0, min_orbital_velocity, 0)
+    return position, velocity
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

@@ -9,7 +9,7 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 from PIL import Image
 
-from controller.time import Time
+from controllers.time import Time
 from views.draw import Drawable
 from views.physicalobject import PhysicalObjectView
 from views.settings import ViewSettings

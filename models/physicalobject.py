@@ -10,7 +10,6 @@ from pygame.math import Vector3
 
 
 class PhysicalObjectModel:
-
     gravitational_constant = 6.67408 * 10 ** (-11)
     force_cache: dict[tuple[PhysicalObjectModel, PhysicalObjectModel], Vector3] = dict()
     null_vector = Vector3(0, 0, 0)
@@ -22,7 +21,6 @@ class PhysicalObjectModel:
         radius: float,
         mass: float,
     ) -> None:
-
         self.position = initial_position
         self.velocity = initial_velocity
         self.acceleration = self.null_vector
@@ -75,7 +73,6 @@ class InclinedPhysicalObjectModel(PhysicalObjectModel):
         radius: float,
         mass: float,
     ) -> None:
-
         position, velocity = elements_to_cartesian(aphelion, min_orbital_velocity, inclination)
         super().__init__(Vector3(position), Vector3(velocity), radius, mass)
 
