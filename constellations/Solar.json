@@ -1,21 +1,5 @@
 {
     "Constellation": {
-        "Moon": {
-            "init_position": [
-                -149982187930.599,
-                0.0,
-                0.0
-            ],
-            "init_velocity": [
-                0.0,
-                30770.0,
-                0.0
-            ],
-            "radius": 1736000.0,
-            "mass": 7.35,
-            "type": "moon",
-            "tail_length": 100
-        },
         "Neptune": {
             "init_position": [
                 -4483448193870.0,
@@ -30,7 +14,7 @@
             "radius": 24764000.0,
             "mass": 1.02e+26,
             "type": "terrestrial dry",
-            "tail_length": 100
+            "tail_length": 4000
         },
         "Uranus": {
             "init_position": [
@@ -46,7 +30,7 @@
             "radius": 25559000.0,
             "mass": 8.68e+25,
             "type": "terrestrial dry",
-            "tail_length": 100
+            "tail_length": 2000
         },
         "Saturn": {
             "init_position": [
@@ -62,7 +46,7 @@
             "radius": 60268000.0,
             "mass": 5.68e+26,
             "type": "gas giant",
-            "tail_length": 100
+            "tail_length": 500
         },
         "Venus": {
             "init_position": [
@@ -78,7 +62,7 @@
             "radius": 6052000.0,
             "mass": 4.87e+24,
             "type": "terrestrial hot",
-            "tail_length": 100
+            "tail_length": 120
         },
         "Pluto": {
             "init_position": [
@@ -94,7 +78,7 @@
             "radius": 1185000.0,
             "mass": 1.27e+22,
             "type": "terrestrial dry",
-            "tail_length": 100
+            "tail_length": 10000
         },
         "Jupiter": {
             "init_position": [
@@ -110,7 +94,7 @@
             "radius": 71492000.0,
             "mass": 1.9e+27,
             "type": "gas giant",
-            "tail_length": 100
+            "tail_length": 400
         },
         "Mars": {
             "init_position": [
@@ -126,7 +110,7 @@
             "radius": 3390000.0,
             "mass": 6.39e+23,
             "type": "terrestrial dry",
-            "tail_length": 100
+            "tail_length": 200
         },
         "Earth": {
             "init_position": [
@@ -142,7 +126,7 @@
             "radius": 6371000.0,
             "mass": 5.77e+24,
             "type": "terrestrial oceanic",
-            "tail_length": 100
+            "tail_length": 150
         },
         "Mercury": {
             "init_position": [
@@ -162,7 +146,7 @@
         },
         "Sun": {
             "init_position": [
-                14959787.100000001,
+                0.0,
                 0.0,
                 0.0
             ],
