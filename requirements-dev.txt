@@ -1,4 +1,4 @@
 gprof2dot==2021.2.21
 mypy==0.940
-pip==22.0.4
+pip>=23.3
 types-Pillow==9.0.9
