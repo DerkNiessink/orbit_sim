@@ -1,5 +1,5 @@
 darkdetect==0.7.1
-Pillow==9.2.0
+pillow>=10.0.1
 pygame==2.1.2
 PyQt5==5.15.9
 PyQt5-Qt5==5.15.2
