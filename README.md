@@ -9,7 +9,7 @@ Application for simulating gravity between bodies with [Newton's law of universa
 1. Clone the repository.
 2. [Create a virtual environment and activate it](https://docs.python.org/3/library/venv.html).
 3. Install the requirements: `pip install -r requirements.txt`
-4. Start the sim: `python gui.py`
+4. Start the sim: `python main.py`
 
 ## Constellations
 
