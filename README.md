@@ -27,6 +27,7 @@ the aphelion/min. orbital velocity/inclination input.
 * Press `UP` key: increase time scale.
 * Press `DOWN` key: decrease time scale.
 * Press `r` key: reset camera rotation and set perspective to center of mass.
+* Press `l` key: show/hide body labels.
 
 ### Mouse
 
