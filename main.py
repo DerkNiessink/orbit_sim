@@ -3,8 +3,8 @@ import sys
 import os
 from functools import partial
 
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QTableWidgetItem, QComboBox, QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QMessageBox
+from PyQt6 import QtWidgets, uic
+from PyQt6.QtWidgets import QTableWidgetItem, QComboBox, QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QMessageBox
 import qdarktheme
 import numpy as np
 import math
